@@ -1,6 +1,6 @@
 import React from 'react';
 
 const RatingsAndReviews = () => (
-  <div>Product Info</div>
+  <div>RatingsAndReviews</div>
 );
 export default RatingsAndReviews;
