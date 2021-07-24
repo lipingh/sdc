@@ -1,11 +1,23 @@
-// Put your API key goes here!
-// Make your own copy and name it to config.js
-// const API_KEY = 'YOUR_API_KEY_HERE';
+const API_KEY = 'YOUR_API_KEY';
+const CAMPUS_CODE = 'hr-sjo';
 
-// Send a GET request with the authorization header set to
-// the string 'my secret token'
-// const res = await axios.get('https://httpbin.org/get', {
-//   headers: {
-//     'Authorization': API_KEY
-//   }
-// });
+const options = {
+  url: `https://app-hrsei-api.herokuapp.com/api/fec2/${CAMPUS_CODE}/`,
+  headers: {
+    'User-Agent': 'request',
+    Authorization: API_KEY,
+  },
+};
+
+// an example to use options
+// const axios = require('axios');
+
+// axios({
+//   url: options.url + 'products',
+//   method: 'get',
+//   headers: options.headers,
+// })
+//   .then(res => console.log(res.data))
+//   .catch(err => console.log(err));
+
+module.exports = options;
