@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
+import RelatedList from './RelatedList.jsx';
 
-const RelatedAndOutfit = () => (
-  <div>
-    RELATED AND OUTFIT
-  </div>
-);
+function RelatedAndOutfit() {
+  return (
+    <div>
+      RELATED AND OUTFIT
+      <RelatedList />
+    </div>
+  );
+}
 
 export default RelatedAndOutfit;
