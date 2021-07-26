@@ -1,5 +1,5 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 const FiveStar = ({ ratings }) => {
   const oneStar = parseInt(ratings['1'], 10);
@@ -25,13 +25,17 @@ const FiveStar = ({ ratings }) => {
   );
 };
 
-// FiveStar.propTypes = {
-//   ratings: PropTypes.object.isRequired,
-//   ratings['5']: PropTypes.string.isRequired,
-//   ratings['4']: PropTypes.string.isRequired,
-//   ratings['3']: PropTypes.string.isRequired,
-//   ratings['2']: PropTypes.string.isRequired,
-//   ratings['1']: PropTypes.string.isRequired
-// }
+FiveStar.propTypes = {
+  ratings: PropTypes.shape({
+    1: PropTypes.string,
+    2: PropTypes.string,
+    3: PropTypes.string,
+    4: PropTypes.string,
+    5: PropTypes.string,
+  }),
+};
+FiveStar.defaultProps = {
+  ratings: {},
+};
 
 export default FiveStar;

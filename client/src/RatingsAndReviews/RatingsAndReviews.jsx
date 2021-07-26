@@ -4,12 +4,15 @@ import options from '../config/config.js';
 import FiveStar from './FiveStar.jsx';
 import RatingsBreakDown from './RatingsBreakDown.jsx';
 import ProductBreakDown from './ProductBreakDown.jsx';
+import ReviewList from './ReviewList.jsx';
 
 const RatingsAndReviews = () => {
   const [recommended, setRecommended] = useState(0);
   const [notRecommended, setNotRecommended] = useState(0);
   const [ratings, setRatings] = useState({});
   const [characteristics, setCharacteristics] = useState({});
+  const [reviews, setReviews] = useState([]);
+
   const getReviewsMeta = () => {
     axios({
       url: `${options.url}reviews/meta?product_id=13023`,
@@ -27,8 +30,22 @@ const RatingsAndReviews = () => {
       .catch((err) => console.error(err));
   };
 
+  const getAllReviews = () => {
+    axios({
+      url: `${options.url}reviews?product_id=13023`,
+      method: 'get',
+      headers: options.headers,
+    })
+      .then((res) => {
+        // console.log(res.data.results);
+        setReviews(res.data.results);
+      })
+      .catch((err) => console.error(err));
+  };
+
   useEffect(() => {
     getReviewsMeta();
+    getAllReviews();
   }, []);
 
   return (
@@ -44,6 +61,7 @@ const RatingsAndReviews = () => {
       </div>
       <br />
       <ProductBreakDown characteristics={characteristics} />
+      <ReviewList ratings={ratings} reviews={reviews} />
     </div>
   );
 };

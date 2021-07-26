@@ -7,13 +7,18 @@ const ProductBreakDown = ({ characteristics }) => (
       <div key={character}>
         {character}
         :
-        {parseFloat(characteristics[character]['value']).toFixed(2)}
+        {parseFloat(characteristics[character].value).toFixed(2)}
       </div>
     ))}
   </div>
 );
 
-// ProductBreakDown.propTypes = {
-//   characteristics: PropTypes.object.isRequired,
-// }
+ProductBreakDown.propTypes = {
+  characteristics: PropTypes.shape({
+    value: PropTypes.string,
+  }),
+};
+ProductBreakDown.defaultProps = {
+  characteristics: {},
+};
 export default ProductBreakDown;
