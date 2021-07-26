@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import exampleData from './ExampleRelatedProducts.js'
+import './related.css'
 
 const RelatedCard = (props) => {
   let relatedIndex = -1;
@@ -28,7 +29,7 @@ const RelatedCard = (props) => {
         height="200"
         className="card-img"
       />
-      <div className="card-add-star"></div>
+      <div className="card-add-star">star</div>
       <div className="card-category">
         {props.product.category.toUpperCase()}
       </div>
@@ -39,7 +40,7 @@ const RelatedCard = (props) => {
         <div className="card-default-price">{defaultPrice}</div>
         <div className="card-sale-price">{salePrice ? salePrice : ''}</div>
       </div>
-      <div className="card-rating"></div>
+      <div className="card-rating">[rating]</div>
     </div>
   );
 };
