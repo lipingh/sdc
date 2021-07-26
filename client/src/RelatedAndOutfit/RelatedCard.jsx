@@ -3,20 +3,28 @@ import exampleData from './ExampleRelatedProducts.js'
 
 const RelatedCard = (props) => {
   let relatedIndex = -1;
+  let relatedStyleInd = 0;
   for (let i = 0; i < exampleData.relatedStyles.length; i++) {
     if (Number.parseInt(exampleData.relatedStyles[i].product_id, 10) === props.product.id) {
       relatedIndex = i;
+      for (let j = 0; j < exampleData.relatedStyles[i].results.length; j++) {
+        if (exampleData.relatedStyles[i].results[j]['default?']) {
+          console.log('YES')
+          relatedStyleInd = j;
+          break;
+        }
+      }
       break;
     }
   }
-  const relatedObj = exampleData.relatedStyles[relatedIndex];
-  let defaultPrice = props.product.default_price;
-  let salePrice =
+  const relatedImg = exampleData.relatedStyles[relatedIndex].results[relatedStyleInd].photos[0].thumbnail_url;
+  const defaultPrice = props.product.default_price;
+  const salePrice = exampleData.relatedStyles[relatedIndex].results[relatedStyleInd].sale_price;
   return (
     <div className="list-card">
       <img
-        src={relatedObj.results[0].photos[0].thumbnail_url}
-        alt={relatedObj.results[0].name}
+        src={relatedImg}
+        alt={props.product.name}
         width="200"
         height="200"
         className="card-img"
@@ -26,6 +34,10 @@ const RelatedCard = (props) => {
       </div>
       <div className="card-name">
         {props.product.name}
+      </div>
+      <div className="card-price">
+        <div className="card-default-price">{defaultPrice}</div>
+        <div className="card-sale-price">{salePrice ? salePrice : ''}</div>
       </div>
     </div>
   );
