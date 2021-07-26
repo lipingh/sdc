@@ -9,7 +9,6 @@ const RelatedCard = (props) => {
       relatedIndex = i;
       for (let j = 0; j < exampleData.relatedStyles[i].results.length; j++) {
         if (exampleData.relatedStyles[i].results[j]['default?']) {
-          console.log('YES')
           relatedStyleInd = j;
           break;
         }
@@ -29,6 +28,7 @@ const RelatedCard = (props) => {
         height="200"
         className="card-img"
       />
+      <div className="card-add-star"></div>
       <div className="card-category">
         {props.product.category.toUpperCase()}
       </div>
@@ -39,6 +39,7 @@ const RelatedCard = (props) => {
         <div className="card-default-price">{defaultPrice}</div>
         <div className="card-sale-price">{salePrice ? salePrice : ''}</div>
       </div>
+      <div className="card-rating"></div>
     </div>
   );
 };
