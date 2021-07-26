@@ -1,4 +1,5 @@
 import React from 'react';
+import QuestionsList from './QuestionsList.jsx';
 
 const QuestionsAndAnswers = () => (
   <div>
