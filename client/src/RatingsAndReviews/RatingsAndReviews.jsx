@@ -3,11 +3,13 @@ import axios from 'axios';
 import options from '../config/config.js';
 import FiveStar from './FiveStar.jsx';
 import RatingsBreakDown from './RatingsBreakDown.jsx';
+import ProductBreakDown from './ProductBreakDown.jsx';
 
 const RatingsAndReviews = () => {
   const [recommended, setRecommended] = useState(0);
   const [notRecommended, setNotRecommended] = useState(0);
   const [ratings, setRatings] = useState({});
+  const [characteristics, setCharacteristics] = useState({});
   const getReviewsMeta = () => {
     axios({
       url: `${options.url}reviews/meta?product_id=13023`,
@@ -18,6 +20,9 @@ const RatingsAndReviews = () => {
         setRatings(res.data.ratings);
         setRecommended(parseInt(res.data.recommended.true, 10));
         setNotRecommended(parseInt(res.data.recommended.false, 10));
+        setCharacteristics(res.data.characteristics);
+        // console.log('ratings', ratings);
+        // console.log('characteristics', characteristics);
       })
       .catch((err) => console.error(err));
   };
@@ -25,6 +30,7 @@ const RatingsAndReviews = () => {
   useEffect(() => {
     getReviewsMeta();
   }, []);
+
   return (
     <div>
       <h5>Ratings & Reviews</h5>
@@ -37,6 +43,7 @@ const RatingsAndReviews = () => {
         % of reviews recommend this product
       </div>
       <br />
+      <ProductBreakDown characteristics={characteristics} />
     </div>
   );
 };
