@@ -3401,4 +3401,5 @@ const relatedStyles = [
 module.exports = {
   exampleRelated,
   relatedStyles,
+  relatedIds,
 };

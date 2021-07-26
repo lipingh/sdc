@@ -1,14 +1,13 @@
 import React, {useState} from 'react';
 import RelatedCard from './RelatedCard.jsx';
+import exampleData from './ExampleRelatedProducts.js';
 
 const RelatedList = () => (
-  <div>
-    List
-    <ul>
-      <RelatedCard />
-      <RelatedCard />
-      <RelatedCard />
-    </ul>
+  <div className="related-list">
+    <h3>Related</h3>
+    {exampleData.exampleRelated.map((product) => (
+      <RelatedCard key={product.id} product={product} />
+    ))}
   </div>
 );
 
