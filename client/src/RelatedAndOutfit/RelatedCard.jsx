@@ -10,16 +10,22 @@ const RelatedCard = (props) => {
     }
   }
   const relatedObj = exampleData.relatedStyles[relatedIndex];
+  let defaultPrice = props.product.default_price;
+  let salePrice =
   return (
-    <div className="related-card">
+    <div className="list-card">
       <img
         src={relatedObj.results[0].photos[0].thumbnail_url}
         alt={relatedObj.results[0].name}
         width="200"
         height="200"
+        className="card-img"
       />
-      <div>
-        Product Category
+      <div className="card-category">
+        {props.product.category.toUpperCase()}
+      </div>
+      <div className="card-name">
+        {props.product.name}
       </div>
     </div>
   );
