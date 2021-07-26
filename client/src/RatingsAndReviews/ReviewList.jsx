@@ -35,7 +35,7 @@ ReviewList.propTypes = {
     4: PropTypes.string,
     5: PropTypes.string,
   }),
-  reviews: PropTypes.shape([]),
+  reviews: PropTypes.arrayOf(PropTypes.object),
 };
 ReviewList.defaultProps = {
   ratings: {},
