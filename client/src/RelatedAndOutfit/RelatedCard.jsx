@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
+import exampleData from './ExampleRelatedProducts.js'
 
-function RelatedCard() {
-  return (
-    <li>
-      Card
-    </li>
-  )
-}
+const RelatedCard = () => (
+  <li>
+    Card
+  </li>
+);
 
 export default RelatedCard;

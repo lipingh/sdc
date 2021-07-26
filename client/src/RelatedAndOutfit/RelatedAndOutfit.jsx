@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import RelatedList from './RelatedList.jsx';
+import axios from 'axios';
+import options from '../config/config.js';
 
-function RelatedAndOutfit() {
-  return (
-    <div>
-      RELATED AND OUTFIT
-      <RelatedList />
-    </div>
-  );
-}
+const RelatedAndOutfit = () => (
+  <div>
+    RELATED AND OUTFIT
+    <RelatedList />
+  </div>
+);
 
 export default RelatedAndOutfit;
