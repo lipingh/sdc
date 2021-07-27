@@ -32,7 +32,7 @@ const Gallery = () => {
 
   return (
     <div className={style.gallery}>
-      <div className={style.thumbnail}></div>
+      <div className={style.thumbnail} />
       <div className={style.mainImage}>
         {currImgIndex !== 0 && <button type="button" className={style.clickPrev} onClick={buttonClickHandler('prev')}>&lt;</button>}
         <img src={images[currImgIndex]} alt="selected style" className={style.image} />
