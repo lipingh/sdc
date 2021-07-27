@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import style from './Gallery.module.css';
 import options from '../../config/config.js';
@@ -9,14 +9,25 @@ const Gallery = () => {
   const [thumbnails, setThumbnails] = useState([]);
   const [currImgIndex, setCurrImgIndex] = useState(0);
   const [firstThumbnailIdex, setFirstThumbnailIdex] = useState(0);
+  const imageMove = useRef(null);
   // const [currThumbnailIndex, setCurrThumbnailIndex] = useState(0);
 
   const buttonClickHandler = (direction) => (
     (event) => {
       if (direction === 'next') {
         setCurrImgIndex((prevIndex) => prevIndex + 1);
+        imageMove.current.scrollBy({
+          top: 0,
+          left: 360,
+          behavior: 'smooth',
+        });
       } else if (direction === 'prev') {
         setCurrImgIndex((prevIndex) => prevIndex - 1);
+        imageMove.current.scrollBy({
+          top: 0,
+          left: -360,
+          behavior: 'smooth',
+        });
       } else if (direction === 'up') {
         setFirstThumbnailIdex((prevIndex) => prevIndex - 5);
       } else if (direction === 'down') {
@@ -28,7 +39,6 @@ const Gallery = () => {
   useEffect(() => {
     axios.get(`${options.url}products/13023/styles`, { headers: options.headers })
       .then((response) => {
-        console.log(response.data.results[0].photos);
         setStyles(response.data.results);
         const imgs = response.data.results[0].photos.map((photo) => photo.url);
         const thumbnailImgs = response.data.results[0].photos.map((photo) => photo.thumbnail_url);
@@ -51,9 +61,13 @@ const Gallery = () => {
         </div>
         {firstThumbnailIdex + 5 < thumbnails.length && <button type="button" onClick={buttonClickHandler('down')}>&or;</button>}
       </div>
-      <div className={style.mainImage}>
+      <div className={style.mainGallery}>
         {currImgIndex !== 0 && <button type="button" className={style.clickPrev} onClick={buttonClickHandler('prev')}>&lt;</button>}
-        <img src={images[currImgIndex]} alt="selected style" className={style.image} />
+        <div className={style.mainImage} ref={imageMove}>
+          {images.map((imageurl, index) => (
+            <img src={imageurl} alt="selected style" className={style.image} key={index}/>
+          ))}
+        </div>
         {currImgIndex !== images.length - 1 && <button type="button" className={style.clickNext} onClick={buttonClickHandler('next')}>&gt;</button>}
       </div>
     </div>
