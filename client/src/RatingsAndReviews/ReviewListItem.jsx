@@ -17,8 +17,7 @@ const ReviewListItem = ({ review }) => {
   return (
     <div>
       <div>
-        <StarRating rating={review.rating} />
-        {/* <span>{review.rating}</span> */}
+        <StarRating rating={review.rating || 5} />
         <span>
           {` ${review.reviewer_name}, ${formatDate(review.date)}`}
         </span>

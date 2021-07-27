@@ -36,6 +36,7 @@ const RatingsAndReviews = () => {
       })
       .catch((err) => console.error(err));
   };
+
   useEffect(() => {
     getReviewsMeta();
   }, []);
@@ -44,7 +45,7 @@ const RatingsAndReviews = () => {
     <div>
       <h5>Ratings &amp; Reviews</h5>
       <span>{averageRatings.toFixed(1)}</span>
-      <StarRating ratings={averageRatings} />
+      <StarRating ratings={averageRatings || 5} />
       <br />
 
       <RatingsBreakDown ratings={ratings} />

@@ -8,7 +8,6 @@ import ReviewForm from './ReviewForm.jsx';
 const ReviewList = ({ totalReviews, productId }) => {
   const [sortOption, setSortOption] = useState('relevant');
   const [reviews, setReviews] = useState([]);
-
   const getReviewsById = () => {
     // console.log('sort by', sortOption);
     axios({
@@ -18,7 +17,7 @@ const ReviewList = ({ totalReviews, productId }) => {
       params: {
         product_id: productId,
         sort: sortOption,
-        count: 20,
+        count: 5,
       },
     })
       .then((res) => {
@@ -26,9 +25,11 @@ const ReviewList = ({ totalReviews, productId }) => {
       })
       .catch((err) => console.error(err));
   };
+
   useEffect(() => {
     getReviewsById();
   }, []);
+
   return (
     <div>
       <div>
@@ -52,7 +53,8 @@ const ReviewList = ({ totalReviews, productId }) => {
         }
       </div>
       <button type="button">MORE REVIEWS</button>
-      <button type="button" onClick={ReviewForm}>ADD A REVIEW  + </button>
+      <button type="button">ADD A REVIEW  + </button>
+      <ReviewForm />
     </div>
 
   );
