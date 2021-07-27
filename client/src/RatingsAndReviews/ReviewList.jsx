@@ -57,7 +57,7 @@ const ReviewList = ({ totalReviews, productId }) => {
       {/* {
         // showReviewForm ? <ReviewForm /> :''
       } */}
-      <ReviewForm />
+      <ReviewForm productId={productId} />
     </div>
 
   );

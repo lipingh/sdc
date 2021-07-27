@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-// import StarRating from './StarRating.jsx';
+import axios from 'axios';
 import { Rating } from 'react-simple-star-rating';
+import options from '../config/config.js';
 
-const ReviewForm = (props) => {
+const ReviewForm = ({ productId }) => {
   const [recommend, setRecommended] = useState('');
   const [rating, setRating] = useState('');
   const [size, setSize] = useState('');
@@ -11,11 +12,47 @@ const ReviewForm = (props) => {
   const [quality, setQuality] = useState('');
   const [length, setLength] = useState('');
   const [fit, setFit] = useState('');
-  const [reviewSummary, setReviewSummary] = useState('');
+  const [summary, setSummary] = useState('');
+  const [body, setBody] = useState('');
+  const [name, setReviewName] = useState('');
+  const [email, setEmail] = useState('');
+
   const addReviews = (e) => {
     e.preventDefault();
-    console.log('recommend value', recommend);
-    console.log('rating', rating);
+    // TODO: need to get each factor id
+    // TODO: validate fileds before submit
+    const params = {
+      product_id: productId,
+      rating,
+      summary,
+      body,
+      recommend,
+      name,
+      email,
+      characteristics: {
+        Fit: {
+          id: 43617,
+          value: fit,
+        },
+        Length: {
+          id: 43618,
+          value: length,
+        },
+        Comfort: {
+          id: 43619,
+          value: comfort,
+        },
+        Quality: {
+          id: 43620,
+          value: quality,
+        },
+
+      },
+    };
+    // TODO: post data to reviews, currently unathorized 401
+    axios.post(`${options.url}reviews`, params, options.headers)
+      .then()
+      .catch((err) => console.error(err));
   };
 
   return (
@@ -110,27 +147,27 @@ const ReviewForm = (props) => {
           <input type="radio" name="fit" value="5" />
           Runs long
         </div>
-        <div className="review-summary" onChange={(e) => setReviewSummary(e.target.value)}>
+        <div className="review-summary" onChange={(e) => setSummary(e.target.value)}>
           Review Summary
-          <input type="text" maxLength="60" placeholder="Example: purchase ever!" />
+          <input type="text" maxLength="60" placeholder="Example: purchase ever!" required />
         </div>
-        <div>
+        <div className="review-body" onChange={(e) => setBody(e.target.value)}>
           Add a written review
-          <input type="text" maxLength="1000" placeholder="Example: Why did you like the product or not?" />
+          <input type="text" maxLength="1000" placeholder="Example: Why did you like the product or not?" required />
         </div>
         <div>
           Choose photos:
           <input type="file" id="upload-photo" accept="image/*" multiple />
         </div>
-        <div>
+        <div className="review-name" onChange={(e) => setReviewName(e.target.value)}>
           Nickname
           <input type="text" placeholder="Example: jackson11!" required />
         </div>
-        <div>
+        <div className="email" onChange={(e) => setEmail(e.target.value)}>
           Email
           <input type="text" maxLength="60" required />
         </div>
-        <button type="submit" onClick={addReviews}>Submit</button>
+        <button type="button" onClick={addReviews}>Submit</button>
       </div>
     </form>
   );
