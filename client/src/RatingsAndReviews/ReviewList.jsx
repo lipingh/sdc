@@ -53,7 +53,7 @@ const ReviewList = ({ totalReviews, productId }) => {
       </div>
       <button type="button">MORE REVIEWS</button>
       <button type="button">ADD A REVIEW  + </button>
-      <ReviewForm />
+      {/* <ReviewForm /> */}
     </div>
 
   );
