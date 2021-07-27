@@ -1,8 +1,14 @@
+.related {
+  display: flex;
+  justify-content: center;
+}
+
 .related-list {
-  border: 1px solid #000000;
+  align-items: center;
   display: flex;
   overflow: hidden;
   position: relative;
+  border: 1px solid #000000;
   max-width: 920px;
 }
 

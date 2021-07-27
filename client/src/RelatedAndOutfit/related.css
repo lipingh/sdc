@@ -9,6 +9,7 @@
 }
 
 .list-card img{
+  object-fit: cover;
   margin: auto;
   display: block;
   justify-content: center;

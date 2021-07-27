@@ -17,7 +17,7 @@ const RelatedList = () => {
     if (listRef.current) {
       listRef.current.scrollBy({
         top: 0,
-        left: 230,
+        left: 231,
         behavior: 'smooth',
       })
     }
@@ -32,7 +32,7 @@ const RelatedList = () => {
     if (listRef.current) {
       listRef.current.scrollBy({
         top: 0,
-        left: -230,
+        left: -231,
         behavior: 'smooth',
       });
     }
@@ -41,13 +41,13 @@ const RelatedList = () => {
 
   return (
     <div className="related">
-      <button className="btn-related-left" onClick={prevCard}>prev</button>
       <div className="related-list" ref={listRef}>
+      <button className="btn-related-left" onClick={prevCard}>prev</button>
         {exampleData.exampleRelated.map((product) => (
           <RelatedCard key={product.id} product={product} />
         ))}
-      </div>
       <button className="btn-related-right" onClick={nextCard}>next</button>
+      </div>
     </div>
   );
 };
