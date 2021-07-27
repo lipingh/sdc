@@ -100,8 +100,25 @@ const ReviewForm = (props) => {
         </div>
         <div className="review-summary">
           Review Summary
-          <input type="text" placeholder="Example: purchase ever!" />
+          <input type="text" maxlength="60" placeholder="Example: purchase ever!" />
         </div>
+        <div>
+          Review body
+          <input type="text" maxlength="1000" placeholder="Example: Why did you like the product or not?" />
+        </div>
+        <div>
+          <label htmlFor="upload-photo">Choose photos:</label>
+          <input type="file" id="pload-photo" accept="image/png, image/jepg" multiple></input>
+        </div>
+        <div>
+          Nickname
+          <input type="text" placeholder="Example: jackson11!" required></input>
+        </div>
+        <div>
+          Email
+          <input type="text" maxlength="60" required></input>
+        </div>
+        <button>Submit</button>
       </div>
     </form>
   );

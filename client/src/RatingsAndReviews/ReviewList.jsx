@@ -8,6 +8,7 @@ import ReviewForm from './ReviewForm.jsx';
 const ReviewList = ({ totalReviews, productId }) => {
   const [sortOption, setSortOption] = useState('relevant');
   const [reviews, setReviews] = useState([]);
+  const [showReviewForm, setShowReviewForm] = useState(false);
   const getReviewsById = () => {
     // console.log('sort by', sortOption);
     axios({
@@ -52,8 +53,9 @@ const ReviewList = ({ totalReviews, productId }) => {
         }
       </div>
       <button type="button">MORE REVIEWS</button>
-      <button type="button">ADD A REVIEW  + </button>
-      <ReviewForm />
+      <button type="button" onClick={setShowReviewForm(true)}>ADD A REVIEW  + </button> {
+        // showReviewForm ? <ReviewForm /> :''
+      }
     </div>
 
   );
