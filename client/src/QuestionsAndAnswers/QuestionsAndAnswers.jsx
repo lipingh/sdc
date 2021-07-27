@@ -24,6 +24,7 @@ const QuestionsAndAnswers = () => {
 
   return (
     <>
+      <h3>Questions and Answers</h3>
       <QuestionsList questions={questions} />
     </>
   );
