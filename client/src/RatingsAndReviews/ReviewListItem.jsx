@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import StarRating from './StarRating.jsx';
+import './reviews.css';
 
 const ReviewListItem = ({ review }) => {
   const formatDate = (dateString) => {
@@ -16,13 +17,13 @@ const ReviewListItem = ({ review }) => {
 
   return (
     <div>
-      <div>
+      <div className="review-list-overall">
         <StarRating rating={review.rating || 5} />
         <span>
           {` ${review.reviewer_name}, ${formatDate(review.date)}`}
         </span>
       </div>
-      <div>{review.summary}</div>
+      <div className="review-summary">{review.summary}</div>
       <div>{review.body}</div>
       <div>
         {review.recommend ? 'I recommend this product' : ''}

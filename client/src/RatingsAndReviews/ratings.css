@@ -1,0 +1,21 @@
+.ratings-reviews {
+  display: flex;
+  flex-flow: row;
+}
+
+.breakdown {
+  width: 30%;
+  margin: 20px;
+}
+.review-list {
+  width: 70%;
+  margin: 20px;
+}
+.overall-rating {
+  display: flex;
+  flex-flow: row wrap;
+  margin: 0.5rem;
+}
+.overall-rating > div {
+  margin-left: 5px
+}

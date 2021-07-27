@@ -28,7 +28,7 @@ const ReviewList = ({ totalReviews, productId }) => {
 
   useEffect(() => {
     getReviewsById();
-  }, []);
+  }, [sortOption]);
 
   return (
     <div>
@@ -39,7 +39,6 @@ const ReviewList = ({ totalReviews, productId }) => {
           value={sortOption}
           onChange={(e) => {
             setSortOption(e.target.value);
-            getReviewsById();
           }}
         >
           <option value="relevant">Relevant</option>

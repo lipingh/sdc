@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './ratings.css';
 
 import axios from 'axios';
 import options from '../config/config.js';
@@ -42,22 +43,29 @@ const RatingsAndReviews = () => {
   }, []);
 
   return (
-    <div>
-      <h5>Ratings &amp; Reviews</h5>
-      <span>{averageRatings.toFixed(1)}</span>
-      <StarRating ratings={averageRatings || 5} />
-      <br />
+    <>
+      <h3>Ratings &amp; Reviews</h3>
+      <div className="ratings-reviews">
+        <div className="breakdown">
+          <div className="overall-rating">
+            <span>{averageRatings.toFixed(1)}</span>
+            <StarRating ratings={averageRatings || 5} />
+          </div>
+          <br />
+          <RatingsBreakDown ratings={ratings} />
+          <br />
+          <div>
+            {(recommended * 100) / (recommended + notRecommended)}
+            % of reviews recommend this product
+          </div>
 
-      <RatingsBreakDown ratings={ratings} />
-      <br />
-      <div>
-        {(recommended * 100) / (recommended + notRecommended)}
-        % of reviews recommend this product
+          <ProductBreakDown characteristics={characteristics} />
+        </div>
+        <div className="review-list">
+          <ReviewList totalReviews={totalReviews} productId={productId} />
+        </div>
       </div>
-      <br />
-      <ProductBreakDown characteristics={characteristics} />
-      <ReviewList totalReviews={totalReviews} productId={productId} />
-    </div>
+    </>
   );
 };
 export default RatingsAndReviews;
