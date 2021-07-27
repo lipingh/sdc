@@ -2,10 +2,42 @@
   width: 65%;
   height: 500px;
   border: 2px black solid;
+  display: flex;
+  justify-content: space-around;
+}
+
+/******* Main Image *******/
+.mainImage {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 85%;
+  height: 100%;
+  border: 2px black solid;
 }
 
 .image {
-  width: 100%;
+  width: 85%;
   height: 100%;
   object-fit: contain;
+}
+
+.clickNext {
+  height: 50px;
+  font-size: 20px;
+  font-weight: bold;
+
+}
+
+.clickPrev {
+  height: 50px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/******* Thumbnail *******/
+.thumbnail {
+  width: 12%;
+  height: 100%;
+  border: 2px black solid;
 }

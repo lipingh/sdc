@@ -23,7 +23,12 @@ const Gallery = () => {
 
   return (
     <div className={style.gallery}>
-      <img src={currImg} alt="selected style" className={style.image} />
+      <div className={style.thumbnail}></div>
+      <div className={style.mainImage}>
+        <button type="button" className={style.clickPrev}>&lt;</button>
+        <img src={currImg} alt="selected style" className={style.image} />
+        <button type="button" className={style.clickNext}>&gt;</button>
+      </div>
     </div>
   );
 };
