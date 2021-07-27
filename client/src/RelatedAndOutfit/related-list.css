@@ -1,7 +1,20 @@
 .related-list {
   border: 1px solid #000000;
   display: flex;
-  overflow: auto;
+  overflow: hidden;
   position: relative;
-  max-width: 1000px;
+}
+
+.btn-related-left {
+  left: 32px;
+  top: 50%;
+  position: absolute;
+  z-index: 10;
+}
+
+.btn-related-right {
+  right: 32px;
+  top: 50%;
+  position: absolute;
+  z-index: 10;
 }
