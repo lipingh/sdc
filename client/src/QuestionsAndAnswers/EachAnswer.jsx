@@ -7,7 +7,7 @@ const EachAnswer = ({ answer }) => {
   const [helpfull, setHelpfull] = useState(answer.helpfulness);
 
   const handleHelpClick = () => {
-    setHelpfull(helpfull + 1);
+    setHelpfull((helpfull) => helpfull + 1);
     axios.put(
       `${options.url}qa/answers/${answer.id}/helpful`,
       {
