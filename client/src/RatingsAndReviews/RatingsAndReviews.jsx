@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './ratings.css';
 
 import axios from 'axios';
+import { RatingView } from 'react-simple-star-rating';
 import options from '../config/config.js';
 import StarRating from './StarRating.jsx';
 import RatingsBreakDown from './RatingsBreakDown.jsx';
@@ -49,7 +50,8 @@ const RatingsAndReviews = () => {
         <div className="breakdown">
           <div className="overall-rating">
             <span>{averageRatings.toFixed(1)}</span>
-            <StarRating ratings={averageRatings || 5} />
+            <RatingView ratingValue={averageRatings} fillColor="black"/>
+            {/* <StarRating ratings={averageRatings || 5} /> */}
           </div>
           <br />
           <RatingsBreakDown ratings={ratings} />

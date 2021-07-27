@@ -53,9 +53,11 @@ const ReviewList = ({ totalReviews, productId }) => {
         }
       </div>
       <button type="button">MORE REVIEWS</button>
-      <button type="button" onClick={setShowReviewForm(true)}>ADD A REVIEW  + </button> {
+      <button type="button">ADD A REVIEW  + </button>
+      {/* {
         // showReviewForm ? <ReviewForm /> :''
-      }
+      } */}
+      <ReviewForm />
     </div>
 
   );

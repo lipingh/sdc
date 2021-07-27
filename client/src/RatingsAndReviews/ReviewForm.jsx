@@ -1,26 +1,38 @@
 import React, { useState } from 'react';
-import StarRating from './StarRating.jsx';
+// import StarRating from './StarRating.jsx';
+import { Rating } from 'react-simple-star-rating';
 
 const ReviewForm = (props) => {
   const [recommend, setRecommended] = useState('');
-
-  const addReviews = () => {
-
+  const [rating, setRating] = useState('');
+  const [size, setSize] = useState('');
+  const [width, setWidth] = useState('');
+  const [comfort, setComfort] = useState('');
+  const [quality, setQuality] = useState('');
+  const [length, setLength] = useState('');
+  const [fit, setFit] = useState('');
+  const [reviewSummary, setReviewSummary] = useState('');
+  const addReviews = (e) => {
+    e.preventDefault();
+    console.log('recommend value', recommend);
+    console.log('rating', rating);
   };
 
   return (
     <form>
-      {/* <label>Overall Ratings</label>
-    <input><StarRating /></input> */}
-      <div className="recommend">
-        <div>
+      <div>
+        Overall Ratings
+        <Rating onClick={(rate) => setRating(rate)} ratingValue={rating} fillColor="black" />
+      </div>
+      <div>
+        <div className="recommend" onChange={(e) => setRecommended(e.target.value)}>
           Do you recommend this product?
           <input type="radio" name="recommend" value="true" />
           Yes
           <input type="radio" name="recommend" value="false" />
           No
         </div>
-        <div>
+        <div className="factor-size" onChange={(e) => setSize(e.target.value)}>
           Size:
           <input type="radio" name="size" value="1" />
           A size too small
@@ -33,7 +45,7 @@ const ReviewForm = (props) => {
           <input type="radio" name="size" value="5" />
           A size too wide
         </div>
-        <div>
+        <div className="factor-width" onChange={(e) => setWidth(e.target.value)}>
           Width:
           <input type="radio" name="width" value="1" />
           Too narrow
@@ -46,7 +58,7 @@ const ReviewForm = (props) => {
           <input type="radio" name="width" value="5" />
           Too wide
         </div>
-        <div>
+        <div className="factor-comfort" onChange={(e) => setComfort(e.target.value)}>
           Comfort:
           <input type="radio" name="comfort" value="1" />
           Uncomfortable
@@ -59,7 +71,7 @@ const ReviewForm = (props) => {
           <input type="radio" name="comfort" value="5" />
           Perfect
         </div>
-        <div>
+        <div className="factor-quality" onChange={(e) => setQuality(e.target.value)}>
           Quality:
           <input type="radio" name="quality" value="1" />
           Poor
@@ -72,7 +84,7 @@ const ReviewForm = (props) => {
           <input type="radio" name="quality" value="5" />
           Perfect
         </div>
-        <div>
+        <div className="factor-length" onChange={(e) => setLength(e.target.value)}>
           Length:
           <input type="radio" name="length" value="1" />
           Runs short
@@ -85,7 +97,7 @@ const ReviewForm = (props) => {
           <input type="radio" name="length" value="5" />
           Runs long
         </div>
-        <div>
+        <div className="factor-fit" onChange={(e) => setFit(e.target.value)}>
           Fit:
           <input type="radio" name="fit" value="1" />
           Runs tight
@@ -98,27 +110,27 @@ const ReviewForm = (props) => {
           <input type="radio" name="fit" value="5" />
           Runs long
         </div>
-        <div className="review-summary">
+        <div className="review-summary" onChange={(e) => setReviewSummary(e.target.value)}>
           Review Summary
-          <input type="text" maxlength="60" placeholder="Example: purchase ever!" />
+          <input type="text" maxLength="60" placeholder="Example: purchase ever!" />
         </div>
         <div>
-          Review body
-          <input type="text" maxlength="1000" placeholder="Example: Why did you like the product or not?" />
+          Add a written review
+          <input type="text" maxLength="1000" placeholder="Example: Why did you like the product or not?" />
         </div>
         <div>
-          <label htmlFor="upload-photo">Choose photos:</label>
-          <input type="file" id="pload-photo" accept="image/png, image/jepg" multiple></input>
+          Choose photos:
+          <input type="file" id="upload-photo" accept="image/*" multiple />
         </div>
         <div>
           Nickname
-          <input type="text" placeholder="Example: jackson11!" required></input>
+          <input type="text" placeholder="Example: jackson11!" required />
         </div>
         <div>
           Email
-          <input type="text" maxlength="60" required></input>
+          <input type="text" maxLength="60" required />
         </div>
-        <button>Submit</button>
+        <button type="submit" onClick={addReviews}>Submit</button>
       </div>
     </form>
   );

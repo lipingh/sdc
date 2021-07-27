@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import StarRating from './StarRating.jsx';
 import './reviews.css';
+import { RatingView } from 'react-simple-star-rating';
 
 const ReviewListItem = ({ review }) => {
   const formatDate = (dateString) => {
@@ -18,7 +19,8 @@ const ReviewListItem = ({ review }) => {
   return (
     <div>
       <div className="review-list-overall">
-        <StarRating rating={review.rating || 5} />
+        <RatingView ratingValue={review.rating} fillColor="black" />
+        {/* <StarRating rating={review.rating || 5} /> */}
         <span>
           {` ${review.reviewer_name}, ${formatDate(review.date)}`}
         </span>
