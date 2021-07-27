@@ -5,10 +5,13 @@ import './related-list.css';
 
 const RelatedList = () => (
   <div className="related-list">
-    <h3>Related</h3>
     {exampleData.exampleRelated.map((product) => (
       <RelatedCard key={product.id} product={product} />
-    ))}
+      ))}
+    <div className="list-actions">
+      <button className="btn-related-left">prev</button>
+      <button className="btn-related-right">next</button>
+    </div>
   </div>
 );
 

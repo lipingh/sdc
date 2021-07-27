@@ -1,5 +1,7 @@
 .related-list {
   border: 1px solid #000000;
   display: flex;
-  overflow-x: auto;
+  overflow: auto;
+  position: relative;
+  max-width: 1000px;
 }
