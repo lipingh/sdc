@@ -26,7 +26,7 @@ const RelatedList = () => {
 
   const prevCard = () => {
     let newCurrent = 0;
-    if (newCurrent > 0) {
+    if (current > 0) {
       newCurrent = current - 1;
     }
     if (listRef.current) {
@@ -41,13 +41,13 @@ const RelatedList = () => {
 
   return (
     <div className="related">
+      {current !== 0 && <button className="btn-related-left" onClick={prevCard}>prev</button>}
       <div className="related-list" ref={listRef}>
-      <button className="btn-related-left" onClick={prevCard}>prev</button>
         {exampleData.exampleRelated.map((product) => (
           <RelatedCard key={product.id} product={product} />
         ))}
-      <button className="btn-related-right" onClick={nextCard}>next</button>
       </div>
+      {current !== len - 4 && <button className="btn-related-right" onClick={nextCard}>next</button>}
     </div>
   );
 };
