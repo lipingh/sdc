@@ -19,7 +19,7 @@ const Gallery = () => {
   );
 
   useEffect(() => {
-    axios.get(`${options.url}products/20100/styles`, { headers: options.headers })
+    axios.get(`${options.url}products/13023/styles`, { headers: options.headers })
       .then((response) => {
         const imgs = response.data.results[0].photos.map((photo) => photo.url);
         setImages(imgs);
