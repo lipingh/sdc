@@ -1,0 +1,8 @@
+.review-list-overall {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+}
+.review-summary {
+  font-weight: bold;
+}
