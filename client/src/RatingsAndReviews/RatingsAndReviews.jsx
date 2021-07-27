@@ -12,8 +12,16 @@ const RatingsAndReviews = () => {
   const [notRecommended, setNotRecommended] = useState(0);
   const [ratings, setRatings] = useState({});
   const [characteristics, setCharacteristics] = useState({});
-  const [reviews, setReviews] = useState([]);
+  const oneStar = parseInt(ratings['1'], 10);
+  const twoStar = parseInt(ratings['2'], 10);
+  const threeStar = parseInt(ratings['3'], 10);
+  const fourStar = parseInt(ratings['4'], 10);
+  const fiveStar = parseInt(ratings['5'], 10);
+  const totalReviews = oneStar + twoStar + threeStar + fourStar + fiveStar;
+  const totalScores = oneStar + twoStar * 2 + threeStar * 3 + fourStar * 4 + fiveStar * 5;
+  const averageRatings = (totalScores / totalReviews);
   const productId = 13023;
+
   const getReviewsMeta = () => {
     axios({
       url: `${options.url}reviews/meta?product_id=${productId}`,
@@ -25,35 +33,20 @@ const RatingsAndReviews = () => {
         setRecommended(parseInt(res.data.recommended.true, 10));
         setNotRecommended(parseInt(res.data.recommended.false, 10));
         setCharacteristics(res.data.characteristics);
-        // console.log('ratings', ratings);
-        // console.log('characteristics', characteristics);
       })
       .catch((err) => console.error(err));
   };
-
-  // const getAllReviews = () => {
-  //   axios({
-  //     url: `${options.url}reviews?product_id=13023`,
-  //     method: 'get',
-  //     headers: options.headers,
-  //   })
-  //     .then((res) => {
-  //       // console.log(res.data.results);
-  //       setReviews(res.data.results);
-  //     })
-  //     .catch((err) => console.error(err));
-  // };
-
   useEffect(() => {
     getReviewsMeta();
-    // getAllReviews();
   }, []);
 
   return (
     <div>
       <h5>Ratings &amp; Reviews</h5>
-      <StarRating ratings={ratings} />
+      <span>{averageRatings.toFixed(1)}</span>
+      <StarRating ratings={averageRatings} />
       <br />
+
       <RatingsBreakDown ratings={ratings} />
       <br />
       <div>
@@ -62,7 +55,7 @@ const RatingsAndReviews = () => {
       </div>
       <br />
       <ProductBreakDown characteristics={characteristics} />
-      <ReviewList ratings={ratings} productId={productId} />
+      <ReviewList totalReviews={totalReviews} productId={productId} />
     </div>
   );
 };

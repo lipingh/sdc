@@ -5,15 +5,10 @@ import options from '../config/config.js';
 import ReviewListItem from './ReviewListItem.jsx';
 import ReviewForm from './ReviewForm.jsx';
 
-const ReviewList = ({ ratings, productId }) => {
+const ReviewList = ({ totalReviews, productId }) => {
   const [sortOption, setSortOption] = useState('relevant');
   const [reviews, setReviews] = useState([]);
-  const oneStar = parseInt(ratings['1'], 10);
-  const twoStar = parseInt(ratings['2'], 10);
-  const threeStar = parseInt(ratings['3'], 10);
-  const fourStar = parseInt(ratings['4'], 10);
-  const fiveStar = parseInt(ratings['5'], 10);
-  const totalReviews = oneStar + twoStar + threeStar + fourStar + fiveStar;
+
   const getReviewsById = () => {
     // console.log('sort by', sortOption);
     axios({
@@ -63,16 +58,7 @@ const ReviewList = ({ ratings, productId }) => {
   );
 };
 ReviewList.propTypes = {
-  ratings: PropTypes.shape({
-    1: PropTypes.string,
-    2: PropTypes.string,
-    3: PropTypes.string,
-    4: PropTypes.string,
-    5: PropTypes.string,
-  }),
+  totalReviews: PropTypes.number.isRequired,
   productId: PropTypes.number.isRequired,
-};
-ReviewList.defaultProps = {
-  ratings: {},
 };
 export default ReviewList;

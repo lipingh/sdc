@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import StarRating from './StarRating.jsx';
 
 const ReviewListItem = ({ review }) => {
   const formatDate = (dateString) => {
@@ -16,13 +17,11 @@ const ReviewListItem = ({ review }) => {
   return (
     <div>
       <div>
-        {`${review.rating} ${review.reviewer_name} ${formatDate(review.date)}`}
-        {/* // <span>{review.rating}</span>
-        // <span>{review.reviewer_name}</span>
-        // <span>
-        //   ,
-        //   {formatDate(review.date)}
-        // </span> */}
+        <StarRating rating={review.rating} />
+        {/* <span>{review.rating}</span> */}
+        <span>
+          {` ${review.reviewer_name}, ${formatDate(review.date)}`}
+        </span>
       </div>
       <div>{review.summary}</div>
       <div>{review.body}</div>
