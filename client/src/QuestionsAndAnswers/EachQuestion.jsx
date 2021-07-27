@@ -8,7 +8,7 @@ const EachQuestion = ({ question }) => {
   const [helpfull, setHelpfull] = useState(question.question_helpfulness);
 
    const handleHelpClick = () => {
-    setHelpfull(helpfull + 1);
+    setHelpfull((helpfull) => helpfull + 1);
     axios.put(
       `${options.url}qa/questions/${question.question_id}/helpful`,
       {
@@ -22,22 +22,20 @@ const EachQuestion = ({ question }) => {
 
     })
     .catch((err) => {
-      res.end('could not make more helpfull', err);
+      res.end('could not make question more helpfull', err);
     })
   }
 
   return (
     <>
       <span>{question.question_body}</span>
-      <span>
-        Helpful?
-        <button onClick={handleHelpClick} type='button'>Yes:
-        {helpfull}
-        </button>
-      </span>
-      <span>
-        Report
-      </span>
+      <div className='Qhelp-report'>
+      <span>Helpful? </span>
+        <span onClick={handleHelpClick}> Yes:
+        ({helpfull}) |
+        </span >
+      <span> Report</span>
+      </div>
       <AnswerList answers={question.answers} />
     </>
   );
