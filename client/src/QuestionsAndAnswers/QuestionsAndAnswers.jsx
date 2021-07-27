@@ -11,7 +11,15 @@ const QuestionsAndAnswers = () => {
       headers: options.headers,
     })
       .then((res) => {
-        setQuestions(res.data.results);
+        const notReported = res.data.results.filter((question) => {
+          if(!question.reported) {
+            return question;
+          }
+        });
+        const inHelpOrder = notReported.sort(
+          (a, b) => { return b.question_helpfulness - a.question_helpfulness}
+        );
+        setQuestions(inHelpOrder);
       })
       .catch((res, err) => {
         res.end('could not get questions', err);

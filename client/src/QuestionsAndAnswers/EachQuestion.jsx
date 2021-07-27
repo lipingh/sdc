@@ -19,10 +19,10 @@ const EachQuestion = ({ question }) => {
       }
     )
     .then((res) => {
-
+      console.log('what are we getting back', res)
     })
     .catch((err) => {
-      res.end('could not make more helpfull', err);
+      res.end('could not make question more helpfull', err);
     })
   }
 
