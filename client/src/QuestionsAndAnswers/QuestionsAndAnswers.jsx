@@ -7,7 +7,7 @@ const QuestionsAndAnswers = () => {
   const [questions, setQuestions] = useState([]);
 
   const getQuestions = () => {
-    axios(`${options.url}qa/questions?product_id=13026`, {
+    axios.get(`${options.url}qa/questions?product_id=13026`, {
       headers: options.headers,
     })
       .then((res) => {
