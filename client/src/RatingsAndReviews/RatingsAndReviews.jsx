@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
+
 import axios from 'axios';
 import options from '../config/config.js';
-import FiveStar from './FiveStar.jsx';
+import StarRating from './StarRating.jsx';
 import RatingsBreakDown from './RatingsBreakDown.jsx';
 import ProductBreakDown from './ProductBreakDown.jsx';
 import ReviewList from './ReviewList.jsx';
@@ -12,10 +13,10 @@ const RatingsAndReviews = () => {
   const [ratings, setRatings] = useState({});
   const [characteristics, setCharacteristics] = useState({});
   const [reviews, setReviews] = useState([]);
-
+  const productId = 13023;
   const getReviewsMeta = () => {
     axios({
-      url: `${options.url}reviews/meta?product_id=13023`,
+      url: `${options.url}reviews/meta?product_id=${productId}`,
       method: 'get',
       headers: options.headers,
     })
@@ -30,28 +31,28 @@ const RatingsAndReviews = () => {
       .catch((err) => console.error(err));
   };
 
-  const getAllReviews = () => {
-    axios({
-      url: `${options.url}reviews?product_id=13023`,
-      method: 'get',
-      headers: options.headers,
-    })
-      .then((res) => {
-        // console.log(res.data.results);
-        setReviews(res.data.results);
-      })
-      .catch((err) => console.error(err));
-  };
+  // const getAllReviews = () => {
+  //   axios({
+  //     url: `${options.url}reviews?product_id=13023`,
+  //     method: 'get',
+  //     headers: options.headers,
+  //   })
+  //     .then((res) => {
+  //       // console.log(res.data.results);
+  //       setReviews(res.data.results);
+  //     })
+  //     .catch((err) => console.error(err));
+  // };
 
   useEffect(() => {
     getReviewsMeta();
-    getAllReviews();
+    // getAllReviews();
   }, []);
 
   return (
     <div>
-      <h5>Ratings & Reviews</h5>
-      <FiveStar ratings={ratings} />
+      <h5>Ratings &amp; Reviews</h5>
+      <StarRating ratings={ratings} />
       <br />
       <RatingsBreakDown ratings={ratings} />
       <br />
@@ -61,7 +62,7 @@ const RatingsAndReviews = () => {
       </div>
       <br />
       <ProductBreakDown characteristics={characteristics} />
-      <ReviewList ratings={ratings} reviews={reviews} />
+      <ReviewList ratings={ratings} productId={productId} />
     </div>
   );
 };

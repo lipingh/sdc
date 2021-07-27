@@ -16,16 +16,15 @@ const ReviewListItem = ({ review }) => {
   return (
     <div>
       <div>
-        <span>{review.rating}</span>
-        <span>{review.reviewer_name}</span>
-        <span>
-          ,
-          {formatDate(review.date)}
-        </span>
+        {`${review.rating} ${review.reviewer_name} ${formatDate(review.date)}`}
+        {/* // <span>{review.rating}</span>
+        // <span>{review.reviewer_name}</span>
+        // <span>
+        //   ,
+        //   {formatDate(review.date)}
+        // </span> */}
       </div>
-
-      <h3>{review.summary}</h3>
-
+      <div>{review.summary}</div>
       <div>{review.body}</div>
       <div>
         {review.recommend ? 'I recommend this product' : ''}
