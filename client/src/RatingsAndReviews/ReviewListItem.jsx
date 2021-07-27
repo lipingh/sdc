@@ -23,6 +23,9 @@ const ReviewListItem = ({ review }) => {
           {formatDate(review.date)}
         </span>
       </div>
+
+      <h3>{review.summary}</h3>
+
       <div>{review.body}</div>
       <div>
         {review.recommend ? 'I recommend this product' : ''}
@@ -45,6 +48,7 @@ const ReviewListItem = ({ review }) => {
 ReviewListItem.propTypes = {
   review: PropTypes.shape({
     rating: PropTypes.number,
+    summary: PropTypes.string,
     reviewer_name: PropTypes.string,
     date: PropTypes.string,
     body: PropTypes.string,
