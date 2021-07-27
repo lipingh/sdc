@@ -28,11 +28,16 @@ const EachAnswer = ({ answer }) => {
   return (
   <>
     <span>{answer.body}</span>
+    <div className='Ahelp-report'>
+      <span>by: {answer.answerer_name}, {new Date(answer.date).toLocaleDateString(
+        undefined, { year: 'numeric', month: 'long', day: 'numeric' }
+        )} | </span>
     <span>Helpful? </span>
         <span onClick={handleHelpClick}> Yes:
         ({helpfull}) |
         </span >
       <span> Report</span>
+    </div>
   </>
   )
 };

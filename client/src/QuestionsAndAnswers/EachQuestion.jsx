@@ -29,11 +29,13 @@ const EachQuestion = ({ question }) => {
   return (
     <>
       <span>{question.question_body}</span>
+      <div className='Qhelp-report'>
       <span>Helpful? </span>
         <span onClick={handleHelpClick}> Yes:
         ({helpfull}) |
         </span >
       <span> Report</span>
+      </div>
       <AnswerList answers={question.answers} />
     </>
   );
