@@ -7,6 +7,7 @@ import options from '../config/config.js';
 
 const RelatedList = () => {
   const [current, setCurrent] = useState(0);
+  const [len, setLen] = useState(0);
   const [relatedIds, setRelatedIds] = useState([]);
   const [related, setRelated] = useState([]);
   const [relatedStyles, setRelatedStyles] = useState([]);
@@ -16,6 +17,7 @@ const RelatedList = () => {
       headers: options.headers,
     })
       .then(res => {
+        setLen(res.data.length);
         getRelatedFromIds(res.data);
       })
       .catch((res, err) => {
@@ -39,8 +41,6 @@ const RelatedList = () => {
   useEffect(() => {
     getRelated();
   }, []);
-
-  const len = exampleData.exampleRelated.length;
 
   const listRef = useRef(null);
 
