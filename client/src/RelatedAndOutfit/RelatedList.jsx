@@ -1,10 +1,45 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import RelatedCard from './RelatedCard.jsx';
 import exampleData from './ExampleRelatedProducts.js';
+import axios from 'axios';
 import './related-list.css';
+import options from '../config/config.js';
 
 const RelatedList = () => {
   const [current, setCurrent] = useState(0);
+  const [relatedIds, setRelatedIds] = useState([]);
+  const [related, setRelated] = useState([]);
+  const [relatedStyles, setRelatedStyles] = useState([]);
+
+  const getRelated = () => {
+    axios.get(`${options.url}products/13029/related`, {
+      headers: options.headers,
+    })
+      .then(res => {
+        getRelatedFromIds(res.data);
+      })
+      .catch((res, err) => {
+        res.end('Could not get related: ', err);
+      })
+  }
+
+  const getRelatedFromIds = (idList) => {
+    let relatedList = []
+    idList.forEach(id => {
+      axios.get(`${options.url}products/${id}`, {
+        headers: options.headers,
+      })
+        .then(res => {
+          relatedList.push(res.data);
+          setRelated([...related, relatedList])
+        })
+    })
+  }
+
+  useEffect(() => {
+    getRelated();
+  }, []);
+
   const len = exampleData.exampleRelated.length;
 
   const listRef = useRef(null);

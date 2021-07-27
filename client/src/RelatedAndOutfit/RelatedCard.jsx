@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import exampleData from './ExampleRelatedProducts.js'
-import './related.css'
+import exampleData from './ExampleRelatedProducts.js';
+import './related.css';
 
 const RelatedCard = (props) => {
   let relatedIndex = -1;
