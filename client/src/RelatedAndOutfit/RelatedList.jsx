@@ -39,16 +39,17 @@ const RelatedList = () => {
     setCurrent(newCurrent);
   };
 
-  console.log('current: ', current);
   return (
-    <div className="related-list" ref={listRef}>
-      {exampleData.exampleRelated.map((product) => (
-        <RelatedCard key={product.id} product={product} />
-      ))}
-      <div className="list-actions">
-        <button className="btn-related-left" onClick={prevCard}>prev</button>
-        <button className="btn-related-right" onClick={nextCard}>next</button>
+    <div className="related">
+      <button className="btn-related-left" onClick={prevCard}>prev</button>
+      <div className="related-list" ref={listRef}>
+        {exampleData.exampleRelated.map((product) => (
+          <RelatedCard key={product.id} product={product} />
+        ))}
       </div>
+      {/* <div className="list-actions"> */}
+      {/* </div> */}
+      <button className="btn-related-right" onClick={nextCard}>next</button>
     </div>
   );
 };
