@@ -33,7 +33,11 @@ const RelatedList = () => {
       })
         .then(res => {
           relatedList.push(res.data);
-          setRelated([...related, relatedList])
+          let newRelated = related.concat(relatedList);
+          setRelated(newRelated)
+        })
+        .catch((res, err) => {
+          res.end('Could not get related from ids: ', err)
         })
     })
   }
@@ -46,7 +50,11 @@ const RelatedList = () => {
       })
         .then(res => {
           relatedStylesList.push(res.data);
-          setRelatedStyles([...relatedStyles, relatedStylesList])
+          let newRelatedStyles = relatedStyles.concat(relatedStylesList);
+          setRelatedStyles(newRelatedStyles)
+        })
+        .catch((res, err) => {
+          res.end('Could not get related styles: ', err)
         })
     })
   }
@@ -91,8 +99,8 @@ const RelatedList = () => {
     <div className="related">
       {current !== 0 && <button className="btn-related-left" onClick={prevCard}>prev</button>}
       <div className="related-list" ref={listRef}>
-        {related.map((product) => (
-          <RelatedCard key={product.id} product={product} />
+        {relatedStyles.map((product, index) => (
+          <RelatedCard key={related[index].id} product={related[index]} styles={relatedStyles[index]} />
         ))}
       </div>
       {current !== len - 4 && <button className="btn-related-right" onClick={nextCard}>next</button>}

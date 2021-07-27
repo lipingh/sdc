@@ -1,25 +1,32 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import exampleData from './ExampleRelatedProducts.js';
 import './related.css';
 
 const RelatedCard = (props) => {
-  let relatedIndex = -1;
-  let relatedStyleInd = 0;
-  for (let i = 0; i < exampleData.relatedStyles.length; i++) {
-    if (Number.parseInt(exampleData.relatedStyles[i].product_id, 10) === props.product.id) {
-      relatedIndex = i;
-      for (let j = 0; j < exampleData.relatedStyles[i].results.length; j++) {
-        if (exampleData.relatedStyles[i].results[j]['default?']) {
-          relatedStyleInd = j;
-          break;
-        }
+  const [relatedImg, setRelatedImg] = useState('');
+  const [salePrice, setSalePrice] = useState('');
+  const [defaultPrice, setDefaultPrice] = useState('');
+
+  console.log('product: ', props.product)
+  const retrieveDefaultData = () => {
+    console.log('props styles: ', props.styles);
+    let relatedIndex = -1;
+    let relatedStyleInd = 0;
+    for (let i = 0; i < props.styles.results.length; i++) {
+      if (props.styles.results[i]['default?']) {
+        relatedStyleInd = i;
+        break;
       }
-      break;
     }
+    setRelatedImg(props.styles.results[relatedStyleInd].photos[0].thumbnail_url);
+    setDefaultPrice(props.product.default_price);
+    setSalePrice(props.styles.results[relatedStyleInd].sale_price);
   }
-  const relatedImg = exampleData.relatedStyles[relatedIndex].results[relatedStyleInd].photos[0].thumbnail_url;
-  const defaultPrice = props.product.default_price;
-  const salePrice = exampleData.relatedStyles[relatedIndex].results[relatedStyleInd].sale_price;
+
+  useEffect(() => {
+    retrieveDefaultData(props.styles)
+  }, [])
+
   return (
     <div className="list-card">
       <img
