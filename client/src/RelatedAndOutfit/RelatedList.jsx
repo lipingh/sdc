@@ -47,8 +47,6 @@ const RelatedList = () => {
           <RelatedCard key={product.id} product={product} />
         ))}
       </div>
-      {/* <div className="list-actions"> */}
-      {/* </div> */}
       <button className="btn-related-right" onClick={nextCard}>next</button>
     </div>
   );
