@@ -28,15 +28,11 @@ const EachAnswer = ({ answer }) => {
   return (
   <>
     <span>{answer.body}</span>
-    <span>
-        Helpful?
-        <button onClick={handleHelpClick} type='button'>Yes:
-        {helpfull}
-        </button>
-      </span>
-      <span>
-        Report
-      </span>
+    <span>Helpful? </span>
+        <span onClick={handleHelpClick}> Yes:
+        ({helpfull}) |
+        </span >
+      <span> Report</span>
   </>
   )
 };

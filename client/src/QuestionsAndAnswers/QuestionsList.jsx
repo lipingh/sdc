@@ -2,13 +2,14 @@ import React from 'react';
 import EachQuestion from './EachQuestion.jsx';
 
 const QuestionsList = ({questions}) => (
-  <ol>
-  {questions.map((question) => (
-      <li key={question.question_id} >
+  <ul>
+  {questions.map((question, id) => (
+    <div key={id} id='QEntry'>
+    <span>Q: </span>
       <EachQuestion key={question.question_id} question={question}/>
-      </li>
+    </div>
     ))}
-  </ol>
+  </ul>
 );
 
 export default QuestionsList;

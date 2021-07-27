@@ -19,7 +19,7 @@ const EachQuestion = ({ question }) => {
       }
     )
     .then((res) => {
-      console.log('what are we getting back', res)
+
     })
     .catch((err) => {
       res.end('could not make question more helpfull', err);
@@ -29,15 +29,11 @@ const EachQuestion = ({ question }) => {
   return (
     <>
       <span>{question.question_body}</span>
-      <span>
-        Helpful?
-        <button onClick={handleHelpClick} type='button'>Yes:
-        {helpfull}
-        </button>
-      </span>
-      <span>
-        Report
-      </span>
+      <span>Helpful? </span>
+        <span onClick={handleHelpClick}> Yes:
+        ({helpfull}) |
+        </span >
+      <span> Report</span>
       <AnswerList answers={question.answers} />
     </>
   );
