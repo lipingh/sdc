@@ -13,11 +13,11 @@ import RatingsAndReviews from './RatingsAndReviews/RatingsAndReviews.jsx';
 
 const App = () => (
   <div>
-    <h1>hello, world</h1>
+    {/* <h1>hello, world</h1> */}
     <Overview />
-    <RelatedItems />
+    {/* <RelatedItems />
     <QuestionsAndAnswers />
-    <RatingsAndReviews />
+    <RatingsAndReviews /> */}
   </div>
 );
 

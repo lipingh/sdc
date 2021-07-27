@@ -1,9 +1,9 @@
 .gallery {
   width: 65%;
-  height: 500px;
+  height: 550px;
   border: 2px black solid;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
 }
 
 /******* Main Image *******/
@@ -35,9 +35,29 @@
   font-weight: bold;
 }
 
-/******* Thumbnail *******/
-.thumbnail {
+/******* Side Bar *******/
+.sideBar {
   width: 12%;
   height: 100%;
   border: 2px black solid;
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.thumbnails {
+  width: 100%;
+  height: 95%;
+  border: 2px black solid;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.eachThumbnail {
+  height: 18%;
+  width: 100%;
+  object-fit: contain;
 }
