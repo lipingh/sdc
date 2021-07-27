@@ -3,17 +3,18 @@
   display: flex;
   overflow: hidden;
   position: relative;
+  max-width: 920px;
 }
 
 .btn-related-left {
-  left: 32px;
+  left: 2%;
   top: 50%;
   position: absolute;
   z-index: 10;
 }
 
 .btn-related-right {
-  right: 32px;
+  right: 2%;
   top: 50%;
   position: absolute;
   z-index: 10;

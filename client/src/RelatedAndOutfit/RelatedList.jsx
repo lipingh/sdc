@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import RelatedCard from './RelatedCard.jsx';
 import exampleData from './ExampleRelatedProducts.js';
 import './related-list.css';
@@ -6,20 +6,42 @@ import './related-list.css';
 const RelatedList = () => {
   const [current, setCurrent] = useState(0);
   const len = exampleData.exampleRelated.length;
-  const width = window.innerWidth;
-  console.log('width: ', width)
+
+  const listRef = useRef(null);
 
   const nextCard = () => {
-    setCurrent(current === len - 1 ? current : current + 1);
+    let newCurrent = current;
+    if (newCurrent !== len - 1) {
+      newCurrent = current + 1;
+    }
+    if (listRef.current) {
+      listRef.current.scrollBy({
+        top: 0,
+        left: 230,
+        behavior: 'smooth',
+      })
+    }
+    setCurrent(newCurrent);
   };
 
   const prevCard = () => {
-    setCurrent(current === 0 ? 0 : current - 1);
+    let newCurrent = 0;
+    if (newCurrent > 0) {
+      newCurrent = current - 1;
+    }
+    if (listRef.current) {
+      listRef.current.scrollBy({
+        top: 0,
+        left: -230,
+        behavior: 'smooth',
+      });
+    }
+    setCurrent(newCurrent);
   };
 
   console.log('current: ', current);
   return (
-    <div className="related-list">
+    <div className="related-list" ref={listRef}>
       {exampleData.exampleRelated.map((product) => (
         <RelatedCard key={product.id} product={product} />
       ))}
