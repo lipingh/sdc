@@ -8,7 +8,6 @@ import options from '../config/config.js';
 const RelatedList = () => {
   const [current, setCurrent] = useState(0);
   const [len, setLen] = useState(0);
-  const [relatedIds, setRelatedIds] = useState([]);
   const [related, setRelated] = useState([]);
   const [relatedStyles, setRelatedStyles] = useState([]);
 
@@ -19,6 +18,7 @@ const RelatedList = () => {
       .then(res => {
         setLen(res.data.length);
         getRelatedFromIds(res.data);
+        getRelatedStylesFromIds(res.data);
       })
       .catch((res, err) => {
         res.end('Could not get related: ', err);
@@ -34,6 +34,19 @@ const RelatedList = () => {
         .then(res => {
           relatedList.push(res.data);
           setRelated([...related, relatedList])
+        })
+    })
+  }
+
+  const getRelatedStylesFromIds = (idList) => {
+    let relatedStylesList = [];
+    idList.forEach(id => {
+      axios.get(`${options.url}products/${id}/styles`, {
+        headers: options.headers,
+      })
+        .then(res => {
+          relatedStylesList.push(res.data);
+          setRelatedStyles([...relatedStyles, relatedStylesList])
         })
     })
   }
@@ -78,7 +91,7 @@ const RelatedList = () => {
     <div className="related">
       {current !== 0 && <button className="btn-related-left" onClick={prevCard}>prev</button>}
       <div className="related-list" ref={listRef}>
-        {exampleData.exampleRelated.map((product) => (
+        {related.map((product) => (
           <RelatedCard key={product.id} product={product} />
         ))}
       </div>
