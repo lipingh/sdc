@@ -23,5 +23,6 @@ module.exports = {
     'react',
   ],
   rules: {
+    import/extensions: {'jsx': 'never'}
   },
 };
