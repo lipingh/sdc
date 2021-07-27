@@ -1,0 +1,8 @@
+.list-card {
+  height: 325px;
+  min-width: 200px;
+  margin: 5px;
+  padding: 10px;
+  text-align: left;
+  background-color: #d9d9d9
+}
