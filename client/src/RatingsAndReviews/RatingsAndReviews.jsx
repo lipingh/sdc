@@ -40,10 +40,10 @@ const RatingsAndReviews = () => {
 
   useEffect(() => {
     getReviewsMeta();
-  }, []);
+  }, [productId]);
 
   return (
-    <>
+    <div id="reviews-root">
       <h3>Ratings &amp; Reviews</h3>
       <div className="ratings-reviews">
         <div className="breakdown">
@@ -65,7 +65,7 @@ const RatingsAndReviews = () => {
           <ReviewList totalReviews={totalReviews} productId={productId} />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 export default RatingsAndReviews;
