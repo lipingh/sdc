@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import options from '../config/config.js'
-import exampleData from './ExampleRelatedProducts.js';
 import './related.css';
 
 const RelatedCard = (props) => {
