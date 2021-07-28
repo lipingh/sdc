@@ -10,5 +10,7 @@ const AnswerList = ({ answers }) => (
     ))}
   </ul>
 );
+// for some reason .map will not work with answers.map now that answers is an array
+// this way still works though
 
 export default AnswerList;

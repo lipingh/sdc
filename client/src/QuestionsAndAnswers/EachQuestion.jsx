@@ -52,10 +52,6 @@ EachQuestion.propTypes = {
   question: PropTypes.shape({
     question_body: PropTypes.string,
     question_helpfulness: PropTypes.number,
-    answers: PropTypes.shape({
-      answerer_name: PropTypes.string,
-      body: PropTypes.string,
-    }),
   }),
 };
 

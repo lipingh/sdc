@@ -3,6 +3,7 @@ import axios from 'axios';
 import './questions.css';
 import options from '../config/config.js';
 import QuestionsList from './QuestionsList.jsx';
+import allInOrder from './Helpers.js'
 
 const QuestionsAndAnswers = () => {
   const [questions, setQuestions] = useState([]);
@@ -17,10 +18,11 @@ const QuestionsAndAnswers = () => {
             return question;
           }
         });
-        const inHelpOrder = notReported.sort(
+        const inQHelpOrder = notReported.sort(
           (a, b) => { return b.question_helpfulness - a.question_helpfulness}
         );
-        setQuestions(inHelpOrder);
+        const finalOrder = allInOrder(inQHelpOrder)
+        setQuestions(finalOrder);
       })
       .catch((res, err) => {
         res.end('could not get questions', err);
