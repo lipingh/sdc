@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import './reviews.css';
-import { RatingView } from 'react-simple-star-rating';
 import axios from 'axios';
 import options from '../config/config';
+import './reviews.css';
+import StarRating from './StarRating.jsx';
 
 const ReviewListItem = ({ review }) => {
   const [helpfull, setHelpfull] = useState(review.helpfulness);
@@ -56,7 +56,7 @@ const ReviewListItem = ({ review }) => {
   return (
     <div>
       <div className="review-list-overall">
-        <RatingView ratingValue={review.rating} fillColor="black" />
+        <StarRating rating={review.rating} />
         <span>
           {review.reviewer_name}
           {review.email ? <span>(Verified Purchaser)</span> : null}

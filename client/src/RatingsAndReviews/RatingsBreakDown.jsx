@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import './ratings.css';
 
 const RatingsBreakDown = ({ ratings }) => (
   <div className="ratings-breakdown">
