@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './reviews.css';
 import { RatingView } from 'react-simple-star-rating';
+import axios from 'axios';
+import options from '../config/config';
 
 const ReviewListItem = ({ review }) => {
+  const [helpfull, setHelpfull] = useState(review.helpfulness);
   const formatDate = (dateString) => {
     const d = new Date(dateString);
     const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
@@ -14,8 +17,25 @@ const ReviewListItem = ({ review }) => {
     const year = d.getFullYear();
     return `${month} ${day}, ${year}`;
   };
+  const handleAddHelpful = () => {
+    setHelpfull(() => helpfull + 1);
+    axios.put(
+      `${options.url}/reviews/${review.review_id}/helpful`,
+      {
+        helpfulness: helpfull,
+      },
+      {
+        headers: options.headers,
+      },
+    )
+      .then()
+      .catch((err) => {
+        console.error(err);
+      });
+  };
   // const email = 'lisa@gamil.com';
-
+  // TODO: review.email should also match the sale system as the verified purchaser
+  // TODO: repsonse from seller section
   return (
     <div>
       <div className="review-list-overall">
@@ -23,7 +43,8 @@ const ReviewListItem = ({ review }) => {
         <span>
           {review.reviewer_name}
           {review.email ? <span>(Verified Purchaser)</span> : null}
-          {`, ${formatDate(review.date)}`}
+          {', '}
+          {formatDate(review.date)}
         </span>
       </div>
       <div className="review-summary">{review.summary}</div>
@@ -33,9 +54,10 @@ const ReviewListItem = ({ review }) => {
       </div>
       {/* {review.response ? <div>{review.response}</div> : ''} */}
       <div>
-        <span>
-          Helpful? Yes(
-          {review.helpfulness}
+        <span>Helpful?</span>
+        <span onClick={handleAddHelpful}>
+          Yes(
+          {helpfull}
           )
         </span>
         <span>
@@ -48,6 +70,7 @@ const ReviewListItem = ({ review }) => {
 };
 ReviewListItem.propTypes = {
   review: PropTypes.shape({
+    review_id: PropTypes.number,
     rating: PropTypes.number,
     summary: PropTypes.string,
     reviewer_name: PropTypes.string,
