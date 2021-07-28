@@ -71,6 +71,9 @@ const RelatedCard = (props) => {
         <div className="card-sale-price">{salePrice || ''}</div>
       </div>
       <div className="card-rating">[rating]</div>
+      <div className="modal-comparison">
+        <button type="button" className="btn-modal-comparison">Comparison</button>
+      </div>
     </div>
   );
 };
