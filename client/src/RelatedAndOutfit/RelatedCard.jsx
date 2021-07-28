@@ -14,7 +14,7 @@ const RelatedCard = (props) => {
   const [inOutfit, setInOutfit] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
-  const getRelatedStylesFromIds =() => {
+  const getRelatedStylesFromIds = () => {
     axios.get(`${options.url}products/${props.product.id}/styles`, {
       headers: options.headers,
     })
@@ -69,15 +69,13 @@ const RelatedCard = (props) => {
         {props.product.name}
       </div>
       <div className="card-price">
-        <div className="card-default-price">{defaultPrice}</div>
+        <div className="card-default-price">${defaultPrice}</div>
         <div className="card-sale-price">{salePrice || ''}</div>
       </div>
       <div className="card-rating">[rating]</div>
       <div className="modal-comparison">
         <button type="button" className="btn-modal-comparison" onClick={() => (setIsOpen(true))}>Compare</button>
-        <ComparisonModal open={isOpen} onClose={() => (setIsOpen(false))}>
-          modal
-        </ComparisonModal>
+        <ComparisonModal open={isOpen} product={props.product} onClose={() => (setIsOpen(false))} />
       </div>
     </div>
   );

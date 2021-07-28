@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import './comp-modal.css'
 
@@ -12,10 +12,15 @@ const ComparisonModal = ({open, onClose}) => {
     <>
       <div className="comparison-overlay"/>
       <div className="comparison-window">
-        <button onClick={onClose}>close</button>
+        <button className="btn-close-comp-modal" onClick={onClose}>X</button>
+        <div className="comp-table">
+          <div className="comp-current"></div>
+          <div className="comp-titles"></div>
+          <div className="comp-related"></div>
+        </div>
       </div>
     </>,
-    document.getElementById('related-outfit'),
+    document.getElementById('comp-modal-portal'),
   );
 };
 

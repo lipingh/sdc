@@ -5,6 +5,7 @@ import './related-list.css';
 import options from '../config/config.js';
 
 const RelatedList = () => {
+  const [currProduct, setCurrProduct] = useState({});
   const [current, setCurrent] = useState(0);
   const [len, setLen] = useState(0);
   const [related, setRelated] = useState([]);
@@ -16,12 +17,15 @@ const RelatedList = () => {
         headers: options.headers,
       })
         .then((res) => {
-          relatedList.push(res.data);
-          const newRelated = related.concat(relatedList);
-          setRelated(newRelated);
+          if (id !== 13029) {
+            relatedList.push(res.data);
+            const newRelated = related.concat(relatedList);
+            setRelated(newRelated);
+          }
+          setCurrProduct(res.data);
         })
         .catch((res, err) => {
-          res.end('Could not get related from ids: ', err)
+          res.end('Could not get related from ids: ', err);
         });
     });
   };
