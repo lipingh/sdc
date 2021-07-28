@@ -38,6 +38,18 @@ const Gallery = () => {
     }
   );
 
+  const thumbnailClickHandler = (index) => (
+    (event) => {
+      const distance = (index - currImgIndex) * 360;
+      imageMove.current.scrollBy({
+        top: 0,
+        left: distance,
+        behavior: 'smooth',
+      });
+      setCurrImgIndex(index);
+    }
+  )
+
   useEffect(() => {
     axios.get(`${options.url}products/13023/styles`, { headers: options.headers })
       .then((response) => {
@@ -60,7 +72,7 @@ const Gallery = () => {
           {thumbnails.slice(firstThumbnailIdex, firstThumbnailIdex + 5).map((url, index) => {
             return (
               <div className={style.selected} key={firstThumbnailIdex + index}>
-                <img src={url} alt="selected style thumbnail" className={style.eachThumbnail} />
+                <img src={url} alt="selected style thumbnail" className={style.eachThumbnail} onClick={thumbnailClickHandler(firstThumbnailIdex + index)}/>
                 {firstThumbnailIdex + index === currImgIndex && <div className={style.highlight}></div>}
               </div>
             )
