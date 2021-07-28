@@ -1,7 +1,12 @@
-.related-list {
-  border: 1px solid #000000;
+.related {
   display: flex;
-  overflow: auto;
+  justify-content: center;
+}
+
+.related-list {
+  display: flex;
+  overflow: hidden;
   position: relative;
-  max-width: 1000px;
+  border: 1px solid #000000;
+  max-width: 920px;
 }

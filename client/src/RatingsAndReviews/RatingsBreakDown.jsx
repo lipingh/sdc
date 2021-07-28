@@ -1,53 +1,74 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import './ratings.css';
 
-const RatingsBreakDown = ({ ratings }) => {
-  const oneStar = parseInt(ratings['1'], 10);
-  const twoStar = parseInt(ratings['2'], 10);
-  const threeStar = parseInt(ratings['3'], 10);
-  const fourStar = parseInt(ratings['4'], 10);
-  const fiveStar = parseInt(ratings['5'], 10);
-  const totalReviews = oneStar + twoStar + threeStar + fourStar + fiveStar;
-
-  return (
-    <div className="ratings-breakdown">
-      <div className="sidebar star5" style={{ width: `${fiveStar / totalReviews} * 100%` }}>
-        5 stars:
-        {ratings['5']}
-      </div>
-      <div className="sidebar star4">
-        4 stars:
-        {ratings['4']}
-      </div>
-
-      <div className="sidebar star3">
-        3 stars:
-        {ratings['3']}
-      </div>
-
-      <div className="sidebar star2">
-        2 stars:
-        {ratings['2']}
-      </div>
-
-      <div className="sidebar star1">
-        1 stars:
-        {ratings['1']}
-      </div>
+const RatingsBreakDown = ({ ratings, handleFilterByRating }) => (
+  <div className="ratings-breakdown">
+    <div
+      className="sidebar star5"
+      role="link"
+      onClick={() => handleFilterByRating(5)}
+      onKeyPress={() => { }}
+      tabIndex={0}
+    >
+      5 stars:
+      {ratings.fiveStar}
+    </div>
+    <div
+      className="sidebar star4"
+      role="link"
+      onClick={() => handleFilterByRating(4)}
+      onKeyPress={() => { }}
+      tabIndex={0}
+    >
+      4 stars:
+      {ratings.fourStar}
     </div>
 
-  );
-};
+    <div
+      className="sidebar star3"
+      role="link"
+      onClick={() => handleFilterByRating(3)}
+      onKeyPress={() => { }}
+      tabIndex={0}
+    >
+      3 stars:
+      {ratings.threeStar}
+    </div>
+
+    <div
+      className="sidebar star2"
+      role="link"
+      onClick={() => handleFilterByRating(2)}
+      onKeyPress={() => { }}
+      tabIndex={0}
+    >
+      2 stars:
+      {ratings.twoStar}
+    </div>
+
+    <div
+      className="sidebar star1"
+      role="link"
+      onClick={() => handleFilterByRating(1)}
+      onKeyPress={() => { }}
+      tabIndex={0}
+    >
+      1 stars:
+      {ratings.oneStar}
+    </div>
+  </div>
+
+);
 
 RatingsBreakDown.propTypes = {
   ratings: PropTypes.shape({
-    1: PropTypes.string,
-    2: PropTypes.string,
-    3: PropTypes.string,
-    4: PropTypes.string,
-    5: PropTypes.string,
+    oneStar: PropTypes.number,
+    twoStar: PropTypes.number,
+    threeStar: PropTypes.number,
+    fourStar: PropTypes.number,
+    fiveStar: PropTypes.number,
   }),
+  handleFilterByRating: PropTypes.func.isRequired,
 };
 RatingsBreakDown.defaultProps = {
   ratings: {},

@@ -4,7 +4,7 @@ import axios from 'axios';
 import options from '../config/config.js';
 
 const RelatedAndOutfit = () => (
-  <div>
+  <div className="related-outfit">
     RELATED AND OUTFIT
     <RelatedList />
   </div>
