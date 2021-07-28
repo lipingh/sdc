@@ -35,7 +35,7 @@ const RatingsAndReviews = () => {
         setNotRecommended(parseInt(res.data.recommended.false, 10));
         setCharacteristics(res.data.characteristics);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => { throw err; });
   };
 
   useEffect(() => {

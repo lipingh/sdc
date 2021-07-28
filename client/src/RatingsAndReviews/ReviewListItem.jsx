@@ -8,6 +8,7 @@ import options from '../config/config';
 const ReviewListItem = ({ review }) => {
   const [helpfull, setHelpfull] = useState(review.helpfulness);
   const [reported, setReported] = useState(false);
+
   const formatDate = (dateString) => {
     const d = new Date(dateString);
     const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
@@ -31,7 +32,7 @@ const ReviewListItem = ({ review }) => {
     )
       .then()
       .catch((err) => {
-        console.error(err);
+        throw err;
       });
   };
 
@@ -46,7 +47,7 @@ const ReviewListItem = ({ review }) => {
     )
       .then()
       .catch((err) => {
-        console.error(err);
+        throw err;
       });
   };
   // const email = 'lisa@gamil.com';

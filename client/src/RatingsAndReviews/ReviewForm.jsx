@@ -53,7 +53,7 @@ const ReviewForm = ({ productId }) => {
     // TODO: post data to reviews, currently unathorized 401
     axios.post(`${options.url}reviews`, params, options.headers)
       .then()
-      .catch((err) => console.error(err));
+      .catch((err) => { throw err; });
   };
 
   return (
