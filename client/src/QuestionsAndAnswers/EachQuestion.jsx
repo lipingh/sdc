@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import options from '../config/config.js';
 import PropTypes from 'prop-types';
+import options from '../config/config';
 import AnswerList from './AnswerList.jsx';
 
 const EachQuestion = ({ question }) => {
@@ -9,9 +9,9 @@ const EachQuestion = ({ question }) => {
   const [voted, setVoted] = useState(false);
 
   const handleHelpClick = () => {
-    if(!voted) {
-      setVoted((voted) => voted = true);
-      setHelpfull((helpfull) => helpfull + 1);
+    if (!voted) {
+      setVoted((vote) => !vote);
+      setHelpfull((helped) => helped + 1);
       axios.put(
         `${options.url}qa/questions/${question.question_id}/helpful`,
         {
@@ -19,27 +19,29 @@ const EachQuestion = ({ question }) => {
         },
         {
           headers: options.headers,
-        }
+        },
       )
-        .then((res) => {
+        .then(() => {
 
         })
-        .catch((err) => {
+        .catch((res, err) => {
           res.end('could not make question more helpfull', err);
-        })
+        });
     }
-  }
+  };
 
   return (
     <>
-      <div className='q-entry'>
-        <div className='q-body'>
-        {'Q: '}
-        <span>{question.question_body}</span>
+      <div className="q-entry">
+        <div className="q-body">
+          {'Q: '}
+          <span>{question.question_body}</span>
         </div>
-        <div className='Qhelp-report'>
-          <span onClick={handleHelpClick}> {voted ? 'You thought this was helpfull | ': ` Helpfull? Yes: ${helpfull} | `}
-          </span >
+        <div className="Qhelp-report">
+          <span onClick={handleHelpClick}>
+            {' '}
+            {voted ? 'You thought this was helpfull | ' : ` Helpfull? Yes: ${helpfull} | `}
+          </span>
           <span> Report</span>
         </div>
       </div>
@@ -51,7 +53,9 @@ const EachQuestion = ({ question }) => {
 EachQuestion.propTypes = {
   question: PropTypes.shape({
     question_body: PropTypes.string,
+    question_id: PropTypes.number,
     question_helpfulness: PropTypes.number,
+    answers: PropTypes.arrayOf(PropTypes.object),
   }),
 };
 
