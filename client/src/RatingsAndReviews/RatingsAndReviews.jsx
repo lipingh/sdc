@@ -13,15 +13,23 @@ const RatingsAndReviews = () => {
   const [notRecommended, setNotRecommended] = useState(0);
   const [ratings, setRatings] = useState({});
   const [characteristics, setCharacteristics] = useState({});
-  const oneStar = parseInt(ratings['1'], 10);
-  const twoStar = parseInt(ratings['2'], 10);
-  const threeStar = parseInt(ratings['3'], 10);
-  const fourStar = parseInt(ratings['4'], 10);
-  const fiveStar = parseInt(ratings['5'], 10);
+  const oneStar = ratings['1'] ? parseInt(ratings['1'], 10) : 0;
+  const twoStar = ratings['2'] ? parseInt(ratings['2'], 10) : 0;
+  const threeStar = ratings['3'] ? parseInt(ratings['3'], 10) : 0;
+  const fourStar = ratings['4'] ? parseInt(ratings['4'], 10) : 0;
+  const fiveStar = ratings['5'] ? parseInt(ratings['5'], 10) : 0;
   const totalReviews = oneStar + twoStar + threeStar + fourStar + fiveStar;
   const totalScores = oneStar + twoStar * 2 + threeStar * 3 + fourStar * 4 + fiveStar * 5;
   const averageRatings = (totalScores / totalReviews);
-  const productId = 13023;
+  const productId = 13025;
+  const ratingsBreakDown = {
+    oneStar,
+    twoStar,
+    threeStar,
+    fourStar,
+    fiveStar,
+    totalReviews,
+  };
 
   const getReviewsMeta = () => {
     axios({
@@ -52,10 +60,10 @@ const RatingsAndReviews = () => {
             <RatingView ratingValue={averageRatings} fillColor="black" />
           </div>
           <br />
-          <RatingsBreakDown ratings={ratings} />
+          <RatingsBreakDown ratings={ratingsBreakDown} />
           <br />
           <div>
-            {(recommended * 100) / (recommended + notRecommended)}
+            {((recommended * 100) / (recommended + notRecommended)).toFixed(0)}
             % of reviews recommend this product
           </div>
 
