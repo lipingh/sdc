@@ -57,15 +57,11 @@ const ReviewForm = ({ productId, characteristics }) => {
       email,
       characteristics: characteristicsInfo,
     };
-    console.log(data);
-    const headers = {
-      'Content-Type': 'application/json',
-      Authorization: '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',
-    };
+    // console.log(data);
 
     // TODO: post data to reviews, currently unathorized 401
-    axios.post(`${options.url}reviews`, data, { headers })
-      .then(() => { console.log('post success'); })
+    axios.post(`${options.url}reviews`, data, { headers: options.headers })
+      .then()
       .catch((err) => { throw err; });
   };
 
