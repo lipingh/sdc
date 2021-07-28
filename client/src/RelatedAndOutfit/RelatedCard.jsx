@@ -76,6 +76,7 @@ const RelatedCard = (props) => {
       <div className="modal-comparison">
         <button type="button" className="btn-modal-comparison" onClick={() => (setIsOpen(true))}>Compare</button>
         <ComparisonModal
+          key={`comp${props.product.id}`}
           open={isOpen}
           product={props.product}
           currProduct={props.currProduct}
