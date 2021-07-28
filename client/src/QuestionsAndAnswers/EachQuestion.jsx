@@ -33,13 +33,9 @@ const EachQuestion = ({ question }) => {
   return (
     <>
       <div className="q-entry">
-        <div className="q-body">
-          {'Q: '}
-          <span>{question.question_body}</span>
-        </div>
+        <span className="q-body">{`Q: ${question.question_body}`}</span>
         <div className="Qhelp-report">
           <span onClick={handleHelpClick}>
-            {' '}
             {voted ? 'You thought this was helpfull | ' : ` Helpfull? Yes: ${helpfull} | `}
           </span>
           <span> Report</span>

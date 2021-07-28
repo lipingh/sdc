@@ -47,7 +47,6 @@ const EachAnswer = ({ answer }) => {
           {' '}
         </span>
         <span onClick={handleHelpClick}>
-          {' '}
           {voted ? 'You thought this was helpfull | ' : ` Helpfull? Yes: ${helpfull} | `}
         </span>
         <span> Report</span>
