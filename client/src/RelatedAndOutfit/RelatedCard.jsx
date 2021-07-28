@@ -3,6 +3,7 @@ import axios from 'axios';
 import options from '../config/config.js'
 import './related.css';
 import emptyStar from './star-icon-empty.png';
+import fillStar from './star-icon-fill.png';
 
 const RelatedCard = (props) => {
   const [styles, setStyles] = useState([]);
@@ -21,7 +22,7 @@ const RelatedCard = (props) => {
       .catch((res, err) => {
         res.end('Could not get related styles: ', err);
       });
-  }
+  };
 
   const setDefaultData = (stylesObj) => {
     let relatedStyleInd = 0;
@@ -34,11 +35,11 @@ const RelatedCard = (props) => {
     setRelatedImg(stylesObj.results[relatedStyleInd].photos[0].thumbnail_url);
     setDefaultPrice(props.product.default_price);
     setSalePrice(stylesObj.results[relatedStyleInd].sale_price);
-  }
+  };
 
   useEffect(() => {
     getRelatedStylesFromIds();
-  }, [])
+  }, []);
 
   return (
     <div className="list-card">
