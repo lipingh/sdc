@@ -12,7 +12,7 @@ const reducer = (state, action) => {
     case 'expand':
       return { ...state, isExpanded: true };
     case 'unexpand':
-      return { ...state, isExpanded: false};
+      return { ...state, isExpanded: false };
     default:
       return state;
   }
