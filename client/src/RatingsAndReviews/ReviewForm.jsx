@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import axios from 'axios';
 import options from '../config/config.js';
 import Star from './Star.jsx';
 
 // const reviewFormModalRoot = document.getElementById('review-form');
-const ReviewForm = ({ productId }) => {
+const ReviewForm = ({ productId, characteristics }) => {
   const [recommend, setRecommended] = useState('');
   const [rating, setRating] = useState('');
   const [size, setSize] = useState('');
@@ -24,42 +25,47 @@ const ReviewForm = ({ productId }) => {
     if (event && event.target && event.target.getAttribute('data-star-id')) val = event.target.getAttribute('data-star-id');
     setSelection(val);
   };
+
   const addReviews = (e) => {
     e.preventDefault();
     // TODO: need to get each factor id
     // TODO: validate fileds before submit
-    const params = {
+    const characteristicsInfo = {};
+    Object.keys(characteristics).forEach((key) => {
+      if (key === 'Fit') {
+        characteristicsInfo[characteristics[key].id] = parseInt(fit, 10);
+      } else if (key === 'Length') {
+        characteristicsInfo[characteristics[key].id] = parseInt(length, 10);
+      } else if (key === 'Comfort') {
+        characteristicsInfo[characteristics[key].id] = parseInt(comfort, 10);
+      } else if (key === 'Size') {
+        characteristicsInfo[characteristics[key].id] = parseInt(size, 10);
+      } else if (key === 'Width') {
+        characteristicsInfo[characteristics[key].id] = parseInt(width, 10);
+      } else if (key === 'Quality') {
+        characteristicsInfo[characteristics[key].id] = parseInt(quality, 10);
+      }
+    });
+
+    const data = {
       product_id: productId,
-      rating,
+      rating: parseInt(rating, 10),
       summary,
       body,
-      recommend,
+      recommend: recommend === 'true',
       name,
       email,
-      characteristics: {
-        Fit: {
-          id: 43617,
-          value: fit,
-        },
-        Length: {
-          id: 43618,
-          value: length,
-        },
-        Comfort: {
-          id: 43619,
-          value: comfort,
-        },
-        Quality: {
-          id: 43620,
-          value: quality,
-        },
-
-      },
+      characteristics: characteristicsInfo,
+    };
+    console.log(data);
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: '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',
     };
 
     // TODO: post data to reviews, currently unathorized 401
-    axios.post(`${options.url}reviews`, params, options.headers)
-      .then()
+    axios.post(`${options.url}reviews`, data, { headers })
+      .then(() => { console.log('post success'); })
       .catch((err) => { throw err; });
   };
 
@@ -173,7 +179,7 @@ const ReviewForm = ({ productId }) => {
             <input type="radio" name="fit" value="5" />
             Runs long
           </div>
-          <div className="review-summary" onChange={(e) => setSummary(e.target.value)}>
+          <div className="review-form-summary" onChange={(e) => setSummary(e.target.value)}>
             Review Summary
             <input type="text" maxLength="60" placeholder="Example: purchase ever!" required />
           </div>
@@ -198,6 +204,16 @@ const ReviewForm = ({ productId }) => {
       </form>
     </div>
   );
+};
+
+ReviewForm.propTypes = {
+  productId: PropTypes.number.isRequired,
+  characteristics: PropTypes.shape({
+    Fit: PropTypes.shape({ id: PropTypes.number }),
+  }),
+};
+ReviewForm.defaultProps = {
+  characteristics: {},
 };
 
 export default ReviewForm;
