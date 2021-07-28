@@ -8,9 +8,9 @@ import RatingsAndReviews from './RatingsAndReviews/RatingsAndReviews.jsx';
 const App = () => (
   <div>
     <Overview />
-    {/* <RelatedItems />
-    <QuestionsAndAnswers /> */}
-    {/* <RatingsAndReviews /> */}
+    <RelatedItems />
+    <QuestionsAndAnswers />
+    <RatingsAndReviews />
   </div>
 );
 
