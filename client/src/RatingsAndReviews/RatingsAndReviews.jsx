@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import './ratings.css';
-
 import axios from 'axios';
-// import { RatingView } from 'react-simple-star-rating';
-// import StarRatings from 'react-star-ratings';
 import StarRating from './StarRating.jsx';
 import options from '../config/config';
 import RatingsBreakDown from './RatingsBreakDown.jsx';
 import ProductBreakDown from './ProductBreakDown.jsx';
 import ReviewList from './ReviewList.jsx';
+import './ratings.css';
 
 const RatingsAndReviews = () => {
   const [recommended, setRecommended] = useState(0);
