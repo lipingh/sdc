@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import axios from 'axios';
 import StarRating from './StarRating.jsx';
-import options from '../config/config';
 import RatingsBreakDown from './RatingsBreakDown.jsx';
 import ProductBreakDown from './ProductBreakDown.jsx';
 import ReviewList from './ReviewList.jsx';
-import './ratings.css';
 import calculateRating from '../../helper.js';
+import { getReviewsMeta, getReviewsById } from '../../reviewRequest.js';
+import './ratings.css';
 
 const RatingsAndReviews = () => {
   const productId = 13023;
@@ -15,24 +14,37 @@ const RatingsAndReviews = () => {
   const [ratings, setRatings] = useState({});
   const [characteristics, setCharacteristics] = useState({});
   const ratingsBreakDown = useMemo(() => calculateRating(ratings), [ratings]);
-  const getReviewsMeta = () => {
-    axios({
-      url: `${options.url}reviews/meta?product_id=${productId}`,
-      method: 'get',
-      headers: options.headers,
-    })
-      .then((res) => {
-        setRatings(res.data.ratings);
-        setRecommended(parseInt(res.data.recommended.true, 10));
-        setNotRecommended(parseInt(res.data.recommended.false, 10));
-        setCharacteristics(res.data.characteristics);
-      })
-      .catch((err) => { throw err; });
+  const [reviews, setReviews] = useState([]);
+  const [filteredReviews, setFilteredReviews] = useState([]);
+  const [sortOption, setSortOption] = useState('relevant');
+  const params = {
+    product_id: productId,
+    count: 10,
+    sort: sortOption,
   };
 
   useEffect(() => {
-    getReviewsMeta();
-  }, [productId]);
+    getReviewsMeta(productId).then((result) => {
+      setRatings(result.ratings);
+      setRecommended(parseInt(result.recommended.true, 10));
+      setNotRecommended(parseInt(result.recommended.false, 10));
+      setCharacteristics(result.characteristics);
+    });
+    getReviewsById(params).then((result) => {
+      setReviews(result);
+      setFilteredReviews(result);
+    });
+  }, [productId, sortOption]);
+
+  // input rating is a digit number
+  const handleFilterByRating = (rating) => {
+    const filteredDta = reviews.filter((review) => review.rating === rating);
+    setFilteredReviews(filteredDta);
+  };
+
+  const handleChangeSort = (option) => {
+    setSortOption(option);
+  };
 
   return (
     <div id="reviews-root">
@@ -49,12 +61,22 @@ const RatingsAndReviews = () => {
             % of reviews recommend this product
           </div>
           <br />
-          <RatingsBreakDown ratings={ratingsBreakDown} />
+          <RatingsBreakDown
+            ratings={ratingsBreakDown}
+            handleFilterByRating={handleFilterByRating}
+          />
           <br />
           <ProductBreakDown characteristics={characteristics} />
         </div>
         <div className="review-list">
-          <ReviewList totalReviews={ratingsBreakDown.totalReviews} productId={productId} />
+          <ReviewList
+            totalReviews={
+              ratingsBreakDown.totalReviews
+            }
+            productId={productId}
+            reviews={filteredReviews}
+            handleChangeSort={handleChangeSort}
+          />
         </div>
       </div>
     </div>
