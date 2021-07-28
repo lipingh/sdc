@@ -8,16 +8,33 @@ const ComparisonModal = ({open, onClose, product, currProduct}) => {
     return null;
   }
 
-  const sharedFeatures = currProduct.features.map((featureObj) => {
-    const featureName = featureObj.feature;
-    let sharedFeatureObj;
-    product.features.forEach((relatedFeatureObj) => {
-      if (relatedFeatureObj.feature === featureName) {
-        sharedFeatureObj = {name: featureName, currVal: featureObj.value, relatedVal: relatedFeatureObj.value};
+  const [sharedFeatures, setSharedFeatures] = useState([]);
+  const [currProductFeatures, setCurrProductFeatures] = useState([]);
+  const [relatedProdFeatures, setRelatedProdFeatures] = useState([]);
+
+  const distributeFeatures = () => {
+    let newSharedFeatures = [];
+    let newCurrProductFeatures = [];
+    let newRelatedProdFeatures = [];
+    for (var i = 0; i < currProduct.features.length; i++) {
+      const featureObj = currProduct.features[i]
+      const featureName = featureObj.feature;
+      for (var j = 0; j < product.features.length; j++) {
+        const relatedFeatureObj = product.features[j];
+        if (relatedFeatureObj.feature === featureName) {
+          newSharedFeatures.push({name: featureName, currVal: featureObj.value, relatedVal: relatedFeatureObj.value});
+          break;
+        }
       }
-    })
-    return sharedFeatureObj;
-  })
+    }
+    setSharedFeatures(newSharedFeatures);
+    setCurrProductFeatures(newCurrProductFeatures);
+    setRelatedProdFeatures(newRelatedProdFeatures);
+  }
+
+  useEffect(() => {
+    distributeFeatures();
+  }, [])
 
   return ReactDOM.createPortal(
     <>
