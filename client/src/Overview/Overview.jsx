@@ -1,6 +1,7 @@
 import React, { useReducer } from 'react';
 import Gallery from './Gallery/Gallery.jsx';
 import './main.css';
+import UserShop from './UserShop/UserShop.jsx';
 
 const initialState = {
   isExpanded: false,
@@ -26,7 +27,7 @@ const Overview = () => {
     <div className="container">
       <ExpandContext.Provider value={{ currState: state, dispatchFunc: dispatch }}>
         <Gallery />
-        {!state.isExpanded && <div className="test">hello</div>}
+        {!state.isExpanded && <UserShop />}
       </ExpandContext.Provider>
     </div>
   );
