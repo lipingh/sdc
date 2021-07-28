@@ -1,22 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { getReviewsById } from '../../reviewRequest.js';
 import ReviewListItem from './ReviewListItem.jsx';
 import ReviewForm from './ReviewForm.jsx';
 // import Modal from './Modal.jsx';
 
-const ReviewList = ({ totalReviews, productId, reviews }) => {
-  // console.log('unsortedReviews', unsortedReviews);
-  const [sortOption, setSortOption] = useState('relevant');
-  // const [reviews, setReviews] = useState([]);
+const ReviewList = ({ totalReviews, reviews, handleChangeSort }) => {
   const [showReviewForm, setShowReviewForm] = useState(false);
-  // let reviews = unsortedReviews;
-  const params = {
-    product_id: productId,
-    sort: sortOption,
-    count: 5,
-  };
-
   // const reviews = useMemo(() => getReviewsById(params), [params]);
   // cosole.log(reviews);
   // const reviewFormModal = showReviewForm ? (
@@ -26,20 +15,14 @@ const ReviewList = ({ totalReviews, productId, reviews }) => {
   //     </div>
   //   </Modal>
   // ) : null;
-
-  // useEffect(() => {
-  //   getReviewsById(params).then((value) => setReviews(value));
-  // }, [sortOption]);
-
   return (
     <div>
       <div>
         {totalReviews}
         {' reviews, sorted by '}
         <select
-          value={sortOption}
           onChange={(e) => {
-            setSortOption(e.target.value);
+            handleChangeSort(e.target.value);
           }}
         >
           <option value="relevant">Relevant</option>
@@ -62,6 +45,10 @@ const ReviewList = ({ totalReviews, productId, reviews }) => {
 };
 ReviewList.propTypes = {
   totalReviews: PropTypes.number.isRequired,
-  productId: PropTypes.number.isRequired,
+  reviews: PropTypes.arrayOf(PropTypes.object),
+  handleChangeSort: PropTypes.func.isRequired,
+};
+ReviewList.defaultProps = {
+  reviews: [],
 };
 export default ReviewList;

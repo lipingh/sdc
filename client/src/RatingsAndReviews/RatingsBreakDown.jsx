@@ -68,6 +68,7 @@ RatingsBreakDown.propTypes = {
     fourStar: PropTypes.number,
     fiveStar: PropTypes.number,
   }),
+  handleFilterByRating: PropTypes.func.isRequired,
 };
 RatingsBreakDown.defaultProps = {
   ratings: {},

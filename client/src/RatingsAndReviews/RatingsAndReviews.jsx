@@ -3,9 +3,9 @@ import StarRating from './StarRating.jsx';
 import RatingsBreakDown from './RatingsBreakDown.jsx';
 import ProductBreakDown from './ProductBreakDown.jsx';
 import ReviewList from './ReviewList.jsx';
-import './ratings.css';
 import calculateRating from '../../helper.js';
 import { getReviewsMeta, getReviewsById } from '../../reviewRequest.js';
+import './ratings.css';
 
 const RatingsAndReviews = () => {
   const productId = 13023;
@@ -16,9 +16,11 @@ const RatingsAndReviews = () => {
   const ratingsBreakDown = useMemo(() => calculateRating(ratings), [ratings]);
   const [reviews, setReviews] = useState([]);
   const [filteredReviews, setFilteredReviews] = useState([]);
+  const [sortOption, setSortOption] = useState('relevant');
   const params = {
     product_id: productId,
-    count: 5,
+    count: 10,
+    sort: sortOption,
   };
 
   useEffect(() => {
@@ -32,12 +34,16 @@ const RatingsAndReviews = () => {
       setReviews(result);
       setFilteredReviews(result);
     });
-  }, [productId]);
+  }, [productId, sortOption]);
 
   // input rating is a digit number
   const handleFilterByRating = (rating) => {
     const filteredDta = reviews.filter((review) => review.rating === rating);
     setFilteredReviews(filteredDta);
+  };
+
+  const handleChangeSort = (option) => {
+    setSortOption(option);
   };
 
   return (
@@ -69,6 +75,7 @@ const RatingsAndReviews = () => {
             }
             productId={productId}
             reviews={filteredReviews}
+            handleChangeSort={handleChangeSort}
           />
         </div>
       </div>
