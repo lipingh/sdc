@@ -1,40 +1,49 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import options from '../config/config.js';
 import PropTypes from 'prop-types';
+import options from '../config/config';
 import AnswerList from './AnswerList.jsx';
 
 const EachQuestion = ({ question }) => {
   const [helpfull, setHelpfull] = useState(question.question_helpfulness);
+  const [voted, setVoted] = useState(false);
 
-   const handleHelpClick = () => {
-    setHelpfull((helpfull) => helpfull + 1);
-    axios.put(
-      `${options.url}qa/questions/${question.question_id}/helpful`,
-      {
-        question_helpfulness: helpfull,
-      },
-      {
-        headers: options.headers,
-      }
-    )
-    .then((res) => {
+  const handleHelpClick = () => {
+    if (!voted) {
+      setVoted((vote) => !vote);
+      setHelpfull((helped) => helped + 1);
+      axios.put(
+        `${options.url}qa/questions/${question.question_id}/helpful`,
+        {
+          question_helpfulness: helpfull,
+        },
+        {
+          headers: options.headers,
+        },
+      )
+        .then(() => {
 
-    })
-    .catch((err) => {
-      res.end('could not make question more helpfull', err);
-    })
-  }
+        })
+        .catch((res, err) => {
+          res.end('could not make question more helpfull', err);
+        });
+    }
+  };
 
   return (
     <>
-      <span>{question.question_body}</span>
-      <div className='Qhelp-report'>
-      <span>Helpful? </span>
-        <span onClick={handleHelpClick}> Yes:
-        ({helpfull}) |
-        </span >
-      <span> Report</span>
+      <div className="q-entry">
+        <div className="q-body">
+          {'Q: '}
+          <span>{question.question_body}</span>
+        </div>
+        <div className="Qhelp-report">
+          <span onClick={handleHelpClick}>
+            {' '}
+            {voted ? 'You thought this was helpfull | ' : ` Helpfull? Yes: ${helpfull} | `}
+          </span>
+          <span> Report</span>
+        </div>
       </div>
       <AnswerList answers={question.answers} />
     </>
@@ -44,11 +53,9 @@ const EachQuestion = ({ question }) => {
 EachQuestion.propTypes = {
   question: PropTypes.shape({
     question_body: PropTypes.string,
+    question_id: PropTypes.number,
     question_helpfulness: PropTypes.number,
-    answers: PropTypes.shape({
-      answerer_name: PropTypes.string,
-      body: PropTypes.string,
-    }),
+    answers: PropTypes.arrayOf(PropTypes.object),
   }),
 };
 

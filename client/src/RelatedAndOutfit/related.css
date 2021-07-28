@@ -6,6 +6,7 @@
   text-align: left;
   background-color: #d9d9d9;
   justify-content: center;
+  position: relative;
 }
 
 .list-card img{
@@ -13,4 +14,16 @@
   margin: auto;
   display: block;
   justify-content: center;
+}
+
+.card-add-star {
+  top: 15px;
+  right: 15px;
+  position: absolute;
+}
+
+.card-add-star img{
+  width: 30px;
+  height: 30px;
+  object-fit: scale-down;
 }
