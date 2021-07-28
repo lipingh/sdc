@@ -1,15 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
-import options from '../config/config.js';
+import { getReviewsById } from '../../reviewRequest.js';
 import ReviewListItem from './ReviewListItem.jsx';
 import ReviewForm from './ReviewForm.jsx';
 // import Modal from './Modal.jsx';
 
 const ReviewList = ({ totalReviews, productId }) => {
+  // console.log('unsortedReviews', unsortedReviews);
   const [sortOption, setSortOption] = useState('relevant');
   const [reviews, setReviews] = useState([]);
   const [showReviewForm, setShowReviewForm] = useState(false);
+  // let reviews = unsortedReviews;
+  const params = {
+    product_id: productId,
+    sort: sortOption,
+    count: 5,
+  };
+
+  // const reviews = useMemo(() => getReviewsById(params), [params]);
+  // cosole.log(reviews);
   // const reviewFormModal = showReviewForm ? (
   //   <Modal>
   //     <div className="modal">
@@ -17,26 +26,9 @@ const ReviewList = ({ totalReviews, productId }) => {
   //     </div>
   //   </Modal>
   // ) : null;
-  const getReviewsById = () => {
-    // console.log('sort by', sortOption);
-    axios({
-      url: `${options.url}reviews/`,
-      method: 'get',
-      headers: options.headers,
-      params: {
-        product_id: productId,
-        sort: sortOption,
-        count: 5,
-      },
-    })
-      .then((res) => {
-        setReviews(res.data.results);
-      })
-      .catch((err) => { throw err; });
-  };
 
   useEffect(() => {
-    getReviewsById();
+    getReviewsById(params).then((value) => setReviews(value));
   }, [sortOption]);
 
   return (
