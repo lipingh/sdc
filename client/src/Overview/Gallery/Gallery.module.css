@@ -39,7 +39,7 @@
   position: absolute;
   top: 5px;
   right: 5px;
-  background-image: url('../assets/fullscreen.png');
+  /* background-image: url('../assets/fullscreen.png'); */
 }
 
 /******* Side Bar *******/
