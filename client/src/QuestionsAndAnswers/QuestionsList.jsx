@@ -2,10 +2,9 @@ import React from 'react';
 import EachQuestion from './EachQuestion.jsx';
 
 const QuestionsList = ({questions}) => (
-  <ul>
+  <ul className='q-list'>
   {questions.map((question, id) => (
-    <div key={id} id='QEntry'>
-    <span>Q: </span>
+    <div key={id}>
       <EachQuestion key={question.question_id} question={question}/>
     </div>
     ))}

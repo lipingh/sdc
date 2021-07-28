@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './questions.css';
 import options from '../config/config.js';
 import QuestionsList from './QuestionsList.jsx';
 
@@ -32,8 +33,10 @@ const QuestionsAndAnswers = () => {
 
   return (
     <>
-      <h3>Questions and Answers</h3>
+    <h3>Questions and Answers</h3>
+    <div className='q-a'>
       <QuestionsList questions={questions} />
+    </div>
     </>
   );
 };

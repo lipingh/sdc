@@ -1,0 +1,24 @@
+.q-a {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.q-entry {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 70%;
+}
+.a-entry {
+  display: flex;
+  flex-direction: column;
+}
+.a-bullet {
+  font-weight: bold;
+}
+#q-bullet {
+  font-weight: bold;
+}
+.q-body {
+  font-weight: bold;
+}

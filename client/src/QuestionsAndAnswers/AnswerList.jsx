@@ -4,8 +4,7 @@ import EachAnswer from './EachAnswer.jsx'
 const AnswerList = ({ answers }) => (
   <ul>
   {Object.keys(answers).map((answer, id) => (
-      <div key={id} id='AEntry'>
-      <span>A: </span>
+      <div key={id}>
       <EachAnswer key={answer} answer={answers[answer]}/>
       </div>
     ))}
