@@ -91,6 +91,8 @@
   margin: 0 auto;
 }
 
-/* .downclick {
-  font-size: 15px;
-} */
+/******* Utility *******/
+.cursor {
+  cursor: zoom-in;
+  cursor: url(../assets/zoomin.ico);
+}

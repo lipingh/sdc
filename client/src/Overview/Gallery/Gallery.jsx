@@ -48,7 +48,7 @@ const Gallery = () => {
       });
       setCurrImgIndex(index);
     }
-  )
+  );
 
   useEffect(() => {
     axios.get(`${options.url}products/13023/styles`, { headers: options.headers })
@@ -84,7 +84,7 @@ const Gallery = () => {
         {currImgIndex !== 0 && <button type="button" className={style.clickPrev} onClick={buttonClickHandler('prev')}>&lt;</button>}
         <div className={style.mainImage} ref={imageMove}>
           {images.map((imageurl, index) => (
-            <img src={imageurl} alt="selected style" className={style.image} key={index}/>
+            <img src={imageurl} alt="selected style" className={`${style.image} ${style.cursor}`} key={index} />
           ))}
         </div>
         {currImgIndex !== images.length - 1 && <button type="button" className={style.clickNext} onClick={buttonClickHandler('next')}>&gt;</button>}
