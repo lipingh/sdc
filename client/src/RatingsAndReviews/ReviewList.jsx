@@ -5,10 +5,10 @@ import ReviewListItem from './ReviewListItem.jsx';
 import ReviewForm from './ReviewForm.jsx';
 // import Modal from './Modal.jsx';
 
-const ReviewList = ({ totalReviews, productId }) => {
+const ReviewList = ({ totalReviews, productId, reviews }) => {
   // console.log('unsortedReviews', unsortedReviews);
   const [sortOption, setSortOption] = useState('relevant');
-  const [reviews, setReviews] = useState([]);
+  // const [reviews, setReviews] = useState([]);
   const [showReviewForm, setShowReviewForm] = useState(false);
   // let reviews = unsortedReviews;
   const params = {
@@ -27,9 +27,9 @@ const ReviewList = ({ totalReviews, productId }) => {
   //   </Modal>
   // ) : null;
 
-  useEffect(() => {
-    getReviewsById(params).then((value) => setReviews(value));
-  }, [sortOption]);
+  // useEffect(() => {
+  //   getReviewsById(params).then((value) => setReviews(value));
+  // }, [sortOption]);
 
   return (
     <div>

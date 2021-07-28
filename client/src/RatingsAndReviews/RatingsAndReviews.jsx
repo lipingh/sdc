@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import axios from 'axios';
-import options from '../config/config';
 import StarRating from './StarRating.jsx';
 import RatingsBreakDown from './RatingsBreakDown.jsx';
 import ProductBreakDown from './ProductBreakDown.jsx';
 import ReviewList from './ReviewList.jsx';
 import './ratings.css';
 import calculateRating from '../../helper.js';
-import { getReviewsMeta } from '../../reviewRequest.js';
+import { getReviewsMeta, getReviewsById } from '../../reviewRequest.js';
 
 const RatingsAndReviews = () => {
   const productId = 13023;
@@ -17,24 +15,11 @@ const RatingsAndReviews = () => {
   const [characteristics, setCharacteristics] = useState({});
   const ratingsBreakDown = useMemo(() => calculateRating(ratings), [ratings]);
   const [reviews, setReviews] = useState([]);
+  const [filteredReviews, setFilteredReviews] = useState([]);
   const params = {
     product_id: productId,
     count: 5,
   };
-  // const getReviewsMeta = () => {
-  //   axios({
-  //     url: `${options.url}reviews/meta?product_id=${productId}`,
-  //     method: 'get',
-  //     headers: options.headers,
-  //   })
-  //     .then((res) => {
-  //       setRatings(res.data.ratings);
-  //       setRecommended(parseInt(res.data.recommended.true, 10));
-  //       setNotRecommended(parseInt(res.data.recommended.false, 10));
-  //       setCharacteristics(res.data.characteristics);
-  //     })
-  //     .catch((err) => { throw err; });
-  // };
 
   useEffect(() => {
     getReviewsMeta(productId).then((result) => {
@@ -43,8 +28,17 @@ const RatingsAndReviews = () => {
       setNotRecommended(parseInt(result.recommended.false, 10));
       setCharacteristics(result.characteristics);
     });
-    // getReviewsById();
+    getReviewsById(params).then((result) => {
+      setReviews(result);
+      setFilteredReviews(result);
+    });
   }, [productId]);
+
+  // input rating is a digit number
+  const handleFilterByRating = (rating) => {
+    const filteredDta = reviews.filter((review) => review.rating === rating);
+    setFilteredReviews(filteredDta);
+  };
 
   return (
     <div id="reviews-root">
@@ -61,7 +55,10 @@ const RatingsAndReviews = () => {
             % of reviews recommend this product
           </div>
           <br />
-          <RatingsBreakDown ratings={ratingsBreakDown} />
+          <RatingsBreakDown
+            ratings={ratingsBreakDown}
+            handleFilterByRating={handleFilterByRating}
+          />
           <br />
           <ProductBreakDown characteristics={characteristics} />
         </div>
@@ -71,7 +68,7 @@ const RatingsAndReviews = () => {
               ratingsBreakDown.totalReviews
             }
             productId={productId}
-            unsortedReviews={reviews}
+            reviews={filteredReviews}
           />
         </div>
       </div>
