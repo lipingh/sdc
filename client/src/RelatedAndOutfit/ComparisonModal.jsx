@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import './comp-modal.css'
 
-const ComparisonModal = ({open, onClose}) => {
+const ComparisonModal = ({open, onClose, currProduct}) => {
 
   if (!open) {
     return null;
