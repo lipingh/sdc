@@ -1,30 +1,43 @@
 import React, {useState, useEffect} from 'react';
+import axios from 'axios';
+import options from '../config/config.js'
 import exampleData from './ExampleRelatedProducts.js';
 import './related.css';
 
 const RelatedCard = (props) => {
+  const [styles, setStyles] = useState([])
   const [relatedImg, setRelatedImg] = useState('');
   const [salePrice, setSalePrice] = useState('');
   const [defaultPrice, setDefaultPrice] = useState('');
 
-  console.log('product: ', props.product)
-  const retrieveDefaultData = () => {
-    console.log('props styles: ', props.styles);
-    let relatedIndex = -1;
+  const getRelatedStylesFromIds =() => {
+    axios.get(`${options.url}products/${props.product.id}/styles`, {
+      headers: options.headers,
+    })
+      .then(res => {
+        setStyles(res.data.results);
+        setDefaultData(res.data);
+      })
+      .catch((res, err) => {
+        res.end('Could not get related styles: ', err);
+      });
+  }
+
+  const setDefaultData = (stylesObj) => {
     let relatedStyleInd = 0;
-    for (let i = 0; i < props.styles.results.length; i++) {
-      if (props.styles.results[i]['default?']) {
+    for (let i = 0; i < stylesObj.results.length; i++) {
+      if (stylesObj.results[i]['default?']) {
         relatedStyleInd = i;
         break;
       }
     }
-    setRelatedImg(props.styles.results[relatedStyleInd].photos[0].thumbnail_url);
+    setRelatedImg(stylesObj.results[relatedStyleInd].photos[0].thumbnail_url);
     setDefaultPrice(props.product.default_price);
-    setSalePrice(props.styles.results[relatedStyleInd].sale_price);
+    setSalePrice(stylesObj.results[relatedStyleInd].sale_price);
   }
 
   useEffect(() => {
-    retrieveDefaultData(props.styles)
+    getRelatedStylesFromIds();
   }, [])
 
   return (

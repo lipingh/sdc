@@ -9,7 +9,6 @@ const RelatedList = () => {
   const [current, setCurrent] = useState(0);
   const [len, setLen] = useState(0);
   const [related, setRelated] = useState([]);
-  const [relatedStyles, setRelatedStyles] = useState([]);
 
   const getRelated = () => {
     axios.get(`${options.url}products/13029/related`, {
@@ -18,7 +17,6 @@ const RelatedList = () => {
       .then(res => {
         setLen(res.data.length);
         getRelatedFromIds(res.data);
-        getRelatedStylesFromIds(res.data);
       })
       .catch((res, err) => {
         res.end('Could not get related: ', err);
@@ -42,22 +40,22 @@ const RelatedList = () => {
     })
   }
 
-  const getRelatedStylesFromIds = (idList) => {
-    let relatedStylesList = [];
-    idList.forEach(id => {
-      axios.get(`${options.url}products/${id}/styles`, {
-        headers: options.headers,
-      })
-        .then(res => {
-          relatedStylesList.push(res.data);
-          let newRelatedStyles = relatedStyles.concat(relatedStylesList);
-          setRelatedStyles(newRelatedStyles)
-        })
-        .catch((res, err) => {
-          res.end('Could not get related styles: ', err)
-        })
-    })
-  }
+  // const getRelatedStylesFromIds = (idList) => {
+  //   let relatedStylesList = [];
+  //   idList.forEach(id => {
+  //     axios.get(`${options.url}products/${id}/styles`, {
+  //       headers: options.headers,
+  //     })
+  //       .then(res => {
+  //         relatedStylesList.push(res.data);
+  //         let newRelatedStyles = relatedStyles.concat(relatedStylesList);
+  //         setRelatedStyles(newRelatedStyles)
+  //       })
+  //       .catch((res, err) => {
+  //         res.end('Could not get related styles: ', err)
+  //       })
+  //   })
+  // }
 
   useEffect(() => {
     getRelated();
@@ -99,8 +97,8 @@ const RelatedList = () => {
     <div className="related">
       {current !== 0 && <button className="btn-related-left" onClick={prevCard}>prev</button>}
       <div className="related-list" ref={listRef}>
-        {relatedStyles.map((product, index) => (
-          <RelatedCard key={related[index].id} product={related[index]} styles={relatedStyles[index]} />
+        {related.map((product, index) => (
+          <RelatedCard key={product.id} product={product} />
         ))}
       </div>
       {current !== len - 4 && <button className="btn-related-right" onClick={nextCard}>next</button>}
