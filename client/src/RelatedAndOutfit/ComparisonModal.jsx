@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import ReactDOM from 'react-dom';
+import ComparisonRow from './ComparisonRow.jsx';
 import './comp-modal.css'
 
 const ComparisonModal = ({open, onClose, product, currProduct}) => {
@@ -49,12 +50,9 @@ const ComparisonModal = ({open, onClose, product, currProduct}) => {
             <div className="comp-title">{currProduct.name}</div>
           </div>
           <div className="comp-table-features">
-            <div className="comp-current">
-            </div>
-            <div className="comp-features">
-            </div>
-            <div className="comp-related">
-            </div>
+            {sharedFeatures.map((feature) => {
+              return <ComparisonRow feature={feature} />
+            })}
           </div>
         </div>
       </div>

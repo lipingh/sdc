@@ -35,4 +35,5 @@
 .comp-titles {
   display: flex;
   justify-content: space-between;
+  font-weight: bold;
 }
