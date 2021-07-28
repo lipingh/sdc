@@ -4,7 +4,7 @@ import options from '../config/config.js'
 import './related.css';
 
 const RelatedCard = (props) => {
-  const [styles, setStyles] = useState([])
+  const [styles, setStyles] = useState([]);
   const [relatedImg, setRelatedImg] = useState('');
   const [salePrice, setSalePrice] = useState('');
   const [defaultPrice, setDefaultPrice] = useState('');
@@ -13,7 +13,7 @@ const RelatedCard = (props) => {
     axios.get(`${options.url}products/${props.product.id}/styles`, {
       headers: options.headers,
     })
-      .then(res => {
+      .then((res) => {
         setStyles(res.data.results);
         setDefaultData(res.data);
       })
@@ -57,7 +57,7 @@ const RelatedCard = (props) => {
       </div>
       <div className="card-price">
         <div className="card-default-price">{defaultPrice}</div>
-        <div className="card-sale-price">{salePrice ? salePrice : ''}</div>
+        <div className="card-sale-price">{salePrice || ''}</div>
       </div>
       <div className="card-rating">[rating]</div>
     </div>
