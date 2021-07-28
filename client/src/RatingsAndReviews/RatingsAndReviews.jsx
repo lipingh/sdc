@@ -44,13 +44,13 @@ const RatingsAndReviews = () => {
             <StarRating rating={ratingsBreakDown.averageRatings} />
           </div>
           <br />
-          <RatingsBreakDown ratings={ratingsBreakDown} />
-          <br />
           <div>
             {((recommended * 100) / (recommended + notRecommended)).toFixed(0)}
             % of reviews recommend this product
           </div>
-
+          <br />
+          <RatingsBreakDown ratings={ratingsBreakDown} />
+          <br />
           <ProductBreakDown characteristics={characteristics} />
         </div>
         <div className="review-list">
