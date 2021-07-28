@@ -57,7 +57,6 @@ const Gallery = () => {
   const mainImageClickHandler = () => {
     contextData.dispatchFunc({ type: 'expand' });
     entireGallery.current.style.width = '100%';
-    console.log(entireGallery.current.style);
   };
 
   useEffect(() => {
@@ -103,6 +102,7 @@ const Gallery = () => {
         </div>
         {currImgIndex !== images.length - 1 ? <button type="button" className={style.clickNext} onClick={buttonClickHandler('next')}>&gt;</button>
           : <div />}
+        <div className={style.expand} />
       </div>
     </div>
   );

@@ -33,6 +33,15 @@
   font-size: 20px;
 }
 
+.expand {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-image: url('../assets/fullscreen.png');
+}
+
 /******* Side Bar *******/
 .sideBar {
   width: 15%;
