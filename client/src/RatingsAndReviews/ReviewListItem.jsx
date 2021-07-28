@@ -7,6 +7,7 @@ import options from '../config/config';
 
 const ReviewListItem = ({ review }) => {
   const [helpfull, setHelpfull] = useState(review.helpfulness);
+  const [reported, setReported] = useState(false);
   const formatDate = (dateString) => {
     const d = new Date(dateString);
     const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
@@ -20,10 +21,25 @@ const ReviewListItem = ({ review }) => {
   const handleAddHelpful = () => {
     setHelpfull(() => helpfull + 1);
     axios.put(
-      `${options.url}/reviews/${review.review_id}/helpful`,
+      `${options.url}reviews/${review.review_id}/helpful`,
       {
         helpfulness: helpfull,
       },
+      {
+        headers: options.headers,
+      },
+    )
+      .then()
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  // TODO: which value should we update by click "report"? can't find in the reviews
+  const handleReport = () => {
+    setReported(!reported);
+    axios.put(
+      `${options.url}reviews/${review.review_id}/report`,
       {
         headers: options.headers,
       },
@@ -55,13 +71,14 @@ const ReviewListItem = ({ review }) => {
       {/* {review.response ? <div>{review.response}</div> : ''} */}
       <div>
         <span>Helpful?</span>
-        <span onClick={handleAddHelpful}>
+        <span onClick={handleAddHelpful} onKeyDown={() => { }} role="link" tabIndex={0}>
           Yes(
           {helpfull}
           )
         </span>
-        <span>
-          | Report(0)
+        <span>{' | '}</span>
+        <span onClick={handleReport} onKeyDown={() => { }} role="link" tabIndex={0}>
+          {reported ? 'Reported' : 'Report'}
         </span>
       </div>
       <br />
