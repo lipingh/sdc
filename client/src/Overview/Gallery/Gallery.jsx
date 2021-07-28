@@ -1,8 +1,10 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, {
+  useState, useEffect, useRef, useContext,
+} from 'react';
 import axios from 'axios';
 import style from './Gallery.module.css';
 import options from '../../config/config.js';
-import {ExpandContext} from '../Overview.jsx';
+import { ExpandContext } from '../Overview.jsx';
 
 const Gallery = () => {
   const [styles, setStyles] = useState([]);
@@ -15,7 +17,7 @@ const Gallery = () => {
   const contextData = useContext(ExpandContext);
 
   const buttonClickHandler = (direction) => (
-    (event) => {
+    () => {
       if (direction === 'next') {
         setCurrImgIndex((prevIndex) => prevIndex + 1);
         imageMove.current.scrollBy({
@@ -41,7 +43,7 @@ const Gallery = () => {
   );
 
   const thumbnailClickHandler = (index) => (
-    (event) => {
+    () => {
       const distance = (index - currImgIndex) * 360;
       imageMove.current.scrollBy({
         top: 0,
@@ -53,7 +55,7 @@ const Gallery = () => {
   );
 
   const mainImageClickHandler = () => {
-    contextData.dispatchFunc({type: 'expand'});
+    contextData.dispatchFunc({ type: 'expand' });
     entireGallery.current.style.width = '100%';
     console.log(entireGallery.current.style);
   };
@@ -77,27 +79,30 @@ const Gallery = () => {
       <div className={style.sideBar}>
         {firstThumbnailIdex !== 0 && <button type="button" onClick={buttonClickHandler('up')} className={style.upclick}>&and;</button>}
         <div className={style.thumbnails}>
-          {thumbnails.slice(firstThumbnailIdex, firstThumbnailIdex + 5).map((url, index) => {
-            return (
-              <div className={style.selected} key={firstThumbnailIdex + index}>
-                <img src={url} alt="selected style thumbnail" className={style.eachThumbnail} onClick={thumbnailClickHandler(firstThumbnailIdex + index)}/>
-                {firstThumbnailIdex + index === currImgIndex && <div className={style.highlight}></div>}
-              </div>
-            )
-          })}
+          {thumbnails.slice(firstThumbnailIdex, firstThumbnailIdex + 5).map((url, index) => (
+            <div className={style.selected} key={firstThumbnailIdex + index}>
+              <img
+                src={url}
+                alt="selected style thumbnail"
+                className={style.eachThumbnail}
+                onClick={thumbnailClickHandler(firstThumbnailIdex + index)}
+              />
+              {firstThumbnailIdex + index === currImgIndex && <div className={style.highlight} />}
+            </div>
+          ))}
         </div>
         {firstThumbnailIdex + 5 < thumbnails.length && <button type="button" onClick={buttonClickHandler('down')} className={style.downclick}>&or;</button>}
       </div>
       <div className={style.mainGallery}>
         {currImgIndex !== 0 ? <button type="button" className={style.clickPrev} onClick={buttonClickHandler('prev')}>&lt;</button>
-        : <div></div>}
+          : <div />}
         <div className={style.mainImage} ref={imageMove}>
           {images.map((imageurl, index) => (
-            <img src={imageurl} alt="selected style" className={`${style.image} ${style.cursor}`} key={index} onClick={mainImageClickHandler}/>
+            <img src={imageurl} alt="selected style" className={`${style.image} ${style.cursor}`} key={index} onClick={mainImageClickHandler} />
           ))}
         </div>
         {currImgIndex !== images.length - 1 ? <button type="button" className={style.clickNext} onClick={buttonClickHandler('next')}>&gt;</button>
-        : <div></div>}
+          : <div />}
       </div>
     </div>
   );

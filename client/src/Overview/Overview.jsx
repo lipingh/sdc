@@ -3,13 +3,13 @@ import Gallery from './Gallery/Gallery.jsx';
 import './main.css';
 
 const initialState = {
-  isExpanded: false
+  isExpanded: false,
 };
 
-const reducer  = (state, action) => {
-  switch(action.type) {
+const reducer = (state, action) => {
+  switch (action.type) {
     case 'expand':
-      return {...initialState, isExpanded: true};
+      return { ...state, isExpanded: true };
     default:
       return state;
   }

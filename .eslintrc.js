@@ -22,7 +22,7 @@ module.exports = {
   plugins: [
     'react',
   ],
-  rules: {
-    import/extensions: {'jsx': 'never'}
-  },
+  // rules: {
+  //   import/extensions: {'jsx': 'never'}
+  // },
 };
