@@ -21,6 +21,7 @@ const Gallery = () => {
           left: 360,
           behavior: 'smooth',
         });
+        setFirstThumbnailIdex(Math.floor(currImgIndex / 4) * 5);
       } else if (direction === 'prev') {
         setCurrImgIndex((prevIndex) => prevIndex - 1);
         imageMove.current.scrollBy({
@@ -28,6 +29,7 @@ const Gallery = () => {
           left: -360,
           behavior: 'smooth',
         });
+        setFirstThumbnailIdex(Math.floor(currImgIndex / 6) * 5);
       } else if (direction === 'up') {
         setFirstThumbnailIdex((prevIndex) => prevIndex - 5);
       } else if (direction === 'down') {
@@ -53,13 +55,18 @@ const Gallery = () => {
   return (
     <div className={style.gallery}>
       <div className={style.sideBar}>
-        {firstThumbnailIdex !== 0 && <button type="button" onClick={buttonClickHandler('up')}>&and;</button>}
+        {firstThumbnailIdex !== 0 && <button type="button" onClick={buttonClickHandler('up')} className={style.upclick}>&and;</button>}
         <div className={style.thumbnails}>
-          {thumbnails.slice(firstThumbnailIdex, firstThumbnailIdex + 5).map((url, index) => (
-            <img src={url} alt="selected style thumbnail" className={style.eachThumbnail} key={index} />
-          ))}
+          {thumbnails.slice(firstThumbnailIdex, firstThumbnailIdex + 5).map((url, index) => {
+            return (
+              <div className={style.selected} key={firstThumbnailIdex + index}>
+                <img src={url} alt="selected style thumbnail" className={style.eachThumbnail} />
+                {firstThumbnailIdex + index === currImgIndex && <div className={style.highlight}></div>}
+              </div>
+            )
+          })}
         </div>
-        {firstThumbnailIdex + 5 < thumbnails.length && <button type="button" onClick={buttonClickHandler('down')}>&or;</button>}
+        {firstThumbnailIdex + 5 < thumbnails.length && <button type="button" onClick={buttonClickHandler('down')} className={style.downclick}>&or;</button>}
       </div>
       <div className={style.mainGallery}>
         {currImgIndex !== 0 && <button type="button" className={style.clickPrev} onClick={buttonClickHandler('prev')}>&lt;</button>}

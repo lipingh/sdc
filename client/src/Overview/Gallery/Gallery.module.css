@@ -14,7 +14,7 @@
   align-items: center;
   width: 85%;
   height: 100%;
-  border: 2px black solid;
+  /* border: 2px black solid; */
 }
 
 .mainImage {
@@ -24,20 +24,17 @@
   display: flex;
   width: 360px;
   height: 100%;
-  border: 2px black solid;
-  overflow: auto;
+  overflow: hidden;
 }
 
 .image {
   width: 360px;
   height: 100%;
-  /* object-fit: contain; */
 }
 
 .clickNext {
   height: 50px;
   font-size: 20px;
-  font-weight: bold;
   position: absolute;
   top: 45%;
   right: 10px;
@@ -46,7 +43,6 @@
 .clickPrev {
   height: 50px;
   font-size: 20px;
-  font-weight: bold;
   position: absolute;
   top: 45%;
   left: 10px;
@@ -56,25 +52,45 @@
 .sideBar {
   width: 12%;
   height: 100%;
-  border: 2px black solid;
   display: flex;
   flex-flow: column;
-  justify-content: flex-start;
-  align-items: center;
+  justify-content: space-around;
 }
 
 .thumbnails {
   width: 100%;
-  height: 95%;
-  border: 2px black solid;
+  height: 90%;
   display: flex;
   flex-flow: column;
   justify-content: space-between;
   align-items: center;
 }
 
-.eachThumbnail {
+.highlight {
+  width: 70px;
+  height: 5px;
+  background-color: gray;
+  margin: 0 auto;
+}
+
+.selected {
   height: 18%;
+  width: 100%;
+}
+
+.eachThumbnail {
+  height: 100%;
   width: 100%;
   object-fit: contain;
 }
+
+.upclick, .downclick{
+  font-size: 18px;
+  width: 70px;
+  height: 25px;
+  margin: 0 auto;
+}
+
+/* .downclick {
+  font-size: 15px;
+} */
