@@ -10,6 +10,7 @@ const RelatedCard = (props) => {
   const [relatedImg, setRelatedImg] = useState('');
   const [salePrice, setSalePrice] = useState('');
   const [defaultPrice, setDefaultPrice] = useState('');
+  const [inOutfit, setInOutfit] = useState(false);
 
   const getRelatedStylesFromIds =() => {
     axios.get(`${options.url}products/${props.product.id}/styles`, {
@@ -41,6 +42,11 @@ const RelatedCard = (props) => {
     getRelatedStylesFromIds();
   }, []);
 
+  const handleStarClick = () => {
+    let newInOutfit = !inOutfit;
+    setInOutfit(newInOutfit);
+  };
+
   return (
     <div className="list-card">
       <img
@@ -50,8 +56,9 @@ const RelatedCard = (props) => {
         height="200"
         className="card-img"
       />
-      <div className="card-add-star">
-        <img src={emptyStar} alt="star_icon_empty" />
+      <div className="card-add-star" onClick={() => (handleStarClick())}>
+        {inOutfit ? <img src={fillStar} alt="star_icon_fill" />
+          : <img src={emptyStar} alt="star_icon_empty" />}
       </div>
       <div className="card-category">
         {props.product.category.toUpperCase()}
