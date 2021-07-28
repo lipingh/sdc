@@ -21,11 +21,13 @@
   width: 360px;
   height: 100%;
   overflow: hidden;
+  border: 2px gray solid;
 }
 
 .image {
   width: 360px;
   height: 100%;
+  cursor: zoom-in;
 }
 
 .clickNext, .clickPrev {
@@ -40,7 +42,14 @@
   top: 5px;
   right: 5px;
   background-image: url('../assets/fullscreen.png');
+  cursor: pointer;
 }
+
+/* .zoomin img {
+  transform-origin: 0 0;
+  transform: scale(2.5);
+} */
+
 
 /******* Side Bar *******/
 .sideBar {
@@ -86,6 +95,4 @@
 }
 
 /******* Utility *******/
-.cursor {
-  cursor: zoom-in;
-}
+

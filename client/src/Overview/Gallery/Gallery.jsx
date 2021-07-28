@@ -55,8 +55,10 @@ const Gallery = () => {
   );
 
   const mainImageClickHandler = () => {
-    contextData.dispatchFunc({ type: 'expand' });
-    entireGallery.current.style.width = '100%';
+    if (!contextData.currState.isExpanded) {
+      contextData.dispatchFunc({ type: 'expand' });
+      entireGallery.current.style.width = '100%';
+    }
   };
 
   const expandButtonClickHandler = () => {
@@ -107,7 +109,7 @@ const Gallery = () => {
           : <div />}
         <div className={style.mainImage} ref={imageMove}>
           {images.map((imageurl, index) => (
-            <img src={imageurl} alt="selected style" className={`${style.image} ${style.cursor}`} key={index} onClick={mainImageClickHandler} />
+            <img src={imageurl} alt="selected style" className={style.image} key={index} onClick={mainImageClickHandler} />
           ))}
         </div>
         {currImgIndex !== images.length - 1 ? <button type="button" className={style.clickNext} onClick={buttonClickHandler('next')}>&gt;</button>

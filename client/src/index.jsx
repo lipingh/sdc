@@ -7,10 +7,10 @@ import RatingsAndReviews from './RatingsAndReviews/RatingsAndReviews.jsx';
 
 const App = () => (
   <div>
-    {/* <Overview />
-    <RelatedItems />
+    <Overview />
+    {/* <RelatedItems />
     <QuestionsAndAnswers /> */}
-    <RatingsAndReviews />
+    {/* <RatingsAndReviews /> */}
   </div>
 );
 
