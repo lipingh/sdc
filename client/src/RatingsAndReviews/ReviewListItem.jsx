@@ -14,14 +14,16 @@ const ReviewListItem = ({ review }) => {
     const year = d.getFullYear();
     return `${month} ${day}, ${year}`;
   };
+  // const email = 'lisa@gamil.com';
 
   return (
     <div>
       <div className="review-list-overall">
         <RatingView ratingValue={review.rating} fillColor="black" />
-        {/* <StarRating rating={review.rating || 5} /> */}
         <span>
-          {` ${review.reviewer_name}, ${formatDate(review.date)}`}
+          {review.reviewer_name}
+          {review.email ? <span>(Verified Purchaser)</span> : null}
+          {`, ${formatDate(review.date)}`}
         </span>
       </div>
       <div className="review-summary">{review.summary}</div>
@@ -53,6 +55,7 @@ ReviewListItem.propTypes = {
     body: PropTypes.string,
     recommend: PropTypes.bool,
     helpfulness: PropTypes.number,
+    email: PropTypes.string,
   }),
 };
 ReviewListItem.defaultProps = {
