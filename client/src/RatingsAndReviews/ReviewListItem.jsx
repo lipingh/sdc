@@ -27,7 +27,7 @@ const ReviewListItem = ({ review }) => {
       <div className="review-summary">{review.summary}</div>
       <div>{review.body}</div>
       <div>
-        {review.recommend ? 'I recommend this product' : ''}
+        {review.recommend ? <span>&#10003; I recommend this product</span> : null}
       </div>
       {/* {review.response ? <div>{review.response}</div> : ''} */}
       <div>
