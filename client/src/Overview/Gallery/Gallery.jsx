@@ -59,8 +59,18 @@ const Gallery = () => {
     entireGallery.current.style.width = '100%';
   };
 
+  const expandButtonClickHandler = () => {
+    if (!contextData.currState.isExpanded) {
+      contextData.dispatchFunc({ type: 'expand' });
+      entireGallery.current.style.width = '100%';
+    } else {
+      contextData.dispatchFunc({ type: 'unexpand' });
+      entireGallery.current.style.width = '65%';
+    }
+  };
+
   useEffect(() => {
-    axios.get(`${options.url}products/13023/styles`, { headers: options.headers })
+    axios.get(`${options.url}products/${contextData.currState.style}/styles`, { headers: options.headers })
       .then((response) => {
         setStyles(response.data.results);
         const imgs = response.data.results[0].photos.map((photo) => photo.url);
@@ -102,7 +112,7 @@ const Gallery = () => {
         </div>
         {currImgIndex !== images.length - 1 ? <button type="button" className={style.clickNext} onClick={buttonClickHandler('next')}>&gt;</button>
           : <div />}
-        <div className={style.expand} />
+        <div className={style.expand} onClick={expandButtonClickHandler}/>
       </div>
     </div>
   );
