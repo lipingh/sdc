@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import options from '../config/config.js'
 import './related.css';
+import emptyStar from 'star-icon-empty.png';
 
 const RelatedCard = (props) => {
   const [styles, setStyles] = useState([]);
@@ -48,7 +49,9 @@ const RelatedCard = (props) => {
         height="200"
         className="card-img"
       />
-      <div className="card-add-star">star</div>
+      <div className="card-add-star">
+        <img src={emptyStar} alt="star_icon_empty" />
+      </div>
       <div className="card-category">
         {props.product.category.toUpperCase()}
       </div>
