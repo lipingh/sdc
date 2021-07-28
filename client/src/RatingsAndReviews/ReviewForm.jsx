@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Rating } from 'react-simple-star-rating';
 import options from '../config/config.js';
+import Star from './Star.jsx';
 
 // const reviewFormModalRoot = document.getElementById('review-form');
 const ReviewForm = ({ productId }) => {
@@ -17,7 +17,13 @@ const ReviewForm = ({ productId }) => {
   const [body, setBody] = useState('');
   const [name, setReviewName] = useState('');
   const [email, setEmail] = useState('');
+  const [selection, setSelection] = React.useState(0);
 
+  const hoverOver = (event) => {
+    let val = 0;
+    if (event && event.target && event.target.getAttribute('data-star-id')) val = event.target.getAttribute('data-star-id');
+    setSelection(val);
+  };
   const addReviews = (e) => {
     e.preventDefault();
     // TODO: need to get each factor id
@@ -50,6 +56,7 @@ const ReviewForm = ({ productId }) => {
 
       },
     };
+
     // TODO: post data to reviews, currently unathorized 401
     axios.post(`${options.url}reviews`, params, options.headers)
       .then()
@@ -61,7 +68,24 @@ const ReviewForm = ({ productId }) => {
       <form>
         <div>
           Overall Ratings
-          <Rating onClick={(rate) => setRating(rate)} ratingValue={rating} fillColor="black" />
+          <div
+            onMouseOut={() => hoverOver(null)}
+            onBlur={() => { }}
+            onClick={(e) => setRating(e.target.getAttribute('data-star-id') || rating)}
+            onKeyUp={() => { }}
+            onMouseOver={hoverOver}
+            onFocus={() => { }}
+            role="button"
+            tabIndex={0}
+          >
+            {Array.from({ length: 5 }, (v, i) => (
+              <Star
+                starId={i + 1}
+                key={`star_${i + 1}`}
+                marked={selection ? selection >= i + 1 : rating >= i + 1}
+              />
+            ))}
+          </div>
         </div>
         <div>
           <div className="recommend" onChange={(e) => setRecommended(e.target.value)}>
