@@ -23,7 +23,7 @@ const RatingsAndReviews = () => {
   const totalReviews = oneStar + twoStar + threeStar + fourStar + fiveStar;
   const totalScores = oneStar + twoStar * 2 + threeStar * 3 + fourStar * 4 + fiveStar * 5;
   const averageRatings = (totalScores / totalReviews);
-  const productId = 13025;
+  const productId = 13023;
   const ratingsBreakDown = {
     oneStar,
     twoStar,

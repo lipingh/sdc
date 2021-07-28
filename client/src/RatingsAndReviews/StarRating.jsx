@@ -3,19 +3,17 @@ import PropTypes from 'prop-types';
 import './star.css';
 
 const StarRating = ({ rating }) => {
-  // const [whole, part] = rating.split('.');
-  // let partial = part;
   const ratingPercentage = (rating * 100) / 5;
   return (
-    <div className="star-ratings-css">
-      <div className="star-ratings-css-top" style={{ width: `${ratingPercentage}%` }}>
+    <div className="star-ratings">
+      <div className="star-ratings-top" style={{ width: `${ratingPercentage}%` }}>
         <span>★</span>
         <span>★</span>
         <span>★</span>
         <span>★</span>
         <span>★</span>
       </div>
-      <div className="star-ratings-css-bottom">
+      <div className="star-ratings-bottom">
         <span>★</span>
         <span>★</span>
         <span>★</span>
@@ -26,6 +24,6 @@ const StarRating = ({ rating }) => {
   );
 };
 StarRating.propTypes = {
-  rating: PropTypes.string.isRequired,
+  rating: PropTypes.number.isRequired,
 };
 export default StarRating;
