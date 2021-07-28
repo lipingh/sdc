@@ -4,10 +4,19 @@ import axios from 'axios';
 import options from '../config/config.js';
 import ReviewListItem from './ReviewListItem.jsx';
 import ReviewForm from './ReviewForm.jsx';
+// import Modal from './Modal.jsx';
 
 const ReviewList = ({ totalReviews, productId }) => {
   const [sortOption, setSortOption] = useState('relevant');
   const [reviews, setReviews] = useState([]);
+  const [showReviewForm, setShowReviewForm] = useState(false);
+  // const reviewFormModal = showReviewForm ? (
+  //   <Modal>
+  //     <div className="modal">
+  //       <ReviewForm />
+  //     </div>
+  //   </Modal>
+  // ) : null;
   const getReviewsById = () => {
     // console.log('sort by', sortOption);
     axios({
@@ -23,7 +32,7 @@ const ReviewList = ({ totalReviews, productId }) => {
       .then((res) => {
         setReviews(res.data.results);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => { throw err; });
   };
 
   useEffect(() => {
@@ -52,8 +61,9 @@ const ReviewList = ({ totalReviews, productId }) => {
         }
       </div>
       <button type="button">MORE REVIEWS</button>
-      <button type="button">ADD A REVIEW  + </button>
-      {/* <ReviewForm /> */}
+      <button type="button" onClick={() => setShowReviewForm(!showReviewForm)}>ADD A REVIEW  + </button>
+      {/* {reviewFormModal} */}
+      {showReviewForm ? <ReviewForm /> : null}
     </div>
 
   );

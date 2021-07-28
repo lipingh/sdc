@@ -1,28 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import './ratings.css';
-
+import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
-import options from '../config/config.js';
 import StarRating from './StarRating.jsx';
+import options from '../config/config';
 import RatingsBreakDown from './RatingsBreakDown.jsx';
 import ProductBreakDown from './ProductBreakDown.jsx';
 import ReviewList from './ReviewList.jsx';
+import './ratings.css';
+import calculateRating from '../../helper.js';
 
 const RatingsAndReviews = () => {
+  const productId = 13023;
   const [recommended, setRecommended] = useState(0);
   const [notRecommended, setNotRecommended] = useState(0);
   const [ratings, setRatings] = useState({});
   const [characteristics, setCharacteristics] = useState({});
-  const oneStar = parseInt(ratings['1'], 10);
-  const twoStar = parseInt(ratings['2'], 10);
-  const threeStar = parseInt(ratings['3'], 10);
-  const fourStar = parseInt(ratings['4'], 10);
-  const fiveStar = parseInt(ratings['5'], 10);
-  const totalReviews = oneStar + twoStar + threeStar + fourStar + fiveStar;
-  const totalScores = oneStar + twoStar * 2 + threeStar * 3 + fourStar * 4 + fiveStar * 5;
-  const averageRatings = (totalScores / totalReviews);
-  const productId = 13023;
-
+  const ratingsBreakDown = useMemo(() => calculateRating(ratings), [ratings]);
   const getReviewsMeta = () => {
     axios({
       url: `${options.url}reviews/meta?product_id=${productId}`,
@@ -35,37 +27,37 @@ const RatingsAndReviews = () => {
         setNotRecommended(parseInt(res.data.recommended.false, 10));
         setCharacteristics(res.data.characteristics);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => { throw err; });
   };
 
   useEffect(() => {
     getReviewsMeta();
-  }, []);
+  }, [productId]);
 
   return (
-    <>
+    <div id="reviews-root">
       <h3>Ratings &amp; Reviews</h3>
       <div className="ratings-reviews">
         <div className="breakdown">
           <div className="overall-rating">
-            <span>{averageRatings.toFixed(1)}</span>
-            <StarRating ratings={averageRatings || 5} />
+            <span>{ratingsBreakDown.averageRatings.toFixed(1)}</span>
+            <StarRating rating={ratingsBreakDown.averageRatings} />
           </div>
-          <br />
-          <RatingsBreakDown ratings={ratings} />
           <br />
           <div>
-            {(recommended * 100) / (recommended + notRecommended)}
+            {((recommended * 100) / (recommended + notRecommended)).toFixed(0)}
             % of reviews recommend this product
           </div>
-
+          <br />
+          <RatingsBreakDown ratings={ratingsBreakDown} />
+          <br />
           <ProductBreakDown characteristics={characteristics} />
         </div>
         <div className="review-list">
-          <ReviewList totalReviews={totalReviews} productId={productId} />
+          <ReviewList totalReviews={ratingsBreakDown.totalReviews} productId={productId} />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 export default RatingsAndReviews;
