@@ -13,15 +13,10 @@ const QuestionsAndAnswers = () => {
       headers: options.headers,
     })
       .then((res) => {
-        const notReported = res.data.results.filter((question) => {
-          /*
-          esLint wants this function to always return something. This is directly
-          against the point of using filter.
-          */
-          if (!question.reported) {
-            return question;
-          }
-        });
+        const notReported = res.data.results.filter((question) => (
+          !question.reported
+          // !question.reported ? question : null
+        ));
         const inQHelpOrder = notReported.sort(
           (a, b) => b.question_helpfulness - a.question_helpfulness,
         );

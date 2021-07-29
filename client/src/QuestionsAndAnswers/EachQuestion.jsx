@@ -5,17 +5,17 @@ import options from '../config/config';
 import AnswerList from './AnswerList.jsx';
 
 const EachQuestion = ({ question }) => {
-  const [helpfull, setHelpfull] = useState(question.question_helpfulness);
+  const [helpful, setHelpful] = useState(question.question_helpfulness);
   const [voted, setVoted] = useState(false);
 
   const handleHelpClick = () => {
     if (!voted) {
       setVoted((vote) => !vote);
-      setHelpfull((helped) => helped + 1);
+      setHelpful((helped) => helped + 1);
       axios.put(
         `${options.url}qa/questions/${question.question_id}/helpful`,
         {
-          question_helpfulness: helpfull,
+          question_helpfulness: helpful,
         },
         {
           headers: options.headers,
@@ -25,7 +25,7 @@ const EachQuestion = ({ question }) => {
 
         })
         .catch((res, err) => {
-          res.end('could not make question more helpfull', err);
+          res.end('could not make question more helpful', err);
         });
     }
   };
@@ -35,8 +35,13 @@ const EachQuestion = ({ question }) => {
       <div className="q-entry">
         <span className="q-body">{`Q: ${question.question_body}`}</span>
         <div className="Qhelp-report">
-          <span onClick={handleHelpClick}>
-            {voted ? 'You thought this was helpfull | ' : ` Helpfull? Yes: ${helpfull} | `}
+          <span
+            onClick={handleHelpClick}
+            onKeyPress={() => {}}
+            role="button"
+            tabIndex="0"
+          >
+            {voted ? 'You thought this was helpful | ' : ` Helpful? Yes: ${helpful} | `}
           </span>
           <span> Report</span>
         </div>

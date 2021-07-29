@@ -46,7 +46,12 @@ const EachAnswer = ({ answer }) => {
           |
           {' '}
         </span>
-        <span onClick={handleHelpClick}>
+        <span
+          onClick={handleHelpClick}
+          onKeyPress={() => {}}
+          role="button"
+          tabIndex="0"
+        >
           {voted ? 'You thought this was helpfull | ' : ` Helpfull? Yes: ${helpfull} | `}
         </span>
         <span> Report</span>

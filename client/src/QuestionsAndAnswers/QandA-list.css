@@ -1,16 +1,17 @@
-.q-a {
+/* .q-a {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  position:relative;
-  max-height:225px;
+} */
+.answer-list {
+  height:100px;
   overflow:hidden;
   overflow-y:scroll;
-
 }
-.answer-list {
-  max-height:225px;
-
+.questions-list {
+  height:300px;
+  overflow:hidden;
+  overflow-y:scroll;
 }
 .q-entry {
   display: flex;
