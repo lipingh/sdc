@@ -10,8 +10,8 @@ const RatingsBreakDown = ({ ratings, handleFilterByRating }) => (
       onKeyPress={() => { }}
       tabIndex={0}
     >
-      5 stars:
-      {ratings.fiveStar}
+      <span className="star-label">5 stars:</span>
+      <span>{ratings.fiveStar}</span>
     </div>
     <div
       className="sidebar star4"
@@ -20,8 +20,8 @@ const RatingsBreakDown = ({ ratings, handleFilterByRating }) => (
       onKeyPress={() => { }}
       tabIndex={0}
     >
-      4 stars:
-      {ratings.fourStar}
+      <span className="star-label">4 stars:</span>
+      <span>{ratings.fourStar}</span>
     </div>
 
     <div
@@ -31,8 +31,8 @@ const RatingsBreakDown = ({ ratings, handleFilterByRating }) => (
       onKeyPress={() => { }}
       tabIndex={0}
     >
-      3 stars:
-      {ratings.threeStar}
+      <span className="star-label">3 stars:</span>
+      <span>{ratings.threeStar}</span>
     </div>
 
     <div
@@ -42,8 +42,8 @@ const RatingsBreakDown = ({ ratings, handleFilterByRating }) => (
       onKeyPress={() => { }}
       tabIndex={0}
     >
-      2 stars:
-      {ratings.twoStar}
+      <span className="star-label">2 stars:</span>
+      <span>{ratings.twoStar}</span>
     </div>
 
     <div
@@ -53,8 +53,8 @@ const RatingsBreakDown = ({ ratings, handleFilterByRating }) => (
       onKeyPress={() => { }}
       tabIndex={0}
     >
-      1 stars:
-      {ratings.oneStar}
+      <span className="star-label">1 stars:</span>
+      <span>{ratings.oneStar}</span>
     </div>
   </div>
 

@@ -29,6 +29,10 @@
   justify-content: space-between;
 }
 
+.star-label {
+  text-decoration: underline;
+}
+
 /* .sidebar {
   background-color: black;
 } */
