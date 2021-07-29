@@ -6,7 +6,7 @@ import UserShop from './UserShop/UserShop.jsx';
 const initialState = {
   isExpanded: false,
   productId: 13023,
-  styleIndex: 4,
+  styleIndex: 0,
 };
 
 const reducer = (state, action) => {
