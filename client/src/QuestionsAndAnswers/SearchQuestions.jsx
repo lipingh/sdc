@@ -17,4 +17,11 @@ const SearchQuestions = ({ handleSearch }) => (
   </>
 );
 
+SearchQuestions.propTypes = {
+  handleSearch: PropTypes.func,
+};
+SearchQuestions.defaultProps = {
+  handleSearch: PropTypes.func,
+};
+
 export default SearchQuestions;
