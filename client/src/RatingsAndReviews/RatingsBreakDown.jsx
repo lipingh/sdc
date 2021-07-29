@@ -4,57 +4,57 @@ import PropTypes from 'prop-types';
 const RatingsBreakDown = ({ ratings, handleFilterByRating }) => (
   <div className="ratings-breakdown">
     <div
-      className="sidebar star5"
+      // className="sidebar star5"
       role="link"
       onClick={() => handleFilterByRating(5)}
       onKeyPress={() => { }}
       tabIndex={0}
     >
-      5 stars:
-      {ratings.fiveStar}
+      <span className="star-label">5 stars:</span>
+      <span className="sidebar star5">{ratings.fiveStar}</span>
     </div>
     <div
-      className="sidebar star4"
+      // className="sidebar star4"
       role="link"
       onClick={() => handleFilterByRating(4)}
       onKeyPress={() => { }}
       tabIndex={0}
     >
-      4 stars:
-      {ratings.fourStar}
+      <span className="star-label">4 stars:</span>
+      <span className="sidebar star4">{ratings.fourStar}</span>
     </div>
 
     <div
-      className="sidebar star3"
+      // className="sidebar star3"
       role="link"
       onClick={() => handleFilterByRating(3)}
       onKeyPress={() => { }}
       tabIndex={0}
     >
-      3 stars:
-      {ratings.threeStar}
+      <span className="star-label">3 stars:</span>
+      <span className="sidebar star3">{ratings.threeStar}</span>
     </div>
 
     <div
-      className="sidebar star2"
+      // className="sidebar star2"
       role="link"
       onClick={() => handleFilterByRating(2)}
       onKeyPress={() => { }}
       tabIndex={0}
     >
-      2 stars:
-      {ratings.twoStar}
+      <span className="star-label">2 stars:</span>
+      <span className="sidebar star2">{ratings.twoStar}</span>
     </div>
 
     <div
-      className="sidebar star1"
+      // className="sidebar star1"
       role="link"
       onClick={() => handleFilterByRating(1)}
       onKeyPress={() => { }}
       tabIndex={0}
     >
-      1 stars:
-      {ratings.oneStar}
+      <span className="star-label">1 stars:</span>
+      <span className="sidebar star1">{ratings.oneStar}</span>
     </div>
   </div>
 

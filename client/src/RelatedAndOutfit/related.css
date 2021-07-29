@@ -27,3 +27,11 @@
   height: 30px;
   object-fit: scale-down;
 }
+
+.card-rating {
+  display: flex;
+  justify-content: left;
+  align-items: baseline;
+  margin-top: -2%;
+  margin-bottom: 2%;
+}

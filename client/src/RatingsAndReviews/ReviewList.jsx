@@ -2,21 +2,12 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import ReviewListItem from './ReviewListItem.jsx';
 import ReviewForm from './ReviewForm.jsx';
-// import Modal from './Modal.jsx';
 
 const ReviewList = ({
-  productId, totalReviews, reviews, handleChangeSort, characteristics,
+  productId, totalReviews, reviews, handleChangeSort,
+  characteristics, handleAddReview,
 }) => {
   const [showReviewForm, setShowReviewForm] = useState(false);
-  // const reviews = useMemo(() => getReviewsById(params), [params]);
-  // cosole.log(reviews);
-  // const reviewFormModal = showReviewForm ? (
-  //   <Modal>
-  //     <div className="modal">
-  //       <ReviewForm />
-  //     </div>
-  //   </Modal>
-  // ) : null;
   return (
     <div>
       <div>
@@ -38,14 +29,14 @@ const ReviewList = ({
         }
       </div>
       <button type="button">MORE REVIEWS</button>
-      <button type="button" onClick={() => setShowReviewForm(!showReviewForm)}>ADD A REVIEW  + </button>
-      {/* {reviewFormModal} */}
-      {showReviewForm ? (
-        <ReviewForm
-          productId={productId}
-          characteristics={characteristics}
-        />
-      ) : null}
+      <button type="button" onClick={() => setShowReviewForm(true)}>ADD A REVIEW  + </button>
+      <ReviewForm
+        showModal={showReviewForm}
+        productId={productId}
+        characteristics={characteristics}
+        onClose={() => setShowReviewForm(false)}
+        handleAddReview={handleAddReview}
+      />
     </div>
 
   );
@@ -54,6 +45,7 @@ ReviewList.propTypes = {
   productId: PropTypes.number.isRequired,
   totalReviews: PropTypes.number.isRequired,
   reviews: PropTypes.arrayOf(PropTypes.object),
+  handleAddReview: PropTypes.func.isRequired,
   handleChangeSort: PropTypes.func.isRequired,
   characteristics: PropTypes.shape({
     Fit: PropTypes.shape({ id: PropTypes.number }),
