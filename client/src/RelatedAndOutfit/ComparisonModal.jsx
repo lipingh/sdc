@@ -63,13 +63,13 @@ const ComparisonModal = ({open, onClose, product, currProduct}) => {
           </div>
           <div className="comp-table-features">
             {sharedFeatures.map((feature) => {
-              return <ComparisonRow feature={feature} />
+              return <ComparisonRow key={`${product.id+feature.currVal}`} feature={feature} />
             })}
             {currProductFeatures.map((feature) => {
-              return <ComparisonRow feature={feature} />
+              return <ComparisonRow key={`${product.id+feature.name}`}feature={feature} />
             })}
             {relatedProdFeatures.map((feature) => {
-              return <ComparisonRow feature={feature} />
+              return <ComparisonRow key={`${product.id+feature.relatedVal}`} feature={feature} />
             })}
           </div>
         </div>
