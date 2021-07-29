@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import axios from 'axios';
@@ -6,7 +6,9 @@ import options from '../config/config.js';
 import Star from './Star.jsx';
 
 // const reviewFormModalRoot = document.getElementById('review-form');
-const ReviewForm = ({ showModal, onClose, productId, characteristics }) => {
+const ReviewForm = ({
+  showModal, onClose, productId, characteristics,
+}) => {
   if (!showModal) return null;
 
   const [recommend, setRecommended] = useState('');
@@ -22,17 +24,21 @@ const ReviewForm = ({ showModal, onClose, productId, characteristics }) => {
   const [name, setReviewName] = useState('');
   const [email, setEmail] = useState('');
   const [selection, setSelection] = useState(0);
-
+  const [ratingError, setRatingError] = useState(true);
   const hoverOver = (event) => {
     let val = 0;
     if (event && event.target && event.target.getAttribute('data-star-id')) val = event.target.getAttribute('data-star-id');
     setSelection(val);
+    console.log(typeof rating);
   };
-
+  useEffect(() => {
+  }, [ratingError]);
   const addReviews = (e) => {
     e.preventDefault();
-    // TODO: need to get each factor id
-    // TODO: validate fileds before submit
+    if (ratingError) {
+      return;
+    }
+
     const characteristicsInfo = {};
     Object.keys(characteristics).forEach((key) => {
       if (key === 'Fit') {
@@ -67,19 +73,24 @@ const ReviewForm = ({ showModal, onClose, productId, characteristics }) => {
   return ReactDOM.createPortal(
     <div className="review-form-modal">
       <form className="review-form" onSubmit={addReviews}>
-        <button type="button" onClick={onClose}>CLOSE</button>
+        <button className="close-button" type="button" onClick={onClose}>X</button>
         <div>
-          Overall Ratings
+          {ratingError
+            ? <span style={{ color: 'red' }}>&#9888; Please select overall rating</span> : null}
           <div
             onMouseOut={() => hoverOver(null)}
             onBlur={() => { }}
-            onClick={(e) => setRating(e.target.getAttribute('data-star-id') || rating)}
+            onClick={(e) => {
+              setRating(e.target.getAttribute('data-star-id') || rating);
+              if ([1, 2, 3, 4, 5].includes(parseInt(rating, 10))) setRatingError(false);
+            }}
             onKeyUp={() => { }}
             onMouseOver={hoverOver}
             onFocus={() => { }}
             role="button"
             tabIndex={0}
           >
+            <span>Overall Ratings</span>
             {Array.from({ length: 5 }, (v, i) => (
               <Star
                 starId={i + 1}
@@ -197,7 +208,7 @@ const ReviewForm = ({ showModal, onClose, productId, characteristics }) => {
           </div>
 
         </div>
-        <button type="submit">Submit</button>
+        <button type="submit" className="review-form-submit-button">Submit</button>
       </form>
     </div>,
     document.getElementById('review-form-modal'),

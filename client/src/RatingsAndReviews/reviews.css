@@ -18,6 +18,8 @@
 }
 
 .review-form {
+  display: flex;
+  flex-flow: column;
   position: fixed;
   top: 0%;
   left: 50%;
@@ -27,4 +29,17 @@
   background-color: lightblue;
   padding: 25px;
   z-index: 1000;
+}
+
+.close-button {
+  height: 20px;
+  width: 20px
+}
+
+.review-form-submit-button {
+  font-size: larger;
+  height: 30px;
+  width: 100px;
+  align-items: center;
+  justify-content: center;
 }
