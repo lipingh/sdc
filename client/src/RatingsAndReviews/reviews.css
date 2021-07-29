@@ -3,6 +3,56 @@
   flex-flow: row;
   justify-content: space-between;
 }
+
 .review-summary {
   font-weight: bold;
+}
+
+.review-form-modal {
+  position: fixed;
+  top: 1000px;
+  left: 20px;
+  right: 0px;
+  bottom: 0px;
+  z-index: 1000;
+}
+
+.review-form {
+  display: flex;
+  flex-flow: column;
+  position: fixed;
+  top: 0%;
+  left: 50%;
+  width: 80%;
+  height: 50%;
+  transform: translate(-50%, 50%);
+  background-color: lightblue;
+  padding: 25px;
+  z-index: 1000;
+}
+
+.review-form>div {
+  margin: 6px
+}
+
+.close-button {
+  height: 20px;
+  width: 20px
+}
+
+.review-form-submit-button {
+  font-size: larger;
+  height: 30px;
+  width: 100px;
+  align-items: center;
+  justify-content: center;
+}
+
+.review-form-summary>input {
+  width: 60%;
+  height: 20px
+}
+
+.review-body>textarea {
+  width: 60%;
 }

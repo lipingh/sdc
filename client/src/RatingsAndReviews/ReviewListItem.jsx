@@ -8,7 +8,7 @@ import StarRating from './StarRating.jsx';
 const ReviewListItem = ({ review }) => {
   const [helpfull, setHelpfull] = useState(review.helpfulness);
   const [reported, setReported] = useState(false);
-
+  const [disableHelpful, setDisableHelpful] = useState(false);
   const formatDate = (dateString) => {
     const d = new Date(dateString);
     const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
@@ -20,7 +20,8 @@ const ReviewListItem = ({ review }) => {
     return `${month} ${day}, ${year}`;
   };
   const handleAddHelpful = () => {
-    setHelpfull(() => helpfull + 1);
+    setDisableHelpful(!disableHelpful);
+    setHelpfull(() => (disableHelpful ? helpfull - 1 : helpfull + 1));
     axios.put(
       `${options.url}reviews/${review.review_id}/helpful`,
       {
@@ -40,7 +41,7 @@ const ReviewListItem = ({ review }) => {
   const handleReport = () => {
     setReported(!reported);
     axios.put(
-      `${options.url}reviews/${review.review_id}/report`,
+      `${options.url}reviews/${review.review_id}/report`, {},
       {
         headers: options.headers,
       },
