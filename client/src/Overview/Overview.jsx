@@ -1,10 +1,12 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import Gallery from './Gallery/Gallery.jsx';
 import './main.css';
+import UserShop from './UserShop/UserShop.jsx';
 
 const initialState = {
   isExpanded: false,
-  style: 13023,
+  productId: 13023,
+  styleIndex: 0,
 };
 
 const reducer = (state, action) => {
@@ -26,7 +28,7 @@ const Overview = () => {
     <div className="container">
       <ExpandContext.Provider value={{ currState: state, dispatchFunc: dispatch }}>
         <Gallery />
-        {!state.isExpanded && <div className="test">hello</div>}
+        {!state.isExpanded && <UserShop />}
       </ExpandContext.Provider>
     </div>
   );
