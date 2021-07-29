@@ -4,6 +4,7 @@ import './QandA-list.css';
 import options from '../config/config.js';
 import QuestionsList from './QuestionsList.jsx';
 import allInOrder from './Helpers.js';
+import SearchQuestions from './SearchQuestions.jsx'
 
 const QuestionsAndAnswers = () => {
   const [questions, setQuestions] = useState([]);
@@ -35,6 +36,7 @@ const QuestionsAndAnswers = () => {
   return (
     <>
       <h3>Questions and Answers</h3>
+      <SearchQuestions />
       <div className="q-a">
         <QuestionsList questions={questions} />
       </div>

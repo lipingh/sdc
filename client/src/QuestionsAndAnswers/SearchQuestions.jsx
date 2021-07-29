@@ -1,6 +1,13 @@
-// import React, { useState, useEffect } from 'react';
-// import PropTypes from 'prop-types';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-// const SearchQuestions = () => {
+const SearchQuestions = () => (
+  <>
+    <form>
+      <input type="text" placeholder="Have a Question? Search for Answers ..." />
+      <button type="submit">Search</button>
+    </form>
+  </>
+);
 
-// };
+export default SearchQuestions;
