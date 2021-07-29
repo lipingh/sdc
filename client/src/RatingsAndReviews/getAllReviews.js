@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import options from '../config/config';
 
-function retriveAllReviewsByPage(productId, page, sortOption) {
+const getAllReviews = (productId, page, sortOption) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [reviews, setReviews] = useState([]);
@@ -37,11 +37,9 @@ function retriveAllReviewsByPage(productId, page, sortOption) {
     return () => cancel();
   }, [productId, page, sortOption]);
 
-  console.log('reviews fetched', reviews);
-
   return {
     loading, error, reviews, hasMore,
   };
-}
+};
 
-export default retriveAllReviewsByPage;
+export default getAllReviews;

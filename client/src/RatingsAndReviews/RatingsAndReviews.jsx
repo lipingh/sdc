@@ -23,15 +23,8 @@ const RatingsAndReviews = () => {
   const params = {
     product_id: productId,
     page,
-    count: 2,
     sort: sortOption,
   };
-  useEffect(() => {
-    getReviewsById(params).then((result) => {
-      setReviews(result);
-      setFilteredReviews(result);
-    });
-  }, [sortOption]);
 
   useEffect(() => {
     getReviewsMeta(productId).then((result) => {
@@ -41,6 +34,13 @@ const RatingsAndReviews = () => {
       setCharacteristics(result.characteristics);
     });
   }, [productId]);
+
+  useEffect(() => {
+    getReviewsById(params).then((result) => {
+      setReviews(result);
+      setFilteredReviews(result);
+    });
+  }, [sortOption]);
 
   // input rating is a digit number
   const handleFilterByRating = (rating) => {
@@ -92,15 +92,7 @@ const RatingsAndReviews = () => {
               <option value="newest">Newest</option>
             </select>
           </div>
-          <ReviewList
-            totalReviews={
-              ratingsBreakDown.totalReviews
-            }
-            productId={productId}
-            reviews={filteredReviews}
-            characteristics={characteristics}
-            handleAddReview={handleAddReview}
-          />
+          <ReviewList reviews={filteredReviews} />
           <button type="button">MORE REVIEWS</button>
           <button type="button" onClick={() => setShowReviewForm(true)}>ADD A REVIEW  + </button>
         </div>
