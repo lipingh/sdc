@@ -1,0 +1,39 @@
+.comparison-window {
+  position: fixed;
+  top: 0%;
+  left: 50%;
+  width: 60%;
+  height: 50%;
+  transform: translate(-50%, 50%);
+  background-color: #ffffff;
+  padding: 25px;
+  z-index: 1000;
+}
+
+.comparison-overlay {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background-color: rgba(0, 0, 0, .6);
+  z-index: 1000;
+}
+
+.btn-close-comp-modal {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+.comparing {
+  position: absolute;
+  top: 5px;
+  left: 10px;
+}
+
+.comp-titles {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+}

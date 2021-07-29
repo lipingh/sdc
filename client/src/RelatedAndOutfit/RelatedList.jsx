@@ -5,6 +5,7 @@ import './related-list.css';
 import options from '../config/config.js';
 
 const RelatedList = () => {
+  const [currProduct, setCurrProduct] = useState({});
   const [current, setCurrent] = useState(0);
   const [len, setLen] = useState(0);
   const [related, setRelated] = useState([]);
@@ -16,12 +17,16 @@ const RelatedList = () => {
         headers: options.headers,
       })
         .then((res) => {
-          relatedList.push(res.data);
-          const newRelated = related.concat(relatedList);
-          setRelated(newRelated);
+          if (id !== 13029) {
+            relatedList.push(res.data);
+            const newRelated = related.concat(relatedList);
+            setRelated(newRelated);
+          } else {
+            setCurrProduct(res.data);
+          }
         })
         .catch((res, err) => {
-          res.end('Could not get related from ids: ', err)
+          res.end('Could not get related from ids: ', err);
         });
     });
   };
@@ -31,7 +36,7 @@ const RelatedList = () => {
       headers: options.headers,
     })
       .then((res) => {
-        setLen(res.data.length);
+        setLen(res.data.length - 1);
         getRelatedFromIds(res.data);
       })
       .catch((res, err) => {
@@ -80,7 +85,7 @@ const RelatedList = () => {
       {current !== 0 && <button type="button" className="btn-related-left" onClick={prevCard}>prev</button>}
       <div className="related-list" ref={listRef}>
         {related.map((product) => (
-          <RelatedCard key={product.id} product={product} />
+          <RelatedCard key={product.id} product={product} currProduct={currProduct} />
         ))}
       </div>
       {current !== len - 4 && <button type="button" className="btn-related-right" onClick={nextCard}>next</button>}
