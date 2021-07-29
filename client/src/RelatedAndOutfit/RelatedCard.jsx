@@ -82,8 +82,14 @@ const RelatedCard = (props) => {
         <div className="card-sale-price">{salePrice || ''}</div>
       </div>
       <div className="card-rating">
-        <div className="card-rating-num">{ratingsBreakDown.averageRatings.toFixed(1)}</div>
-        <StarRating rating={ratingsBreakDown.averageRatings}/>
+        {isNaN(ratingsBreakDown.averageRatings.toFixed(1))
+          ? <div className="card-rating-num">No ratings</div>
+          : (
+            <>
+              <div className="card-rating-num">{ratingsBreakDown.averageRatings.toFixed(1)}</div>
+              <StarRating rating={ratingsBreakDown.averageRatings} />
+            </>
+          )}
       </div>
       <div className="modal-comparison">
         <button type="button" className="btn-modal-comparison" onClick={() => (setIsOpen(true))}>Compare</button>
