@@ -3,7 +3,7 @@ import ProductInfo from '../ProductInfo/ProductInfo.jsx';
 import style from './UserShop.module.css';
 
 const UserShop = () => (
-  <div className={style.infoContainer}>
+  <div className={style.userShop}>
     <ProductInfo />
   </div>
 );

@@ -1,0 +1,14 @@
+.linkToReviewComponent {
+  font-weight: bold;
+  color: black;
+  margin-left: 8px;
+}
+
+.category {
+  margin: 12px 0;
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 12px 0;
+}
