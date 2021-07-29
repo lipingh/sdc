@@ -45,7 +45,7 @@ const ProductInfo = () => {
       .catch((err) => {
         console.log('styles data fetching err', err);
       });
-  }, []);
+  }, [contextData.currState.styleIndex, contextData.currState.productId]);
 
   return (
     <div>

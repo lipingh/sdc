@@ -15,6 +15,8 @@ const reducer = (state, action) => {
       return { ...state, isExpanded: true };
     case 'unexpand':
       return { ...state, isExpanded: false };
+    case 'changeStyleIndex':
+      return { ...state, styleIndex: action.data };
     default:
       return state;
   }

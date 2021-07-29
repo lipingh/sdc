@@ -10,6 +10,12 @@ const StyleSelector = () => {
   const [styleName, setStyleName] = useState('');
   const [styleThumbnails, setStyleThumbnails] = useState([]);
 
+  const selectorClickHandler = (index) => (
+    () => {
+      contextData.dispatchFunc({ type: 'changeStyleIndex', data: index });
+    }
+  );
+
   useEffect(() => {
     axios.get(`${options.url}products/${contextData.currState.productId}/styles`, { headers: options.headers })
       .then((response) => {
@@ -22,7 +28,7 @@ const StyleSelector = () => {
       .catch((err) => {
         console.log('styles data fetching err', err);
       });
-  }, []);
+  }, [contextData.currState.styleIndex, contextData.currState.productId]);
   return (
     <div className={style.styleSelector}>
       <>
@@ -31,13 +37,12 @@ const StyleSelector = () => {
       </>
       <div className={style.flex}>
         {styleThumbnails.map((thumbnailurl, index) => (
-          <div key={index} className={style.selector}>
+          <div key={index} className={style.selector} onClick={selectorClickHandler(index)}>
             <div className={style.frame}>
               <img src={thumbnailurl} alt="style thumbnail" className={style.thumbnail} />
             </div>
-            <div className={style.checkmark}>
-              <img src={checkmark} alt="checkmark" />
-            </div>
+            {contextData.currState.styleIndex === index
+              && <div className={style.checkmark}><img src={checkmark} alt="checkmark" /></div>}
           </div>
         ))}
       </div>

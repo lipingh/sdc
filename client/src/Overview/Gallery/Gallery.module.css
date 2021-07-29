@@ -21,13 +21,13 @@
   width: 360px;
   height: 100%;
   overflow: hidden;
-  border: 2px gray solid;
 }
 
 .image {
   width: 360px;
   height: 100%;
   cursor: zoom-in;
+  object-fit: scale-down;
 }
 
 .clickNext, .clickPrev {
@@ -45,12 +45,6 @@
   border-radius: 3px;
   cursor: pointer;
 }
-
-/* .zoomin img {
-  transform-origin: 0 0;
-  transform: scale(2.5);
-} */
-
 
 /******* Side Bar *******/
 .sideBar {

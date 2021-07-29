@@ -22,6 +22,7 @@
 .selector {
   position: relative;
   margin-right: 18px;
+  cursor: pointer;
 }
 
 .frame {
