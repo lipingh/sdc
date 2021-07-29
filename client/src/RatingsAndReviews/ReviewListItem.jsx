@@ -57,10 +57,20 @@ const ReviewListItem = ({ review }) => {
       </div>
       <div className="review-summary">{review.summary}</div>
       <div>{review.body}</div>
+      <div className="photos-container">
+        {review.photos.map((photo) => <img key={photo.id} src={photo.url} alt="" width="30%" height="30%" />)}
+      </div>
       <div>
         {review.recommend ? <span>&#10003; I recommend this product</span> : null}
       </div>
-      {/* {review.response ? <div>{review.response}</div> : ''} */}
+      {review.response ? (
+        <div className="review-response">
+          <strong>
+            Response:
+          </strong>
+          <div>{review.response}</div>
+        </div>
+      ) : null}
       <div>
         <span>Helpful?</span>
         <span onClick={handleAddHelpful} onKeyDown={() => { }} role="link" tabIndex={0}>
@@ -85,9 +95,11 @@ ReviewListItem.propTypes = {
     reviewer_name: PropTypes.string,
     date: PropTypes.string,
     body: PropTypes.string,
+    photos: PropTypes.arrayOf(PropTypes.object),
     recommend: PropTypes.bool,
     helpfulness: PropTypes.number,
     email: PropTypes.string,
+    response: PropTypes.string,
   }),
 };
 ReviewListItem.defaultProps = {

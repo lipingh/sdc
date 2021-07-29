@@ -19,7 +19,7 @@ const RatingsAndReviews = () => {
   const [sortOption, setSortOption] = useState('relevant');
   const params = {
     product_id: productId,
-    count: 5,
+    count: 10,
     sort: sortOption,
   };
 
