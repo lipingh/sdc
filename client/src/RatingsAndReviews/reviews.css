@@ -47,3 +47,12 @@
   align-items: center;
   justify-content: center;
 }
+
+.review-form-summary>input {
+  width: 60%;
+  height: 20px
+}
+
+.review-body>textarea {
+  width: 60%;
+}
