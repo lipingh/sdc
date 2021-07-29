@@ -29,10 +29,10 @@ const ReviewForm = ({
     let val = 0;
     if (event && event.target && event.target.getAttribute('data-star-id')) val = event.target.getAttribute('data-star-id');
     setSelection(val);
-    console.log(typeof rating);
   };
   useEffect(() => {
   }, [ratingError]);
+
   const addReviews = (e) => {
     e.preventDefault();
     if (ratingError) {
@@ -74,7 +74,7 @@ const ReviewForm = ({
     <div className="review-form-modal">
       <form className="review-form" onSubmit={addReviews}>
         <button className="close-button" type="button" onClick={onClose}>X</button>
-        <div>
+        <div className="revirw-form-row">
           {ratingError
             ? <span style={{ color: 'red' }}>&#9888; Please select overall rating</span> : null}
           <div
@@ -82,7 +82,7 @@ const ReviewForm = ({
             onBlur={() => { }}
             onClick={(e) => {
               setRating(e.target.getAttribute('data-star-id') || rating);
-              if ([1, 2, 3, 4, 5].includes(parseInt(rating, 10))) setRatingError(false);
+              setRatingError(false);
             }}
             onKeyUp={() => { }}
             onMouseOver={hoverOver}
@@ -100,113 +100,111 @@ const ReviewForm = ({
             ))}
           </div>
         </div>
-        <div>
-          <div className="recommend" onChange={(e) => setRecommended(e.target.value)}>
-            Do you recommend this product?
-            <input type="radio" name="recommend" value="true" required />
-            Yes
-            <input type="radio" name="recommend" value="false" />
-            No
-          </div>
-          <div className="factor-size" onChange={(e) => setSize(e.target.value)}>
-            Size:
-            <input type="radio" name="size" value="1" required />
-            A size too small
-            <input type="radio" name="size" value="2" />
-            Half a size too small
-            <input type="radio" name="size" value="3" />
-            Perfect
-            <input type="radio" name="size" value="4" />
-            Half a size too big
-            <input type="radio" name="size" value="5" />
-            A size too wide
-          </div>
-          <div className="factor-width" onChange={(e) => setWidth(e.target.value)}>
-            Width:
-            <input type="radio" name="width" value="1" required />
-            Too narrow
-            <input type="radio" name="width" value="2" />
-            Slightly narrow
-            <input type="radio" name="width" value="3" />
-            Perfect
-            <input type="radio" name="width" value="4" />
-            Slightly wide
-            <input type="radio" name="width" value="5" />
-            Too wide
-          </div>
-          <div className="factor-comfort" onChange={(e) => setComfort(e.target.value)}>
-            Comfort:
-            <input type="radio" name="comfort" value="1" required />
-            Uncomfortable
-            <input type="radio" name="comfort" value="2" />
-            Slightly uncomfortable
-            <input type="radio" name="comfort" value="3" />
-            Ok
-            <input type="radio" name="comfort" value="4" />
-            Comfortable
-            <input type="radio" name="comfort" value="5" />
-            Perfect
-          </div>
-          <div className="factor-quality" onChange={(e) => setQuality(e.target.value)}>
-            Quality:
-            <input type="radio" name="quality" value="1" required />
-            Poor
-            <input type="radio" name="quality" value="2" />
-            Below Average
-            <input type="radio" name="quality" value="3" />
-            What I expected
-            <input type="radio" name="quality" value="4" />
-            Pretty great
-            <input type="radio" name="quality" value="5" />
-            Perfect
-          </div>
-          <div className="factor-length" onChange={(e) => setLength(e.target.value)}>
-            Length:
-            <input type="radio" name="length" value="1" required />
-            Runs short
-            <input type="radio" name="length" value="2" />
-            Runs slightly short
-            <input type="radio" name="length" value="3" />
-            Perfect
-            <input type="radio" name="length" value="4" />
-            Runs slightly long
-            <input type="radio" name="length" value="5" />
-            Runs long
-          </div>
-          <div className="factor-fit" onChange={(e) => setFit(e.target.value)}>
-            Fit:
-            <input type="radio" name="fit" value="1" required />
-            Runs tight
-            <input type="radio" name="fit" value="2" />
-            Runs slightly tight
-            <input type="radio" name="fit" value="3" />
-            Perfect
-            <input type="radio" name="fit" value="4" />
-            Runs slightly long
-            <input type="radio" name="fit" value="5" />
-            Runs long
-          </div>
-          <div className="review-form-summary" onChange={(e) => setSummary(e.target.value)}>
-            Review Summary
-            <input type="text" maxLength="60" placeholder="Example: purchase ever!" required />
-          </div>
-          <div className="review-body" onChange={(e) => setBody(e.target.value)}>
-            Add a written review
-            <input type="text" maxLength="1000" placeholder="Example: Why did you like the product or not?" required />
-          </div>
-          <div>
-            Choose photos:
-            <input type="file" id="upload-photo" accept="image/*" multiple />
-          </div>
-          <div className="review-name" onChange={(e) => setReviewName(e.target.value)}>
-            Nickname
-            <input type="text" placeholder="Example: jackson11!" required />
-          </div>
-          <div className="email" onChange={(e) => setEmail(e.target.value)}>
-            Email
-            <input type="email" maxLength="60" required />
-          </div>
 
+        <div className="recommend" onChange={(e) => setRecommended(e.target.value)}>
+          Do you recommend this product?
+          <input type="radio" name="recommend" value="true" required />
+          Yes
+          <input type="radio" name="recommend" value="false" />
+          No
+        </div>
+        <div className="factor-size" onChange={(e) => setSize(e.target.value)}>
+          Size:
+          <input type="radio" name="size" value="1" required />
+          A size too small
+          <input type="radio" name="size" value="2" />
+          Half a size too small
+          <input type="radio" name="size" value="3" />
+          Perfect
+          <input type="radio" name="size" value="4" />
+          Half a size too big
+          <input type="radio" name="size" value="5" />
+          A size too wide
+        </div>
+        <div className="factor-width" onChange={(e) => setWidth(e.target.value)}>
+          Width:
+          <input type="radio" name="width" value="1" required />
+          Too narrow
+          <input type="radio" name="width" value="2" />
+          Slightly narrow
+          <input type="radio" name="width" value="3" />
+          Perfect
+          <input type="radio" name="width" value="4" />
+          Slightly wide
+          <input type="radio" name="width" value="5" />
+          Too wide
+        </div>
+        <div className="factor-comfort" onChange={(e) => setComfort(e.target.value)}>
+          Comfort:
+          <input type="radio" name="comfort" value="1" required />
+          Uncomfortable
+          <input type="radio" name="comfort" value="2" />
+          Slightly uncomfortable
+          <input type="radio" name="comfort" value="3" />
+          Ok
+          <input type="radio" name="comfort" value="4" />
+          Comfortable
+          <input type="radio" name="comfort" value="5" />
+          Perfect
+        </div>
+        <div className="factor-quality" onChange={(e) => setQuality(e.target.value)}>
+          Quality:
+          <input type="radio" name="quality" value="1" required />
+          Poor
+          <input type="radio" name="quality" value="2" />
+          Below Average
+          <input type="radio" name="quality" value="3" />
+          What I expected
+          <input type="radio" name="quality" value="4" />
+          Pretty great
+          <input type="radio" name="quality" value="5" />
+          Perfect
+        </div>
+        <div className="factor-length" onChange={(e) => setLength(e.target.value)}>
+          Length:
+          <input type="radio" name="length" value="1" required />
+          Runs short
+          <input type="radio" name="length" value="2" />
+          Runs slightly short
+          <input type="radio" name="length" value="3" />
+          Perfect
+          <input type="radio" name="length" value="4" />
+          Runs slightly long
+          <input type="radio" name="length" value="5" />
+          Runs long
+        </div>
+        <div className="factor-fit" onChange={(e) => setFit(e.target.value)}>
+          Fit:
+          <input type="radio" name="fit" value="1" required />
+          Runs tight
+          <input type="radio" name="fit" value="2" />
+          Runs slightly tight
+          <input type="radio" name="fit" value="3" />
+          Perfect
+          <input type="radio" name="fit" value="4" />
+          Runs slightly long
+          <input type="radio" name="fit" value="5" />
+          Runs long
+        </div>
+        <div className="review-form-summary" onChange={(e) => setSummary(e.target.value)}>
+          Review Summary
+          <input type="text" maxLength="60" placeholder="Example: purchase ever!" required />
+        </div>
+        <div className="review-body" onChange={(e) => setBody(e.target.value)}>
+          Add a written review
+          <input type="text" maxLength="1000" placeholder="Example: Why did you like the product or not?" required />
+        </div>
+        <div>
+          Choose photos:
+          <input type="file" id="upload-photo" accept="image/*" multiple />
+        </div>
+        <div className="review-name" onChange={(e) => setReviewName(e.target.value)}>
+          Nickname
+          <input type="text" placeholder="Example: jackson11!" required />
+        </div>
+        <div className="email" onChange={(e) => setEmail(e.target.value)}>
+          Email
+          <input type="email" maxLength="60" required />
         </div>
         <button type="submit" className="review-form-submit-button">Submit</button>
       </form>

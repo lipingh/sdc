@@ -31,6 +31,10 @@
   z-index: 1000;
 }
 
+.review-form>div {
+  margin: 6px
+}
+
 .close-button {
   height: 20px;
   width: 20px
