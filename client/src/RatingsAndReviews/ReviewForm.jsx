@@ -21,7 +21,7 @@ const ReviewForm = ({ showModal, onClose, productId, characteristics }) => {
   const [body, setBody] = useState('');
   const [name, setReviewName] = useState('');
   const [email, setEmail] = useState('');
-  const [selection, setSelection] = React.useState(0);
+  const [selection, setSelection] = useState(0);
 
   const hoverOver = (event) => {
     let val = 0;
@@ -60,16 +60,13 @@ const ReviewForm = ({ showModal, onClose, productId, characteristics }) => {
       email,
       characteristics: characteristicsInfo,
     };
-    // console.log(data);
-
-    // TODO: post data to reviews, currently unathorized 401
     axios.post(`${options.url}reviews`, data, { headers: options.headers })
       .then()
       .catch((err) => { throw err; });
   };
   return ReactDOM.createPortal(
     <div className="review-form-modal">
-      <form className="review-form">
+      <form className="review-form" onSubmit={addReviews}>
         <button type="button" onClick={onClose}>CLOSE</button>
         <div>
           Overall Ratings
@@ -95,14 +92,14 @@ const ReviewForm = ({ showModal, onClose, productId, characteristics }) => {
         <div>
           <div className="recommend" onChange={(e) => setRecommended(e.target.value)}>
             Do you recommend this product?
-            <input type="radio" name="recommend" value="true" />
+            <input type="radio" name="recommend" value="true" required />
             Yes
             <input type="radio" name="recommend" value="false" />
             No
           </div>
           <div className="factor-size" onChange={(e) => setSize(e.target.value)}>
             Size:
-            <input type="radio" name="size" value="1" />
+            <input type="radio" name="size" value="1" required />
             A size too small
             <input type="radio" name="size" value="2" />
             Half a size too small
@@ -115,7 +112,7 @@ const ReviewForm = ({ showModal, onClose, productId, characteristics }) => {
           </div>
           <div className="factor-width" onChange={(e) => setWidth(e.target.value)}>
             Width:
-            <input type="radio" name="width" value="1" />
+            <input type="radio" name="width" value="1" required />
             Too narrow
             <input type="radio" name="width" value="2" />
             Slightly narrow
@@ -128,7 +125,7 @@ const ReviewForm = ({ showModal, onClose, productId, characteristics }) => {
           </div>
           <div className="factor-comfort" onChange={(e) => setComfort(e.target.value)}>
             Comfort:
-            <input type="radio" name="comfort" value="1" />
+            <input type="radio" name="comfort" value="1" required />
             Uncomfortable
             <input type="radio" name="comfort" value="2" />
             Slightly uncomfortable
@@ -141,7 +138,7 @@ const ReviewForm = ({ showModal, onClose, productId, characteristics }) => {
           </div>
           <div className="factor-quality" onChange={(e) => setQuality(e.target.value)}>
             Quality:
-            <input type="radio" name="quality" value="1" />
+            <input type="radio" name="quality" value="1" required />
             Poor
             <input type="radio" name="quality" value="2" />
             Below Average
@@ -154,7 +151,7 @@ const ReviewForm = ({ showModal, onClose, productId, characteristics }) => {
           </div>
           <div className="factor-length" onChange={(e) => setLength(e.target.value)}>
             Length:
-            <input type="radio" name="length" value="1" />
+            <input type="radio" name="length" value="1" required />
             Runs short
             <input type="radio" name="length" value="2" />
             Runs slightly short
@@ -167,7 +164,7 @@ const ReviewForm = ({ showModal, onClose, productId, characteristics }) => {
           </div>
           <div className="factor-fit" onChange={(e) => setFit(e.target.value)}>
             Fit:
-            <input type="radio" name="fit" value="1" />
+            <input type="radio" name="fit" value="1" required />
             Runs tight
             <input type="radio" name="fit" value="2" />
             Runs slightly tight
@@ -196,10 +193,11 @@ const ReviewForm = ({ showModal, onClose, productId, characteristics }) => {
           </div>
           <div className="email" onChange={(e) => setEmail(e.target.value)}>
             Email
-            <input type="text" maxLength="60" required />
+            <input type="email" maxLength="60" required />
           </div>
-          <button type="button" onClick={addReviews}>Submit</button>
+
         </div>
+        <button type="submit">Submit</button>
       </form>
     </div>,
     document.getElementById('review-form-modal'),

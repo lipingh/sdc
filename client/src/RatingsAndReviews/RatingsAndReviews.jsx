@@ -45,6 +45,9 @@ const RatingsAndReviews = () => {
   const handleChangeSort = (option) => {
     setSortOption(option);
   };
+  const handleAddReview = (newReview) => {
+    setReviews([...reviews, newReview]);
+  };
 
   return (
     <div id="review-form-modal" className="reviews-root">
@@ -77,6 +80,7 @@ const RatingsAndReviews = () => {
             reviews={filteredReviews}
             handleChangeSort={handleChangeSort}
             characteristics={characteristics}
+            handleAddReview={handleAddReview}
           />
         </div>
       </div>
