@@ -6,6 +6,7 @@ import './reviews.css';
 import StarRating from './StarRating.jsx';
 
 const ReviewListItem = ({ review }) => {
+  // console.log('current review', review);
   const [helpfull, setHelpfull] = useState(review.helpfulness);
   const [reported, setReported] = useState(false);
   const [disableHelpful, setDisableHelpful] = useState(false);
@@ -58,7 +59,7 @@ const ReviewListItem = ({ review }) => {
       <div className="review-summary">{review.summary}</div>
       <div>{review.body}</div>
       <div className="photos-container">
-        {review.photos.map((photo) => <img key={photo.id} src={photo.url} alt="" width="30%" height="30%" />)}
+        {review.photos ? review.photos.map((photo) => <img key={photo.id} src={photo.url} alt="" width="30%" height="30%" />) : null}
       </div>
       <div>
         {review.recommend ? <span>&#10003; I recommend this product</span> : null}
