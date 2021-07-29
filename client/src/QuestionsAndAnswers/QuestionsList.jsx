@@ -1,14 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import EachQuestion from './EachQuestion.jsx';
 
-const QuestionsList = ({ questions }) => {
-  const [moreQuestions, showMoreQuestions] = useState(false);
-
-  const handleMoreQuestions = () => {
-    showMoreQuestions((more) => !more);
-  };
-
+const QuestionsList = ({ questions, moreQuestions }) => {
   if (moreQuestions) {
     return (
       <>
@@ -19,13 +13,6 @@ const QuestionsList = ({ questions }) => {
             </div>
           ))}
         </ul>
-        <button
-          className="more-questions-button"
-          type="button"
-          onClick={handleMoreQuestions}
-        >
-          Hide Questions
-        </button>
       </>
     );
   }
@@ -40,13 +27,6 @@ const QuestionsList = ({ questions }) => {
           </div>
         ))}
       </ul>
-      <button
-        className="more-questions-button"
-        type="button"
-        onClick={handleMoreQuestions}
-      >
-        More Answered Questions
-      </button>
     </>
   );
 };
@@ -55,10 +35,12 @@ QuestionsList.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.shape({
     answers: PropTypes.arrayOf(PropTypes.object),
   })),
+  moreQuestions: PropTypes.bool,
 };
 
 QuestionsList.defaultProps = {
   questions: {},
+  moreQuestions: false,
 };
 
 export default QuestionsList;
