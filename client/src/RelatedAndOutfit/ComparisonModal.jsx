@@ -24,19 +24,21 @@ const ComparisonModal = ({open, onClose, product, currProduct}) => {
       let match = false;
       for (var j = 0; j < uniqRelatedFeatures.length; j++) {
         const relatedFeatureObj = uniqRelatedFeatures[j];
-        if (relatedFeatureObj.feature === featureName) {
+        if (relatedFeatureObj.feature === featureName && relatedFeatureObj.value) {
           match = true
           uniqRelatedFeatures.splice(j, 1);
           newSharedFeatures.push({name: featureName, currVal: featureObj.value, relatedVal: relatedFeatureObj.value});
           break;
         }
       }
-      if (!match) {
+      if (!match && featureObj.value) {
         newCurrProductFeatures.push({name: featureName, currVal: featureObj.value});
       }
     }
     uniqRelatedFeatures.forEach(feature => {
-      newRelatedProdFeatures.push({name: feature.feature, relatedVal: feature.value})
+      if (feature.value) {
+        newRelatedProdFeatures.push({name: feature.feature, relatedVal: feature.value})
+      }
     })
     setSharedFeatures(newSharedFeatures);
     setCurrProductFeatures(newCurrProductFeatures);
@@ -56,7 +58,7 @@ const ComparisonModal = ({open, onClose, product, currProduct}) => {
         <div className="comp-table">
           <div className="comp-titles">
             <div className="comp-title">{product.name}</div>
-            <div className="comp-title">Features</div>
+            <div className="comp-title-center">Features</div>
             <div className="comp-title">{currProduct.name}</div>
           </div>
           <div className="comp-table-features">
