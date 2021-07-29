@@ -8,5 +8,5 @@
   overflow: hidden;
   position: relative;
   border: 1px solid #000000;
-  max-width: 920px;
+  min-width: 690px;
 }
