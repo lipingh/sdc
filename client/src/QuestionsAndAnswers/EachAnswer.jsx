@@ -4,16 +4,16 @@ import axios from 'axios';
 import options from '../config/config';
 
 const EachAnswer = ({ answer }) => {
-  const [helpfull, setHelpfull] = useState(answer.helpfulness);
+  const [helpful, setHelpful] = useState(answer.helpfulness);
   const [voted, setVoted] = useState(false);
   const handleHelpClick = () => {
     if (!voted) {
       setVoted((vote) => !vote);
-      setHelpfull((helped) => helped + 1);
+      setHelpful((helped) => helped + 1);
       axios.put(
         `${options.url}qa/answers/${answer.id}/helpful`,
         {
-          helpfulness: helpfull,
+          helpfulness: helpful,
         },
         {
           headers: options.headers,
@@ -23,7 +23,7 @@ const EachAnswer = ({ answer }) => {
 
         })
         .catch((res, err) => {
-          res.end('could not make answer more helpfull', err);
+          res.end('could not make answer more helpful', err);
         });
     }
   };
@@ -52,7 +52,7 @@ const EachAnswer = ({ answer }) => {
           role="button"
           tabIndex="0"
         >
-          {voted ? 'You thought this was helpfull | ' : ` Helpfull? Yes: ${helpfull} | `}
+          {voted ? 'You thought this was helpful | ' : ` Helpful? Yes: ${helpful} | `}
         </span>
         <span> Report</span>
       </div>

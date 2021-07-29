@@ -5,11 +5,13 @@
 } */
 .answer-list {
   height:100px;
+  width: 30%;
   overflow:hidden;
   overflow-y:scroll;
 }
 .questions-list {
-  height:300px;
+  height:350px;
+  width: 70%;
   overflow:hidden;
   overflow-y:scroll;
 }
