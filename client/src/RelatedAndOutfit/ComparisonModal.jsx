@@ -13,6 +13,7 @@ const ComparisonModal = ({ open, onClose, product, currProduct }) => {
   const [sharedFeatures, setSharedFeatures] = useState([]);
   const [currProductFeatures, setCurrProductFeatures] = useState([]);
   const [relatedProdFeatures, setRelatedProdFeatures] = useState([]);
+  const [windowHt, setwindowHt] = useState(window.innerHeight);
 
   const distributeFeatures = () => {
     let uniqRelatedFeatures = product.features;
@@ -46,8 +47,15 @@ const ComparisonModal = ({ open, onClose, product, currProduct }) => {
     setRelatedProdFeatures(newRelatedProdFeatures);
   }
 
+  const updateHeight = () => {
+    console.log(windowHt)
+    setwindowHt(window.innerHeight);
+  };
+
   useEffect(() => {
     distributeFeatures();
+    window.addEventListener('resize', updateHeight);
+    return () => { window.removeEventListener('resize', updateHeight); };
   }, [])
 
   return ReactDOM.createPortal(
@@ -62,9 +70,8 @@ const ComparisonModal = ({ open, onClose, product, currProduct }) => {
             <div className="comp-title-center">Features</div>
             <div className="comp-title">{currProduct.name}</div>
           </div>
-          <div className="comp-table-features">
+          <div className="comp-table-features" style={{ height: `${Math.floor(windowHt * 0.44)}px` }}>
             {sharedFeatures.map((feature) => {
-              console.log(feature);
               return <ComparisonRow key={`${product.id+feature.currVal}`} feature={feature} />
             })}
             {currProductFeatures.map((feature) => {

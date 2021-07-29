@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import options from '../config/config.js'
+import options from '../config/config.js';
 import './related.css';
 import emptyStar from './assets/star-icon-empty.png';
 import fillStar from './assets/star-icon-fill.png';
-import ComparisonModal from './ComparisonModal.jsx'
-import StarRating from '../RatingsAndReviews/StarRating.jsx'
+import ComparisonModal from './ComparisonModal.jsx';
+import StarRating from '../RatingsAndReviews/StarRating.jsx';
 import calculateRating from '../../helper.js';
 import { getReviewsMeta } from '../../reviewRequest.js';
 
