@@ -8,15 +8,6 @@ const ReviewList = ({
   productId, totalReviews, reviews, handleChangeSort, characteristics,
 }) => {
   const [showReviewForm, setShowReviewForm] = useState(false);
-  // const reviews = useMemo(() => getReviewsById(params), [params]);
-  // cosole.log(reviews);
-  // const reviewFormModal = showReviewForm ? (
-  //   <Modal>
-  //     <div className="modal">
-  //       <ReviewForm />
-  //     </div>
-  //   </Modal>
-  // ) : null;
   return (
     <div>
       <div>
@@ -38,14 +29,13 @@ const ReviewList = ({
         }
       </div>
       <button type="button">MORE REVIEWS</button>
-      <button type="button" onClick={() => setShowReviewForm(!showReviewForm)}>ADD A REVIEW  + </button>
-      {/* {reviewFormModal} */}
-      {showReviewForm ? (
-        <ReviewForm
-          productId={productId}
-          characteristics={characteristics}
-        />
-      ) : null}
+      <button type="button" onClick={() => setShowReviewForm(true)}>ADD A REVIEW  + </button>
+      <ReviewForm
+        showModal={showReviewForm}
+        productId={productId}
+        characteristics={characteristics}
+        onClose={() => setShowReviewForm(false)}
+      />
     </div>
 
   );

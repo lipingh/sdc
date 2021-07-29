@@ -47,7 +47,7 @@ const RatingsAndReviews = () => {
   };
 
   return (
-    <div id="reviews-root">
+    <div id="review-form-modal" className="reviews-root">
       <h3>Ratings &amp; Reviews</h3>
       <div className="ratings-reviews">
         <div className="breakdown">
