@@ -39,6 +39,7 @@ const EachAnswer = ({ answer }) => {
           by:
           {answer.answerer_name}
           ,
+          {' '}
           {new Date(answer.date).toLocaleDateString(
             undefined, { year: 'numeric', month: 'long', day: 'numeric' },
           )}
