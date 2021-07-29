@@ -1,18 +1,56 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import EachAnswer from './EachAnswer.jsx';
 
-const AnswerList = ({ answers }) => (
-  <ul>
-    {Object.keys(answers).map((answer) => (
-      <div key={answer}>
-        <EachAnswer key={answer} answer={answers[answer]} />
-      </div>
-    ))}
-  </ul>
-);
-// for some reason .map will not work with answers.map now that answers is an array
-// this way still works though
+const AnswerList = ({ answers }) => {
+  const [moreAnswers, showMoreAnswers] = useState(false);
+
+  const handleMoreAnswers = () => {
+    showMoreAnswers((more) => !more);
+  };
+
+  if (moreAnswers) {
+    return (
+      <>
+        <ul className="answer-list">
+          {Object.keys(answers).map((answer) => (
+            <div key={answer}>
+              <EachAnswer key={answer} answer={answers[answer]} />
+            </div>
+          ))}
+        </ul>
+        <button
+          className="more-answers-button"
+          type="button"
+          onClick={handleMoreAnswers}
+        >
+          Hide Answers
+        </button>
+      </>
+    );
+  }
+  return (
+    <>
+      <ul className="two-answers">
+        {answers.filter((answer, index) => (
+          index < 2
+        )).map((answer) => (
+          <div key={answer.id}>
+            <EachAnswer key={answer.id} answer={answer} />
+          </div>
+        ))}
+      </ul>
+      <button
+        className="more-answers-button"
+        type="button"
+        onClick={handleMoreAnswers}
+      >
+        Load More Answers
+      </button>
+    </>
+  );
+};
+
 AnswerList.propTypes = {
   answers: PropTypes.arrayOf(PropTypes.object),
 };
