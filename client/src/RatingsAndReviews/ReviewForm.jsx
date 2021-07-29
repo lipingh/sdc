@@ -69,8 +69,8 @@ const ReviewForm = ({ showModal, onClose, productId, characteristics }) => {
   };
   return ReactDOM.createPortal(
     <div className="review-form-modal">
-      <button type="button" onClick={onClose}>CLOSE</button>
-      <form>
+      <form className="review-form">
+        <button type="button" onClick={onClose}>CLOSE</button>
         <div>
           Overall Ratings
           <div

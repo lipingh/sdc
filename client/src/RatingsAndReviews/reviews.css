@@ -3,6 +3,28 @@
   flex-flow: row;
   justify-content: space-between;
 }
+
 .review-summary {
   font-weight: bold;
+}
+
+.review-form-modal {
+  position: fixed;
+  top: 1000px;
+  left: 20px;
+  right: 0px;
+  bottom: 0px;
+  z-index: 1000;
+}
+
+.review-form {
+  position: fixed;
+  top: 0%;
+  left: 50%;
+  width: 80%;
+  height: 50%;
+  transform: translate(-50%, 50%);
+  background-color: pink;
+  padding: 25px;
+  z-index: 1000;
 }
