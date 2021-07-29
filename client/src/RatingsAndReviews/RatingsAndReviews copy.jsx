@@ -19,9 +19,10 @@ const RatingsAndReviews = () => {
   const [reviews, setReviews] = useState([]);
   const [filteredReviews, setFilteredReviews] = useState([]);
   const [sortOption, setSortOption] = useState('relevant');
+  const [page, setPage] = useState(1);
   const params = {
     product_id: productId,
-    page: 1,
+    page,
     sort: sortOption,
   };
 

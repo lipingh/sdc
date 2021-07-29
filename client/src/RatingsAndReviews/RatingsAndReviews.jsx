@@ -19,11 +19,19 @@ const RatingsAndReviews = () => {
   const [reviews, setReviews] = useState([]);
   const [filteredReviews, setFilteredReviews] = useState([]);
   const [sortOption, setSortOption] = useState('relevant');
+  const [page, setPage] = useState(1);
   const params = {
     product_id: productId,
-    page: 1,
+    page,
+    count: 2,
     sort: sortOption,
   };
+  useEffect(() => {
+    getReviewsById(params).then((result) => {
+      setReviews(result);
+      setFilteredReviews(result);
+    });
+  }, [sortOption]);
 
   useEffect(() => {
     getReviewsMeta(productId).then((result) => {
@@ -32,11 +40,7 @@ const RatingsAndReviews = () => {
       setNotRecommended(parseInt(result.recommended.false, 10));
       setCharacteristics(result.characteristics);
     });
-    getReviewsById(params).then((result) => {
-      setReviews(result);
-      setFilteredReviews(result);
-    });
-  }, [productId, sortOption]);
+  }, [productId]);
 
   // input rating is a digit number
   const handleFilterByRating = (rating) => {
