@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './questions.css';
+import './QandA-list.css';
 import options from '../config/config.js';
 import QuestionsList from './QuestionsList.jsx';
 import allInOrder from './Helpers.js';
