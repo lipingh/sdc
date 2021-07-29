@@ -75,8 +75,10 @@ const Gallery = () => {
     axios.get(`${options.url}products/${contextData.currState.productId}/styles`, { headers: options.headers })
       .then((response) => {
         setStyles(response.data.results);
-        const imgs = response.data.results[0].photos.map((photo) => photo.url);
-        const thumbnailImgs = response.data.results[0].photos.map((photo) => photo.thumbnail_url);
+        const imgs = response.data.results[contextData.currState.styleIndex]
+          .photos.map((photo) => photo.url);
+        const thumbnailImgs = response.data.results[contextData.currState.styleIndex]
+          .photos.map((photo) => photo.thumbnail_url);
         setImages(imgs);
         setThumbnails(thumbnailImgs);
       })

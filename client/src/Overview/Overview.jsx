@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import Gallery from './Gallery/Gallery.jsx';
 import './main.css';
 import UserShop from './UserShop/UserShop.jsx';
@@ -6,6 +6,7 @@ import UserShop from './UserShop/UserShop.jsx';
 const initialState = {
   isExpanded: false,
   productId: 13023,
+  styleIndex: 4,
 };
 
 const reducer = (state, action) => {

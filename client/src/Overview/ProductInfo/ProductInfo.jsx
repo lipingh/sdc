@@ -14,6 +14,8 @@ const ProductInfo = () => {
   const [category, setCategory] = useState('');
   const [productName, setProductName] = useState('');
   const [price, setPrice] = useState('');
+  const [onSale, setOnSale] = useState(false);
+  const [salePrice, setSalePrice] = useState('');
 
   useEffect(() => {
     helperMethods.getReviewsMeta(contextData.currState.productId)
@@ -28,7 +30,17 @@ const ProductInfo = () => {
       .then((response) => {
         setCategory(response.data.category);
         setProductName(response.data.name);
-        setPrice(response.data.default_price);
+      })
+      .catch((err) => {
+        console.log('product data fetching err', err);
+      });
+    axios.get(`${options.url}products/${contextData.currState.productId}/styles`, { headers: options.headers })
+      .then((response) => {
+        setPrice(response.data.results[contextData.currState.styleIndex].original_price);
+        if (response.data.results[contextData.currState.styleIndex].sale_price !== null) {
+          setOnSale(true);
+          setSalePrice(response.data.results[contextData.currState.styleIndex].sale_price);
+        }
       })
       .catch((err) => {
         console.log('styles data fetching err', err);
@@ -43,7 +55,8 @@ const ProductInfo = () => {
       <a href="#" className={style.linkToReviewComponent}>{totalReview}</a>
       <h4 className={style.category}>{category}</h4>
       <h1 className={style.title}>{productName}</h1>
-      <p>${price}</p>
+      {onSale ? <><span style={{color: 'red'}}>${salePrice}</span><span className={style.oldPrice}>${price}</span></>
+        : <p>${price}</p>}
     </div>
   );
 };
