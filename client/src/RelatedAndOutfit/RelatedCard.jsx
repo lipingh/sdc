@@ -9,8 +9,7 @@ import StarRating from '../RatingsAndReviews/StarRating.jsx'
 import calculateRating from '../../helper.js';
 import { getReviewsMeta } from '../../reviewRequest.js';
 
-const RelatedCard = (props) => {
-  const [styles, setStyles] = useState([]);
+const RelatedCard = ({ product, currProduct }) => {
   const [relatedImg, setRelatedImg] = useState('');
   const [salePrice, setSalePrice] = useState('');
   const [defaultPrice, setDefaultPrice] = useState('');
@@ -20,11 +19,10 @@ const RelatedCard = (props) => {
   const ratingsBreakDown = useMemo(() => calculateRating(ratings), [ratings]);
 
   const getRelatedStylesFromIds = () => {
-    axios.get(`${options.url}products/${props.product.id}/styles`, {
+    axios.get(`${options.url}products/${product.id}/styles`, {
       headers: options.headers,
     })
       .then((res) => {
-        setStyles(res.data.results);
         setDefaultData(res.data);
       })
       .catch((res, err) => {
@@ -41,13 +39,13 @@ const RelatedCard = (props) => {
       }
     }
     setRelatedImg(stylesObj.results[relatedStyleInd].photos[0].thumbnail_url);
-    setDefaultPrice(props.product.default_price);
+    setDefaultPrice(product.default_price);
     setSalePrice(stylesObj.results[relatedStyleInd].sale_price);
   };
 
   useEffect(() => {
     getRelatedStylesFromIds();
-    getReviewsMeta(props.product.id)
+    getReviewsMeta(product.id)
       .then((res) => {
         setRatings(res.ratings);
       });
@@ -62,7 +60,7 @@ const RelatedCard = (props) => {
     <div className="list-card">
       <img
         src={relatedImg}
-        alt={props.product.name}
+        alt={product.name}
         width="200"
         height="200"
         className="card-img"
@@ -72,10 +70,10 @@ const RelatedCard = (props) => {
           : <img src={emptyStar} alt="star_icon_empty" />}
       </div>
       <div className="card-category">
-        {props.product.category.toUpperCase()}
+        {product.category.toUpperCase()}
       </div>
       <div className="card-name">
-        {props.product.name}
+        {product.name}
       </div>
       <div className="card-price">
         <div className="card-default-price">${defaultPrice}</div>
@@ -94,10 +92,10 @@ const RelatedCard = (props) => {
       <div className="modal-comparison">
         <button type="button" className="btn-modal-comparison" onClick={() => (setIsOpen(true))}>Compare</button>
         <ComparisonModal
-          key={`comp${props.product.id}`}
+          key={`comp${product.id}`}
           open={isOpen}
-          product={props.product}
-          currProduct={props.currProduct}
+          product={product}
+          currProduct={currProduct}
           onClose={() => (setIsOpen(false))}
         />
       </div>

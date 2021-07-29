@@ -1,7 +1,7 @@
 import React from 'react';
 import './comparison-row.css';
 
-const ComparisonRow = ({feature}) => (
+const ComparisonRow = ({ feature }) => (
   <div className="comp-row">
     <div className="comp-current">
       {feature.currVal}
