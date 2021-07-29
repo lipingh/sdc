@@ -19,7 +19,7 @@ const RatingsAndReviews = () => {
   const [sortOption, setSortOption] = useState('relevant');
   const params = {
     product_id: productId,
-    count: 10,
+    count: 5,
     sort: sortOption,
   };
 
@@ -76,6 +76,7 @@ const RatingsAndReviews = () => {
             productId={productId}
             reviews={filteredReviews}
             handleChangeSort={handleChangeSort}
+            characteristics={characteristics}
           />
         </div>
       </div>

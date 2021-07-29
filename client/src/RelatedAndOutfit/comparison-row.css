@@ -1,0 +1,8 @@
+.comp-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* .comp-current .comp-features .comp-related {
+  display: flex;
+} */

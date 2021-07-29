@@ -4,7 +4,9 @@ import ReviewListItem from './ReviewListItem.jsx';
 import ReviewForm from './ReviewForm.jsx';
 // import Modal from './Modal.jsx';
 
-const ReviewList = ({ totalReviews, reviews, handleChangeSort }) => {
+const ReviewList = ({
+  productId, totalReviews, reviews, handleChangeSort, characteristics,
+}) => {
   const [showReviewForm, setShowReviewForm] = useState(false);
   // const reviews = useMemo(() => getReviewsById(params), [params]);
   // cosole.log(reviews);
@@ -38,17 +40,27 @@ const ReviewList = ({ totalReviews, reviews, handleChangeSort }) => {
       <button type="button">MORE REVIEWS</button>
       <button type="button" onClick={() => setShowReviewForm(!showReviewForm)}>ADD A REVIEW  + </button>
       {/* {reviewFormModal} */}
-      {showReviewForm ? <ReviewForm /> : null}
+      {showReviewForm ? (
+        <ReviewForm
+          productId={productId}
+          characteristics={characteristics}
+        />
+      ) : null}
     </div>
 
   );
 };
 ReviewList.propTypes = {
+  productId: PropTypes.number.isRequired,
   totalReviews: PropTypes.number.isRequired,
   reviews: PropTypes.arrayOf(PropTypes.object),
   handleChangeSort: PropTypes.func.isRequired,
+  characteristics: PropTypes.shape({
+    Fit: PropTypes.shape({ id: PropTypes.number }),
+  }),
 };
 ReviewList.defaultProps = {
   reviews: [],
+  characteristics: {},
 };
 export default ReviewList;

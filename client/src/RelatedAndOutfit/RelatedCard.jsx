@@ -2,8 +2,9 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import options from '../config/config.js'
 import './related.css';
-import emptyStar from './star-icon-empty.png';
-import fillStar from './star-icon-fill.png';
+import emptyStar from './assets/star-icon-empty.png';
+import fillStar from './assets/star-icon-fill.png';
+import ComparisonModal from './ComparisonModal.jsx'
 
 const RelatedCard = (props) => {
   const [styles, setStyles] = useState([]);
@@ -11,8 +12,9 @@ const RelatedCard = (props) => {
   const [salePrice, setSalePrice] = useState('');
   const [defaultPrice, setDefaultPrice] = useState('');
   const [inOutfit, setInOutfit] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
-  const getRelatedStylesFromIds =() => {
+  const getRelatedStylesFromIds = () => {
     axios.get(`${options.url}products/${props.product.id}/styles`, {
       headers: options.headers,
     })
@@ -67,10 +69,20 @@ const RelatedCard = (props) => {
         {props.product.name}
       </div>
       <div className="card-price">
-        <div className="card-default-price">{defaultPrice}</div>
+        <div className="card-default-price">${defaultPrice}</div>
         <div className="card-sale-price">{salePrice || ''}</div>
       </div>
       <div className="card-rating">[rating]</div>
+      <div className="modal-comparison">
+        <button type="button" className="btn-modal-comparison" onClick={() => (setIsOpen(true))}>Compare</button>
+        <ComparisonModal
+          key={`comp${props.product.id}`}
+          open={isOpen}
+          product={props.product}
+          currProduct={props.currProduct}
+          onClose={() => (setIsOpen(false))}
+        />
+      </div>
     </div>
   );
 };
