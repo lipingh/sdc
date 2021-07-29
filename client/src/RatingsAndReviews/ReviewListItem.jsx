@@ -9,16 +9,6 @@ const ReviewListItem = ({ review }) => {
   const [helpfull, setHelpfull] = useState(review.helpfulness);
   const [reported, setReported] = useState(false);
   const [disableHelpful, setDisableHelpful] = useState(false);
-  const formatDate = (dateString) => {
-    const d = new Date(dateString);
-    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December',
-    ];
-    const month = monthNames[d.getMonth()];
-    const day = d.getDate() + 1;
-    const year = d.getFullYear();
-    return `${month} ${day}, ${year}`;
-  };
   const handleAddHelpful = () => {
     setDisableHelpful(!disableHelpful);
     setHelpfull(() => (disableHelpful ? helpfull - 1 : helpfull + 1));
@@ -62,7 +52,7 @@ const ReviewListItem = ({ review }) => {
           {review.reviewer_name}
           {review.email ? <span>(Verified Purchaser)</span> : null}
           {', '}
-          {formatDate(review.date)}
+          {new Date(review.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
         </span>
       </div>
       <div className="review-summary">{review.summary}</div>
