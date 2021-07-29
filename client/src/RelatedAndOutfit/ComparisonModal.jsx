@@ -1,9 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import ComparisonRow from './ComparisonRow.jsx';
-import './comp-modal.css'
+import './comp-modal.css';
+import PropTypes from 'prop-types';
 
-const ComparisonModal = ({open, onClose, product, currProduct}) => {
+const ComparisonModal = ({ open, onClose, product, currProduct }) => {
 
   if (!open) {
     return null;
@@ -63,6 +64,7 @@ const ComparisonModal = ({open, onClose, product, currProduct}) => {
           </div>
           <div className="comp-table-features">
             {sharedFeatures.map((feature) => {
+              console.log(feature);
               return <ComparisonRow key={`${product.id+feature.currVal}`} feature={feature} />
             })}
             {currProductFeatures.map((feature) => {
@@ -78,5 +80,13 @@ const ComparisonModal = ({open, onClose, product, currProduct}) => {
     document.getElementById('comp-modal-portal'),
   );
 };
+
+ComparisonModal.propTypes = {
+  open: PropTypes.bool,
+}
+
+ComparisonModal.defaultProps = {
+  open: false,
+}
 
 export default ComparisonModal;

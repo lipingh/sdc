@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 import options from '../config/config.js'
 import './related.css';
 import emptyStar from './assets/star-icon-empty.png';
@@ -101,6 +102,29 @@ const RelatedCard = ({ product, currProduct }) => {
       </div>
     </div>
   );
+};
+
+RelatedCard.propTypes = {
+  product: PropTypes.shape({
+    id: PropTypes.number,
+    category: PropTypes.string,
+    default_price: PropTypes.string,
+    name: PropTypes.string,
+    features: PropTypes.instanceOf(Array),
+  }),
+  currProduct: PropTypes.shape({
+    id: PropTypes.number,
+    category: PropTypes.string,
+    default_price: PropTypes.string,
+    name: PropTypes.string,
+    features: PropTypes.instanceOf(Array),
+
+  }),
+};
+
+RelatedCard.defaultProps = {
+  product: {},
+  currProduct: {},
 };
 
 export default RelatedCard;
