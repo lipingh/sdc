@@ -25,44 +25,54 @@ const ReviewForm = ({ productId, characteristics }) => {
     if (event && event.target && event.target.getAttribute('data-star-id')) val = event.target.getAttribute('data-star-id');
     setSelection(val);
   };
-
+  const validateInfo = () => {
+    // const emailRegx = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/;
+    const emailRegx = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!email.match(emailRegx)) {
+      console.log('email is not valid');
+      return false;
+    }
+    return true;
+  };
   const addReviews = (e) => {
     e.preventDefault();
-    // TODO: need to get each factor id
-    // TODO: validate fileds before submit
-    const characteristicsInfo = {};
-    Object.keys(characteristics).forEach((key) => {
-      if (key === 'Fit') {
-        characteristicsInfo[characteristics[key].id] = parseInt(fit, 10);
-      } else if (key === 'Length') {
-        characteristicsInfo[characteristics[key].id] = parseInt(length, 10);
-      } else if (key === 'Comfort') {
-        characteristicsInfo[characteristics[key].id] = parseInt(comfort, 10);
-      } else if (key === 'Size') {
-        characteristicsInfo[characteristics[key].id] = parseInt(size, 10);
-      } else if (key === 'Width') {
-        characteristicsInfo[characteristics[key].id] = parseInt(width, 10);
-      } else if (key === 'Quality') {
-        characteristicsInfo[characteristics[key].id] = parseInt(quality, 10);
-      }
-    });
+    if (validateInfo) {
+      // TODO: need to get each factor id
+      // TODO: validate fileds before submit
+      const characteristicsInfo = {};
+      Object.keys(characteristics).forEach((key) => {
+        if (key === 'Fit') {
+          characteristicsInfo[characteristics[key].id] = parseInt(fit, 10);
+        } else if (key === 'Length') {
+          characteristicsInfo[characteristics[key].id] = parseInt(length, 10);
+        } else if (key === 'Comfort') {
+          characteristicsInfo[characteristics[key].id] = parseInt(comfort, 10);
+        } else if (key === 'Size') {
+          characteristicsInfo[characteristics[key].id] = parseInt(size, 10);
+        } else if (key === 'Width') {
+          characteristicsInfo[characteristics[key].id] = parseInt(width, 10);
+        } else if (key === 'Quality') {
+          characteristicsInfo[characteristics[key].id] = parseInt(quality, 10);
+        }
+      });
 
-    const data = {
-      product_id: productId,
-      rating: parseInt(rating, 10),
-      summary,
-      body,
-      recommend: recommend === 'true',
-      name,
-      email,
-      characteristics: characteristicsInfo,
-    };
-    // console.log(data);
+      const data = {
+        product_id: productId,
+        rating: parseInt(rating, 10),
+        summary,
+        body,
+        recommend: recommend === 'true',
+        name,
+        email,
+        characteristics: characteristicsInfo,
+      };
+      // console.log(data);
 
-    // TODO: post data to reviews, currently unathorized 401
-    axios.post(`${options.url}reviews`, data, { headers: options.headers })
-      .then()
-      .catch((err) => { throw err; });
+      // TODO: post data to reviews, currently unathorized 401
+      axios.post(`${options.url}reviews`, data, { headers: options.headers })
+        .then()
+        .catch((err) => { throw err; });
+    }
   };
 
   return (
