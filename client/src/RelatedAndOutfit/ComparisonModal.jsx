@@ -14,20 +14,30 @@ const ComparisonModal = ({open, onClose, product, currProduct}) => {
   const [relatedProdFeatures, setRelatedProdFeatures] = useState([]);
 
   const distributeFeatures = () => {
+    let uniqRelatedFeatures = product.features;
     let newSharedFeatures = [];
     let newCurrProductFeatures = [];
     let newRelatedProdFeatures = [];
     for (var i = 0; i < currProduct.features.length; i++) {
       const featureObj = currProduct.features[i]
       const featureName = featureObj.feature;
-      for (var j = 0; j < product.features.length; j++) {
-        const relatedFeatureObj = product.features[j];
+      let match = false;
+      for (var j = 0; j < uniqRelatedFeatures.length; j++) {
+        const relatedFeatureObj = uniqRelatedFeatures[j];
         if (relatedFeatureObj.feature === featureName) {
+          match = true
+          uniqRelatedFeatures.splice(j, 1);
           newSharedFeatures.push({name: featureName, currVal: featureObj.value, relatedVal: relatedFeatureObj.value});
           break;
         }
       }
+      if (!match) {
+        newCurrProductFeatures.push({name: featureName, currVal: featureObj.value});
+      }
     }
+    uniqRelatedFeatures.forEach(feature => {
+      newRelatedProdFeatures.push({name: feature.feature, relatedVal: feature.value})
+    })
     setSharedFeatures(newSharedFeatures);
     setCurrProductFeatures(newCurrProductFeatures);
     setRelatedProdFeatures(newRelatedProdFeatures);
@@ -51,6 +61,12 @@ const ComparisonModal = ({open, onClose, product, currProduct}) => {
           </div>
           <div className="comp-table-features">
             {sharedFeatures.map((feature) => {
+              return <ComparisonRow feature={feature} />
+            })}
+            {currProductFeatures.map((feature) => {
+              return <ComparisonRow feature={feature} />
+            })}
+            {relatedProdFeatures.map((feature) => {
               return <ComparisonRow feature={feature} />
             })}
           </div>
