@@ -14,20 +14,32 @@ const ComparisonModal = ({open, onClose, product, currProduct}) => {
   const [relatedProdFeatures, setRelatedProdFeatures] = useState([]);
 
   const distributeFeatures = () => {
+    let uniqRelatedFeatures = product.features;
     let newSharedFeatures = [];
     let newCurrProductFeatures = [];
     let newRelatedProdFeatures = [];
     for (var i = 0; i < currProduct.features.length; i++) {
       const featureObj = currProduct.features[i]
       const featureName = featureObj.feature;
-      for (var j = 0; j < product.features.length; j++) {
-        const relatedFeatureObj = product.features[j];
-        if (relatedFeatureObj.feature === featureName) {
+      let match = false;
+      for (var j = 0; j < uniqRelatedFeatures.length; j++) {
+        const relatedFeatureObj = uniqRelatedFeatures[j];
+        if (relatedFeatureObj.feature === featureName && relatedFeatureObj.value) {
+          match = true
+          uniqRelatedFeatures.splice(j, 1);
           newSharedFeatures.push({name: featureName, currVal: featureObj.value, relatedVal: relatedFeatureObj.value});
           break;
         }
       }
+      if (!match && featureObj.value) {
+        newCurrProductFeatures.push({name: featureName, currVal: featureObj.value});
+      }
     }
+    uniqRelatedFeatures.forEach(feature => {
+      if (feature.value) {
+        newRelatedProdFeatures.push({name: feature.feature, relatedVal: feature.value})
+      }
+    })
     setSharedFeatures(newSharedFeatures);
     setCurrProductFeatures(newCurrProductFeatures);
     setRelatedProdFeatures(newRelatedProdFeatures);
@@ -46,12 +58,18 @@ const ComparisonModal = ({open, onClose, product, currProduct}) => {
         <div className="comp-table">
           <div className="comp-titles">
             <div className="comp-title">{product.name}</div>
-            <div className="comp-title">Features</div>
+            <div className="comp-title-center">Features</div>
             <div className="comp-title">{currProduct.name}</div>
           </div>
           <div className="comp-table-features">
             {sharedFeatures.map((feature) => {
-              return <ComparisonRow feature={feature} />
+              return <ComparisonRow key={`${product.id+feature.currVal}`} feature={feature} />
+            })}
+            {currProductFeatures.map((feature) => {
+              return <ComparisonRow key={`${product.id+feature.name}`}feature={feature} />
+            })}
+            {relatedProdFeatures.map((feature) => {
+              return <ComparisonRow key={`${product.id+feature.relatedVal}`} feature={feature} />
             })}
           </div>
         </div>

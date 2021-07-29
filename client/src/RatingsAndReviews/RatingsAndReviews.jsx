@@ -52,7 +52,7 @@ const RatingsAndReviews = () => {
       <div className="ratings-reviews">
         <div className="breakdown">
           <div className="overall-rating">
-            <span>{ratingsBreakDown.averageRatings.toFixed(1)}</span>
+            <div>{ratingsBreakDown.averageRatings.toFixed(1)}</div>
             <StarRating rating={ratingsBreakDown.averageRatings} />
           </div>
           <br />

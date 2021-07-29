@@ -37,3 +37,9 @@
   justify-content: space-between;
   font-weight: bold;
 }
+
+.comp-title-center {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+}
