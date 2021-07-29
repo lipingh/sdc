@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import getReviewsMeta from '../../../reviewRequest.js';
+import helperMethods from '../../../reviewRequest.js';
 import { ExpandContext } from '../Overview.jsx';
 import calculateRating from '../../../helper.js';
 import StarRating from '../../RatingsAndReviews/StarRating.jsx'
@@ -9,7 +9,7 @@ const ProductInfo = () => {
   const [averageRating, setAverageRating] = useState(0);
 
   useEffect(() => {
-    getReviewsMeta(contextData.currState.productId)
+    helperMethods.getReviewsMeta(contextData.currState.productId)
       .then((res) => {
         setAverageRating(calculateRating(res.ratings).averageRatings);
       })
