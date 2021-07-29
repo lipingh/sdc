@@ -56,7 +56,7 @@ const ProductInfo = () => {
       <h4 className={style.category}>{category}</h4>
       <h1 className={style.title}>{productName}</h1>
       {onSale ? <><span style={{color: 'red'}}>${salePrice}</span><span className={style.oldPrice}>${price}</span></>
-        : <p>${price}</p>}
+        : <span>${price}</span>}
     </div>
   );
 };
