@@ -19,6 +19,7 @@ const OutfitList = () => {
         headers: options.headers,
       })
         .then((res) => {
+          // condition should eventually use id of the current page (from global state) to ignore it
           if (id !== 13029) {
             outfitsList.push(res.data);
             const newRelated = outfits.concat(outfitsList);
@@ -33,11 +34,14 @@ const OutfitList = () => {
     });
   };
 
+  // This should be refactored to get a list of ids from local storage
   const getOutfits = () => {
+    // Will not use get request to server. Array should be stored locally
     axios.get(`${options.url}products/13029/related`, {
       headers: options.headers,
     })
       .then((res) => {
+        // Still should set length AND use getOutfitsFromIds to get product info from server
         setLen(res.data.length - 1);
         getOutfitsFromIds(res.data);
       })

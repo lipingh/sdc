@@ -65,6 +65,7 @@ const RelatedCard = ({ product, currProduct }) => {
         height="200"
         className="card-img"
       />
+      {/* Create event handler to add to local storage */}
       <div className="card-add-star" onClick={() => (handleStarClick())}>
         {inOutfit ? <img src={fillStar} alt="star_icon_fill" />
           : <img src={emptyStar} alt="star_icon_empty" />}

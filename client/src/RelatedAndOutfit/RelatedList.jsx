@@ -19,6 +19,7 @@ const RelatedList = () => {
         headers: options.headers,
       })
         .then((res) => {
+          // condition should eventually use id of the current page (from global state) to ignore it
           if (id !== 13029) {
             relatedList.push(res.data);
             const newRelated = related.concat(relatedList);
@@ -34,6 +35,7 @@ const RelatedList = () => {
   };
 
   const getRelated = () => {
+    // should eventually use id of the current page (not hard code)
     axios.get(`${options.url}products/13029/related`, {
       headers: options.headers,
     })

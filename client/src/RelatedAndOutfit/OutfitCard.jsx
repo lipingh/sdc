@@ -65,6 +65,7 @@ const OutfitCard = ({ product, currProduct }) => {
         height="200"
         className="card-img"
       />
+      {/* Change to 'X' icon which uses an event handler to delete from local storage */}
       <div className="card-add-star" onClick={() => (handleStarClick())}>
         {inOutfit ? <img src={fillStar} alt="star_icon_fill" />
           : <img src={emptyStar} alt="star_icon_empty" />}
