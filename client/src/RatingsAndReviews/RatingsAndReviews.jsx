@@ -29,7 +29,7 @@ const RatingsAndReviews = () => {
   } = useAllReviews(productId, page, sortOption, ratingFilter);
   // const [filteredReviews, setFilteredReviews] = useState(reviews);
 
-  const observer = useRef();
+  const observer = useRef(null);
   const lastReviewRef = useCallback((node) => {
     if (loading) return;
     if (observer.current) {
@@ -112,10 +112,13 @@ const RatingsAndReviews = () => {
             </select>
           </div>
           <div className="review-list-container">
-            {
-              // filteredReviews.map((review, i) => {
-              //   if (filteredReviews.length === i + 1) {
-              reviews.map((review, i) => {
+            {reviews.length === 0
+              ? (
+                <span ref={lastReviewRef}>
+                  No More Reviews Found or Loading...
+                </span>
+              )
+              : reviews.map((review, i) => {
                 if (reviews.length === i + 1) {
                   return (
                     <div key={review.review_id} ref={lastReviewRef}>
@@ -124,8 +127,7 @@ const RatingsAndReviews = () => {
                   );
                 }
                 return <ReviewListItem key={review.review_id} review={review} />;
-              })
-            }
+              })}
             <div>{loading && 'Loading...'}</div>
             <div>{error && 'Error...'}</div>
           </div>
