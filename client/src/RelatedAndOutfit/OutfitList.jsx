@@ -1,8 +1,11 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, {
+  useState, useRef, useEffect, useContext,
+} from 'react';
 import axios from 'axios';
 import OutfitCard from './OutfitCard.jsx';
 import './list.css';
 import options from '../config/config.js';
+import { OutfitContext } from './RelatedAndOutfit.jsx';
 
 const OutfitList = () => {
   const [currProduct, setCurrProduct] = useState({});
@@ -11,6 +14,7 @@ const OutfitList = () => {
   const [outfits, setOutfits] = useState([]);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [cards, setCards] = useState(0);
+  const outfitsContext = useContext(OutfitContext);
 
   const getOutfitsFromIds = (idList) => {
     const outfitsList = [];
@@ -20,13 +24,10 @@ const OutfitList = () => {
       })
         .then((res) => {
           // condition should eventually use id of the current page (from global state) to ignore it
-          if (id !== 13029) {
-            outfitsList.push(res.data);
-            const newRelated = outfits.concat(outfitsList);
-            setOutfits(newRelated);
-          } else {
-            setCurrProduct(res.data);
-          }
+          outfitsList.push(res.data);
+          const newOutfits = outfits.concat(outfitsList);
+          setOutfits(newOutfits);
+          setCurrProduct(res.data);
         })
         .catch((res, err) => {
           res.end('Could not get outfits from ids: ', err);
@@ -35,24 +36,24 @@ const OutfitList = () => {
   };
 
   // This should be refactored to get a list of ids from local storage
-  const getOutfits = () => {
-    // Will not use get request to server. Array should be stored locally
-    const storageOutfits = JSON.parse(window.localStorage.getItem('outfits'));
-    // Still should set length AND use getOutfitsFromIds to get product info from server
-    if (!Array.isArray(storageOutfits)) {
-      window.localStorage.setItem('outfits', JSON.stringify([13031]));
-      storageOutfits = [];
-    }
-    setLen(storageOutfits.length - 1);
-    getOutfitsFromIds(storageOutfits);
-  };
+  // const getOutfits = () => {
+  //   const storageOutfits = JSON.parse(window.localStorage.getItem('outfits'));
+  //   if (!Array.isArray(storageOutfits)) {
+  //     window.localStorage.setItem('outfits', JSON.stringify([13031]));
+  //     storageOutfits = [];
+  //   }
+  //   setLen(storageOutfits.length - 1);
+  //   getOutfitsFromIds(storageOutfits);
+  // };
 
   const updateWidth = () => {
     setWindowWidth(window.innerWidth);
   };
 
   useEffect(() => {
-    getOutfits();
+    console.log('from component: ', outfitsContext.outfits);
+    setLen(outfitsContext.outfits.length - 1);
+    getOutfitsFromIds(outfitsContext.outfits);
     window.addEventListener('resize', updateWidth);
     return () => { window.removeEventListener('resize', updateWidth); };
   }, []);

@@ -71,13 +71,11 @@ const RelatedCard = ({ product, currProduct }) => {
       window.localStorage.setItem('outfits', JSON.stringify(storageOutfits));
     } else {
       const storageOutfits = JSON.parse(window.localStorage.getItem('outfits'));
-      console.log('before remove: ', storageOutfits);
       storageOutfits.forEach((id, index) => {
         if (id === product.id) {
           storageOutfits.splice(index, 1);
         }
       });
-      console.log('after remove: ', storageOutfits);
       window.localStorage.setItem('outfits', JSON.stringify(storageOutfits));
     }
     setInOutfit(newInOutfit);
@@ -92,7 +90,6 @@ const RelatedCard = ({ product, currProduct }) => {
         height="200"
         className="card-img"
       />
-      {/* Create event handler to add to local storage */}
       <div className="card-add-star" onClick={() => (handleStarClick())}>
         {inOutfit ? <img src={fillStar} alt="star_icon_fill" />
           : <img src={emptyStar} alt="star_icon_empty" />}

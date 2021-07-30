@@ -35,7 +35,7 @@ const RelatedList = () => {
   };
 
   const getRelated = () => {
-    // should eventually use id of the current page (not hard code)
+    // should eventually use id of the current page (global state not hard code)
     axios.get(`${options.url}products/13029/related`, {
       headers: options.headers,
     })

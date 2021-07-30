@@ -54,13 +54,11 @@ const OutfitCard = ({ product, currProduct }) => {
   const handleRemove = () => {
     const newInOutfit = !inOutfit;
     const storageOutfits = JSON.parse(window.localStorage.getItem('outfits'));
-    console.log('before remove: ', storageOutfits);
     storageOutfits.forEach((id, index) => {
       if (id === product.id) {
         storageOutfits.splice(index, 1);
       }
     });
-    console.log('after remove: ', storageOutfits);
     window.localStorage.setItem('outfits', JSON.stringify(storageOutfits));
     setInOutfit(newInOutfit);
   };
@@ -74,7 +72,6 @@ const OutfitCard = ({ product, currProduct }) => {
         height="200"
         className="card-img"
       />
-      {/* Change to 'X' icon which uses an event handler to delete from local storage */}
       <button type="button" className="btn-outfit-remove" onClick={() => (handleRemove())}>X</button>
       <div className="card-category">
         {product.category.toUpperCase()}

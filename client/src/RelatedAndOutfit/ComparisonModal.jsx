@@ -51,7 +51,6 @@ const ComparisonModal = ({
   };
 
   const updateHeight = () => {
-    console.log(windowHt);
     setwindowHt(window.innerHeight);
   };
 
