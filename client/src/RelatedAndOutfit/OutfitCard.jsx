@@ -84,7 +84,7 @@ const OutfitCard = ({ product, currProduct }) => {
         <div className="card-sale-price">{salePrice || ''}</div>
       </div>
       <div className="card-rating">
-        {Number.isNaN(ratingsBreakDown.averageRatings.toFixed(1))
+        {isNaN(ratingsBreakDown.averageRatings.toFixed(1))
           ? <div className="card-rating-num">No ratings</div>
           : (
             <>
