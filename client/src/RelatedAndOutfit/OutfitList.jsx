@@ -1,48 +1,48 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
-import RelatedCard from './RelatedCard.jsx';
+import OutfitCard from './OutfitCard.jsx';
 import './related-list.css';
 import options from '../config/config.js';
 
-const RelatedList = () => {
+const OutfitList = () => {
   const [currProduct, setCurrProduct] = useState({});
   const [current, setCurrent] = useState(0);
   const [len, setLen] = useState(0);
-  const [related, setRelated] = useState([]);
+  const [outfits, setOutfits] = useState([]);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [cards, setCards] = useState(3);
 
-  const getRelatedFromIds = (idList) => {
-    const relatedList = [];
+  const getOutfitsFromIds = (idList) => {
+    const outfitsList = [];
     idList.forEach((id) => {
       axios.get(`${options.url}products/${id}`, {
         headers: options.headers,
       })
         .then((res) => {
           if (id !== 13029) {
-            relatedList.push(res.data);
-            const newRelated = related.concat(relatedList);
-            setRelated(newRelated);
+            outfitsList.push(res.data);
+            const newRelated = outfits.concat(outfitsList);
+            setOutfits(newRelated);
           } else {
             setCurrProduct(res.data);
           }
         })
         .catch((res, err) => {
-          res.end('Could not get related from ids: ', err);
+          res.end('Could not get outfits from ids: ', err);
         });
     });
   };
 
-  const getRelated = () => {
+  const getOutfits = () => {
     axios.get(`${options.url}products/13029/related`, {
       headers: options.headers,
     })
       .then((res) => {
         setLen(res.data.length - 1);
-        getRelatedFromIds(res.data);
+        getOutfitsFromIds(res.data);
       })
       .catch((res, err) => {
-        res.end('Could not get related: ', err);
+        res.end('Could not get outfits: ', err);
       });
   };
 
@@ -51,7 +51,7 @@ const RelatedList = () => {
   };
 
   useEffect(() => {
-    getRelated();
+    getOutfits();
     window.addEventListener('resize', updateWidth);
     return () => { window.removeEventListener('resize', updateWidth); };
   }, []);
@@ -97,8 +97,8 @@ const RelatedList = () => {
     <div className="related">
       {current !== 0 && <button type="button" className="btn-related-left" onClick={prevCard}>prev</button>}
       <div className="related-list" style={{ width: `${cards * 230}px` }} ref={listRef}>
-        {related.map((product) => (
-          <RelatedCard key={product.id} product={product} currProduct={currProduct} />
+        {outfits.map((product) => (
+          <OutfitCard key={product.id} product={product} currProduct={currProduct} />
         ))}
       </div>
       {current !== len - cards && <button type="button" className="btn-related-right" onClick={nextCard}>next</button>}
@@ -106,4 +106,4 @@ const RelatedList = () => {
   );
 };
 
-export default RelatedList;
+export default OutfitList;

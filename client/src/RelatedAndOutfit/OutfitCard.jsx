@@ -10,8 +10,8 @@ import StarRating from '../RatingsAndReviews/StarRating.jsx';
 import calculateRating from '../../helper.js';
 import { getReviewsMeta } from '../../reviewRequest.js';
 
-const RelatedCard = ({ product, currProduct }) => {
-  const [relatedImg, setRelatedImg] = useState('');
+const OutfitCard = ({ product, currProduct }) => {
+  const [outfitImg, setOutfitImg] = useState('');
   const [salePrice, setSalePrice] = useState('');
   const [defaultPrice, setDefaultPrice] = useState('');
   const [inOutfit, setInOutfit] = useState(false);
@@ -20,18 +20,18 @@ const RelatedCard = ({ product, currProduct }) => {
   const ratingsBreakDown = useMemo(() => calculateRating(ratings), [ratings]);
 
   const setDefaultData = (stylesObj) => {
-    let relatedStyleInd = 0;
-    for (let i = 0; i < stylesObj.results.length; i++) {
+    let outfitStyleInd = 0;
+    for (let i = 0; i < stylesObj.results.length; i += 1) {
       if (stylesObj.results[i]['default?']) {
-        relatedStyleInd = i;
+        outfitStyleInd = i;
         break;
       }
     }
-    setRelatedImg(stylesObj.results[relatedStyleInd].photos[0].thumbnail_url);
+    setOutfitImg(stylesObj.results[outfitStyleInd].photos[0].thumbnail_url);
     setDefaultPrice(product.default_price);
-    setSalePrice(stylesObj.results[relatedStyleInd].sale_price);
+    setSalePrice(stylesObj.results[outfitStyleInd].sale_price);
   };
-  const getRelatedStylesFromIds = () => {
+  const getOutfitStylesFromIds = () => {
     axios.get(`${options.url}products/${product.id}/styles`, {
       headers: options.headers,
     })
@@ -39,12 +39,12 @@ const RelatedCard = ({ product, currProduct }) => {
         setDefaultData(res.data);
       })
       .catch((res, err) => {
-        res.end('Could not get related styles: ', err);
+        res.end('Could not get outfit styles: ', err);
       });
   };
 
   useEffect(() => {
-    getRelatedStylesFromIds();
+    getOutfitStylesFromIds();
     getReviewsMeta(product.id)
       .then((res) => {
         setRatings(res.ratings);
@@ -59,7 +59,7 @@ const RelatedCard = ({ product, currProduct }) => {
   return (
     <div className="list-card">
       <img
-        src={relatedImg}
+        src={outfitImg}
         alt={product.name}
         width="200"
         height="200"
@@ -106,7 +106,7 @@ const RelatedCard = ({ product, currProduct }) => {
   );
 };
 
-RelatedCard.propTypes = {
+OutfitCard.propTypes = {
   product: PropTypes.shape({
     id: PropTypes.number,
     category: PropTypes.string,
@@ -124,9 +124,9 @@ RelatedCard.propTypes = {
   }),
 };
 
-RelatedCard.defaultProps = {
+OutfitCard.defaultProps = {
   product: {},
   currProduct: {},
 };
 
-export default RelatedCard;
+export default OutfitCard;
