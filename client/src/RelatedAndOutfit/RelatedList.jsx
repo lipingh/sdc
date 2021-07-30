@@ -59,7 +59,10 @@ const RelatedList = () => {
   }, []);
 
   useEffect(() => {
-    const possibleCards = Math.floor((windowWidth - 100) / 230);
+    let possibleCards = Math.floor((windowWidth - 100) / 230);
+    if (possibleCards >= len) {
+      possibleCards = len;
+    }
     setCards(possibleCards);
   }, [windowWidth]);
 

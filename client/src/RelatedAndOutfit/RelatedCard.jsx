@@ -43,16 +43,42 @@ const RelatedCard = ({ product, currProduct }) => {
       });
   };
 
+  const isInOutfit = () => {
+    // use global storage for outfit list
+    const storageOutfits = JSON.parse(window.localStorage.getItem('outfits'));
+    storageOutfits.forEach((id) => {
+      if (id === product.id) {
+        setInOutfit(true);
+      }
+    });
+  };
+
   useEffect(() => {
     getRelatedStylesFromIds();
     getReviewsMeta(product.id)
       .then((res) => {
         setRatings(res.ratings);
       });
+    isInOutfit();
   }, []);
 
   const handleStarClick = () => {
     const newInOutfit = !inOutfit;
+    if (newInOutfit) {
+      const storageOutfits = JSON.parse(window.localStorage.getItem('outfits'));
+      storageOutfits.push(product.id);
+      window.localStorage.setItem('outfits', JSON.stringify(storageOutfits));
+    } else {
+      const storageOutfits = JSON.parse(window.localStorage.getItem('outfits'));
+      console.log('before remove: ', storageOutfits);
+      storageOutfits.forEach((id, index) => {
+        if (id === product.id) {
+          storageOutfits.splice(index, 1);
+        }
+      });
+      console.log('after remove: ', storageOutfits);
+      window.localStorage.setItem('outfits', JSON.stringify(storageOutfits));
+    }
     setInOutfit(newInOutfit);
   };
 

@@ -1,6 +1,7 @@
 .list-section {
   display: flex;
   justify-content: left;
+  min-height: 337px;
 }
 
 .list-cards {

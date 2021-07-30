@@ -10,7 +10,7 @@ const OutfitList = () => {
   const [len, setLen] = useState(0);
   const [outfits, setOutfits] = useState([]);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [cards, setCards] = useState(3);
+  const [cards, setCards] = useState(0);
 
   const getOutfitsFromIds = (idList) => {
     const outfitsList = [];
@@ -37,17 +37,14 @@ const OutfitList = () => {
   // This should be refactored to get a list of ids from local storage
   const getOutfits = () => {
     // Will not use get request to server. Array should be stored locally
-    axios.get(`${options.url}products/13029/related`, {
-      headers: options.headers,
-    })
-      .then((res) => {
-        // Still should set length AND use getOutfitsFromIds to get product info from server
-        setLen(res.data.length - 1);
-        getOutfitsFromIds(res.data);
-      })
-      .catch((res, err) => {
-        res.end('Could not get outfits: ', err);
-      });
+    const storageOutfits = JSON.parse(window.localStorage.getItem('outfits'));
+    // Still should set length AND use getOutfitsFromIds to get product info from server
+    if (!Array.isArray(storageOutfits)) {
+      window.localStorage.setItem('outfits', JSON.stringify([13031]));
+      storageOutfits = [];
+    }
+    setLen(storageOutfits.length - 1);
+    getOutfitsFromIds(storageOutfits);
   };
 
   const updateWidth = () => {
@@ -61,7 +58,10 @@ const OutfitList = () => {
   }, []);
 
   useEffect(() => {
-    const possibleCards = Math.floor((windowWidth - 100) / 230);
+    let possibleCards = Math.floor((windowWidth - 100) / 230);
+    if (possibleCards >= len) {
+      possibleCards = len;
+    }
     setCards(possibleCards);
   }, [windowWidth]);
 
