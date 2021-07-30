@@ -9,7 +9,7 @@ const ProductBreakDown = ({ characteristics }) => (
         const indicatorValue = (parseFloat(characteristics[character].value) * 50) / 5;
         return (
           <div key={character} className="bar-row">
-            <span>{character}</span>
+            <span className="factor-side">{character}</span>
             <span className="factor-bar">
               {parseFloat(characteristics[character].value).toFixed(1)}
             </span>
@@ -18,8 +18,7 @@ const ProductBreakDown = ({ characteristics }) => (
             </span>
           </div>
         );
-      })
-      }
+      })}
 
     </div>
   </div>
