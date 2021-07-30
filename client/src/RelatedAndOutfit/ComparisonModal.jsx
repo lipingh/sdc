@@ -19,13 +19,13 @@ const ComparisonModal = ({open, onClose, product, currProduct}) => {
     let newCurrProductFeatures = [];
     let newRelatedProdFeatures = [];
     for (var i = 0; i < currProduct.features.length; i++) {
-      const featureObj = currProduct.features[i]
+      const featureObj = currProduct.features[i];
       const featureName = featureObj.feature;
       let match = false;
       for (var j = 0; j < uniqRelatedFeatures.length; j++) {
         const relatedFeatureObj = uniqRelatedFeatures[j];
         if (relatedFeatureObj.feature === featureName && relatedFeatureObj.value) {
-          match = true
+          match = true;
           uniqRelatedFeatures.splice(j, 1);
           newSharedFeatures.push({name: featureName, currVal: featureObj.value, relatedVal: relatedFeatureObj.value});
           break;
