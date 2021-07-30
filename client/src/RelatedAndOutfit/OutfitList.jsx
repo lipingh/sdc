@@ -8,6 +8,7 @@ import options from '../config/config.js';
 import { OutfitContext } from './RelatedAndOutfit.jsx';
 
 const OutfitList = () => {
+  // get current product from global state
   const [currProduct, setCurrProduct] = useState({});
   const [current, setCurrent] = useState(0);
   const [len, setLen] = useState(0);

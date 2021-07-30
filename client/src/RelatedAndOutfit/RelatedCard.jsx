@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, {
+  useState, useEffect, useMemo, useContext
+} from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import options from '../config/config.js';
@@ -9,6 +11,7 @@ import ComparisonModal from './ComparisonModal.jsx';
 import StarRating from '../RatingsAndReviews/StarRating.jsx';
 import calculateRating from '../../helper.js';
 import { getReviewsMeta } from '../../reviewRequest.js';
+import { OutfitContext } from './RelatedAndOutfit.jsx';
 
 const RelatedCard = ({ product, currProduct }) => {
   const [relatedImg, setRelatedImg] = useState('');
@@ -18,6 +21,7 @@ const RelatedCard = ({ product, currProduct }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [ratings, setRatings] = useState({});
   const ratingsBreakDown = useMemo(() => calculateRating(ratings), [ratings]);
+  const outfitsContext = useContext(OutfitContext);
 
   const setDefaultData = (stylesObj) => {
     let relatedStyleInd = 0;
@@ -45,9 +49,8 @@ const RelatedCard = ({ product, currProduct }) => {
 
   const isInOutfit = () => {
     // use global storage for outfit list
-    const storageOutfits = JSON.parse(window.localStorage.getItem('outfits'));
-    storageOutfits.forEach((id) => {
-      if (id === product.id) {
+    outfitsContext.outfits.forEach((outfitItem) => {
+      if (outfitItem.id === product.id) {
         setInOutfit(true);
       }
     });
