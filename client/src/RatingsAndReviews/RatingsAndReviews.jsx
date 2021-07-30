@@ -1,11 +1,14 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, {
+  useState, useEffect, useMemo, useRef, useCallback,
+} from 'react';
 import StarRating from './StarRating.jsx';
 import RatingsBreakDown from './RatingsBreakDown.jsx';
 import ProductBreakDown from './ProductBreakDown.jsx';
 import ReviewForm from './ReviewForm.jsx';
-import ReviewList from './ReviewList.jsx';
+import ReviewListItem from './ReviewListItem.jsx';
 import calculateRating from '../../helper.js';
 import { getReviewsMeta, getReviewsById } from '../../reviewRequest.js';
+import useAllReviews from './useAllReviews.js';
 import './ratings.css';
 
 const RatingsAndReviews = () => {
@@ -16,15 +19,29 @@ const RatingsAndReviews = () => {
   const [ratings, setRatings] = useState({});
   const [characteristics, setCharacteristics] = useState({});
   const ratingsBreakDown = useMemo(() => calculateRating(ratings), [ratings]);
-  const [reviews, setReviews] = useState([]);
-  const [filteredReviews, setFilteredReviews] = useState([]);
+  const [totalReviews, setTotalReviews] = useState(0);
   const [sortOption, setSortOption] = useState('relevant');
+  // const [productId, setProductId] = useState(13023);
   const [page, setPage] = useState(1);
-  const params = {
-    product_id: productId,
-    page,
-    sort: sortOption,
-  };
+  const [ratingFilter, setRatingFilter] = useState(null);
+  const {
+    reviews, hasMore, loading, error,
+  } = useAllReviews(productId, page, sortOption, ratingFilter);
+  // const [filteredReviews, setFilteredReviews] = useState(reviews);
+
+  const observer = useRef(null);
+  const lastReviewRef = useCallback((node) => {
+    if (loading) return;
+    if (observer.current) {
+      observer.current.disconnect();
+    }
+    observer.current = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && hasMore) {
+        setPage((prev) => prev + 1);
+      }
+    });
+    if (node) observer.current.observe(node);
+  }, [loading, hasMore]);
 
   useEffect(() => {
     getReviewsMeta(productId).then((result) => {
@@ -35,28 +52,26 @@ const RatingsAndReviews = () => {
     });
   }, [productId]);
 
-  useEffect(() => {
-    getReviewsById(params).then((result) => {
-      setReviews(result);
-      setFilteredReviews(result);
-    });
-  }, [sortOption]);
-
   // input rating is a digit number
   const handleFilterByRating = (rating) => {
-    const filteredDta = reviews.filter((review) => review.rating === rating);
-    setFilteredReviews(filteredDta);
+    // const filteredData = reviews.filter((review) => review.rating === rating);
+    // setFilteredReviews(filteredData);
+    setRatingFilter(rating);
+    setPage(1);
   };
 
   const handleChangeSort = (option) => {
     setSortOption(option);
+    setRatingFilter(null);
+    setPage(1);
   };
-  const handleAddReview = (newReview) => {
-    setReviews([...reviews, newReview]);
+  const handleAddReview = () => {
+    setTotalReviews((prev) => prev + 1);
+    // setReviews([...reviews, newReview]);
   };
 
   return (
-    <div id="review-form-modal" className="reviews-root">
+    <div className="reviews-root">
       <h3>Ratings &amp; Reviews</h3>
       <div className="ratings-reviews">
         <div className="breakdown">
@@ -92,9 +107,29 @@ const RatingsAndReviews = () => {
               <option value="newest">Newest</option>
             </select>
           </div>
-          <ReviewList reviews={filteredReviews} />
-          <button type="button">MORE REVIEWS</button>
-          <button type="button" onClick={() => setShowReviewForm(true)}>ADD A REVIEW  + </button>
+          <div className="review-list-container">
+            {
+              reviews.length === 0
+                ? (
+                  <span ref={lastReviewRef}>
+                    No More Reviews Found
+                  </span>
+                )
+                : reviews.map((review, i) => {
+                  if (reviews.length === i + 1) {
+                    return (
+                      <div ref={lastReviewRef} key={review.review_id.toString()}>
+                        <ReviewListItem review={review} />
+                      </div>
+                    );
+                  }
+                  return <ReviewListItem key={review.review_id} review={review} />;
+                })}
+            <div>{loading && 'Loading...'}</div>
+            <div>{error && 'Error...'}</div>
+          </div>
+          {/* <button type="button">MORE REVIEWS</button> */}
+          <button className="add-review-button" type="button" onClick={() => setShowReviewForm(true)}>ADD A REVIEW  + </button>
         </div>
 
       </div>
