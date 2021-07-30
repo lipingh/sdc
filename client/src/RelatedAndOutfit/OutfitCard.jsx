@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, {
+  useState, useEffect, useMemo, useContext,
+} from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import options from '../config/config.js';
@@ -9,15 +11,17 @@ import ComparisonModal from './ComparisonModal.jsx';
 import StarRating from '../RatingsAndReviews/StarRating.jsx';
 import calculateRating from '../../helper.js';
 import { getReviewsMeta } from '../../reviewRequest.js';
+import { OutfitContext } from './RelatedAndOutfit.jsx';
 
 const OutfitCard = ({ product, currProduct }) => {
   const [outfitImg, setOutfitImg] = useState('');
   const [salePrice, setSalePrice] = useState('');
   const [defaultPrice, setDefaultPrice] = useState('');
-  const [inOutfit, setInOutfit] = useState(false);
+  const [inOutfit, setInOutfit] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const [ratings, setRatings] = useState({});
   const ratingsBreakDown = useMemo(() => calculateRating(ratings), [ratings]);
+  const outfitsContext = useContext(OutfitContext);
 
   const setDefaultData = (stylesObj) => {
     let outfitStyleInd = 0;
@@ -52,15 +56,7 @@ const OutfitCard = ({ product, currProduct }) => {
   }, []);
 
   const handleRemove = () => {
-    const newInOutfit = !inOutfit;
-    const storageOutfits = JSON.parse(window.localStorage.getItem('outfits'));
-    storageOutfits.forEach((id, index) => {
-      if (id === product.id) {
-        storageOutfits.splice(index, 1);
-      }
-    });
-    window.localStorage.setItem('outfits', JSON.stringify(storageOutfits));
-    setInOutfit(newInOutfit);
+    outfitsContext.handleOutfitAction(false, product.id);
   };
 
   return (
