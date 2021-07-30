@@ -19,18 +19,6 @@ const RelatedCard = ({ product, currProduct }) => {
   const [ratings, setRatings] = useState({});
   const ratingsBreakDown = useMemo(() => calculateRating(ratings), [ratings]);
 
-  const getRelatedStylesFromIds = () => {
-    axios.get(`${options.url}products/${product.id}/styles`, {
-      headers: options.headers,
-    })
-      .then((res) => {
-        setDefaultData(res.data);
-      })
-      .catch((res, err) => {
-        res.end('Could not get related styles: ', err);
-      });
-  };
-
   const setDefaultData = (stylesObj) => {
     let relatedStyleInd = 0;
     for (let i = 0; i < stylesObj.results.length; i++) {
@@ -43,6 +31,17 @@ const RelatedCard = ({ product, currProduct }) => {
     setDefaultPrice(product.default_price);
     setSalePrice(stylesObj.results[relatedStyleInd].sale_price);
   };
+  const getRelatedStylesFromIds = () => {
+    axios.get(`${options.url}products/${product.id}/styles`, {
+      headers: options.headers,
+    })
+      .then((res) => {
+        setDefaultData(res.data);
+      })
+      .catch((res, err) => {
+        res.end('Could not get related styles: ', err);
+      });
+  };
 
   useEffect(() => {
     getRelatedStylesFromIds();
@@ -53,7 +52,7 @@ const RelatedCard = ({ product, currProduct }) => {
   }, []);
 
   const handleStarClick = () => {
-    let newInOutfit = !inOutfit;
+    const newInOutfit = !inOutfit;
     setInOutfit(newInOutfit);
   };
 
@@ -77,11 +76,14 @@ const RelatedCard = ({ product, currProduct }) => {
         {product.name}
       </div>
       <div className="card-price">
-        <div className="card-default-price">${defaultPrice}</div>
+        <div className="card-default-price">
+          $
+          {defaultPrice}
+        </div>
         <div className="card-sale-price">{salePrice || ''}</div>
       </div>
       <div className="card-rating">
-        {isNaN(ratingsBreakDown.averageRatings.toFixed(1))
+        {Number.isNaN(ratingsBreakDown.averageRatings.toFixed(1))
           ? <div className="card-rating-num">No ratings</div>
           : (
             <>

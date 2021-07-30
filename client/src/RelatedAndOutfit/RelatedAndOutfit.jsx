@@ -1,7 +1,5 @@
-import React, {useState} from 'react';
+import React from 'react';
 import RelatedList from './RelatedList.jsx';
-import axios from 'axios';
-import options from '../config/config.js';
 
 const RelatedAndOutfit = () => (
   <div id="comp-modal-portal" className="related-outfit">

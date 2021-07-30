@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import RelatedCard from './RelatedCard.jsx';
 import axios from 'axios';
+import RelatedCard from './RelatedCard.jsx';
 import './related-list.css';
 import options from '../config/config.js';
 
