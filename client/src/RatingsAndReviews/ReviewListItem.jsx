@@ -62,26 +62,24 @@ const ReviewListItem = ({ review }) => {
       <div>{review.body}</div>
       <div className="photos-container">
         {review.photos.map((photo) => (
-          <>
+          <div key={photo.id}>
             <img
-              key={photo.id}
               src={photo.url}
+              aria-label="save"
               alt=""
               width="30%"
               height="30%"
               onClick={() => setShowFullImage((prev) => !prev)}
-              role="button"
               onKeyPress={() => { }}
+              role="presentation"
             />
-
             <ImageModal
-              key={photo.id}
               showFullImage={showFullImage}
               url={photo.url}
               onClose={() => setShowFullImage((prev) => !prev)}
             />
+          </div>
 
-          </>
         ))}
         ;
       </div>

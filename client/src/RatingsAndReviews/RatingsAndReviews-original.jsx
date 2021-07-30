@@ -23,6 +23,7 @@ const RatingsAndReviews = () => {
   const params = {
     product_id: productId,
     page,
+    count: 20,
     sort: sortOption,
   };
 

@@ -108,22 +108,23 @@ const RatingsAndReviews = () => {
             </select>
           </div>
           <div className="review-list-container">
-            {reviews.length === 0
-              ? (
-                <span ref={lastReviewRef} key={0}>
-                  No More Reviews Found
-                </span>
-              )
-              : reviews.map((review, i) => {
-                if (reviews.length === i + 1) {
-                  return (
-                    <div ref={lastReviewRef} key={review.review_id}>
-                      <ReviewListItem review={review} />
-                    </div>
-                  );
-                }
-                return <ReviewListItem key={review.review_id} review={review} />;
-              })}
+            {
+              reviews.length === 0
+                ? (
+                  <span ref={lastReviewRef}>
+                    No More Reviews Found
+                  </span>
+                )
+                : reviews.map((review, i) => {
+                  if (reviews.length === i + 1) {
+                    return (
+                      <div ref={lastReviewRef} key={review.review_id.toString()}>
+                        <ReviewListItem review={review} />
+                      </div>
+                    );
+                  }
+                  return <ReviewListItem key={review.review_id} review={review} />;
+                })}
             <div>{loading && 'Loading...'}</div>
             <div>{error && 'Error...'}</div>
           </div>
