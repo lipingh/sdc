@@ -67,8 +67,8 @@ const ReviewListItem = ({ review }) => {
               src={photo.url}
               aria-label="save"
               alt=""
-              width="30%"
-              height="30%"
+              width="50"
+              height="60"
               onClick={() => setShowFullImage((prev) => !prev)}
               onKeyPress={() => { }}
               role="presentation"
