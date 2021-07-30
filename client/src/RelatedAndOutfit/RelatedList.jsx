@@ -28,8 +28,8 @@ const RelatedList = () => {
             setCurrProduct(res.data);
           }
         })
-        .catch((res, err) => {
-          res.end('Could not get related from ids: ', err);
+        .catch((err) => {
+          throw err;
         });
     });
   };
@@ -43,8 +43,8 @@ const RelatedList = () => {
         setLen(res.data.length - 1);
         getRelatedFromIds(res.data);
       })
-      .catch((res, err) => {
-        res.end('Could not get related: ', err);
+      .catch((err) => {
+        throw err;
       });
   };
 

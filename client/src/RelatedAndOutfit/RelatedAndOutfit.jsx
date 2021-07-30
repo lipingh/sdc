@@ -22,8 +22,8 @@ const RelatedAndOutfit = () => {
           const newOutfits = outfits.concat(outfitsList);
           setOutfits(newOutfits);
         })
-        .catch((res, err) => {
-          res.end('Could not get outfits from ids: ', err);
+        .catch((err) => {
+          throw err;
         });
     });
   };

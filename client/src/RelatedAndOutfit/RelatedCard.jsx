@@ -42,8 +42,8 @@ const RelatedCard = ({ product, currProduct }) => {
       .then((res) => {
         setDefaultData(res.data);
       })
-      .catch((res, err) => {
-        res.end('Could not get related styles: ', err);
+      .catch((err) => {
+        throw err;
       });
   };
 

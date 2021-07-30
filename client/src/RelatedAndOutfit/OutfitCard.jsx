@@ -43,8 +43,8 @@ const OutfitCard = ({ product, currProduct }) => {
       .then((res) => {
         setDefaultData(res.data);
       })
-      .catch((res, err) => {
-        res.end('Could not get outfit styles: ', err);
+      .catch((err) => {
+        throw err;
       });
   };
 
