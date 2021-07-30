@@ -25,7 +25,7 @@ const useAllReviews = (productId, page, sortOption, ratingFilter) => {
       params: {
         product_id: productId,
         page,
-        count: 2,
+        count: 4,
         sort: sortOption,
       },
       cancelToken: new CancelToken((c) => (cancel = c)),
@@ -38,11 +38,12 @@ const useAllReviews = (productId, page, sortOption, ratingFilter) => {
           newReviews = res.data.results;
           // setReviews((prev) => [...prev, ...res.data.results]);
         }
+        // console.log('res', res.data.results);
+        // console.log('filtered', newReviews);
         // setReviews((prev) => [...new Set([...prev, ...newReviews])]);
         setReviews((prev) => [...prev, ...newReviews]);
-        setHasMore(newReviews.length > 0);
+        setHasMore(res.data.results.length > 0);
         // setReviews((prev) => [...prev, ...res.data.results]);
-        // setHasMore(res.data.results.length > 0);
         setLoading(false);
       }).catch((e) => {
         if (axios.isCancel(e)) return;
@@ -50,8 +51,7 @@ const useAllReviews = (productId, page, sortOption, ratingFilter) => {
       });
     return () => cancel();
   }, [productId, page, sortOption, ratingFilter]);
-  // console.log('ratingFilter', ratingFilter);
-  // console.log('reviews', reviews);
+  // console.log('review', reviews);
   return {
     loading, error, reviews, hasMore,
   };

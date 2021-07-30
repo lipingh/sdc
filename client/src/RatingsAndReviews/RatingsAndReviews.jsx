@@ -12,6 +12,7 @@ import useAllReviews from './useAllReviews.js';
 import './ratings.css';
 
 const RatingsAndReviews = () => {
+  const productId = 13023;
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [recommended, setRecommended] = useState(0);
   const [notRecommended, setNotRecommended] = useState(0);
@@ -20,7 +21,7 @@ const RatingsAndReviews = () => {
   const ratingsBreakDown = useMemo(() => calculateRating(ratings), [ratings]);
   const [totalReviews, setTotalReviews] = useState(0);
   const [sortOption, setSortOption] = useState('relevant');
-  const [productId, setProductId] = useState(13023);
+  // const [productId, setProductId] = useState(13023);
   const [page, setPage] = useState(1);
   const [ratingFilter, setRatingFilter] = useState(null);
   const {
@@ -65,6 +66,7 @@ const RatingsAndReviews = () => {
 
   const handleChangeSort = (option) => {
     setSortOption(option);
+    setRatingFilter(null);
     setPage(1);
   };
   const handleAddReview = () => {
@@ -139,7 +141,7 @@ const RatingsAndReviews = () => {
         onClose={() => setShowReviewForm(false)}
         handleAddReview={handleAddReview}
       />
-    </div >
+    </div>
   );
 };
 export default RatingsAndReviews;
