@@ -38,8 +38,8 @@ const useAllReviews = (productId, page, sortOption, ratingFilter) => {
           newReviews = res.data.results;
           // setReviews((prev) => [...prev, ...res.data.results]);
         }
-        console.log('res', res.data.results);
-        console.log('filtered', newReviews);
+        // console.log('res', res.data.results);
+        // console.log('filtered', newReviews);
         // setReviews((prev) => [...new Set([...prev, ...newReviews])]);
         setReviews((prev) => [...prev, ...newReviews]);
         setHasMore(res.data.results.length > 0);
