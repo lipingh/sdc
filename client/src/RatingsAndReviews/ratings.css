@@ -10,6 +10,7 @@
 
 .review-list {
   width: 70%;
+  flex-flow: column;
   margin: 20px;
 }
 
@@ -33,13 +34,6 @@
   text-decoration: underline;
 }
 
-.sidebar {
-  position: relative;
-  width: 1000px;
-  height: 10px;
-  background-color: lightgrey;
-}
-
 /* .star1 .star2 .star3 .star4 .star5 {
   height: 10px;
   background-color: lightGreen;
@@ -53,3 +47,65 @@
   outline: 1px solid green;
   outline-offset: -1px
 } */
+
+/* Three column layout */
+
+.side {
+  float: left;
+  width: 15%;
+  margin-top: 10px;
+}
+
+.middle {
+  margin-top: 10px;
+  float: left;
+  width: 70%;
+}
+
+/* Place text to the right */
+
+.right {
+  text-align: right;
+}
+
+/* Clear floats after the columns */
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* The bar container */
+
+.bar-container {
+  width: 100%;
+  background-color: #f1f1f1;
+  text-align: center;
+  color: white;
+}
+
+.bar-5 {
+  height: 18px;
+  background-color: #04AA6D;
+}
+
+.bar-4 {
+  height: 18px;
+  background-color: #2196F3;
+}
+
+.bar-3 {
+  height: 18px;
+  background-color: #00bcd4;
+}
+
+.bar-2 {
+  height: 18px;
+  background-color: #ff9800;
+}
+
+.bar-1 {
+  height: 18px;
+  background-color: #f44336;
+}
