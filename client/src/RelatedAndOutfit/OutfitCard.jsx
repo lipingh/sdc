@@ -12,6 +12,7 @@ import StarRating from '../RatingsAndReviews/StarRating.jsx';
 import calculateRating from '../../helper.js';
 import { getReviewsMeta } from '../../reviewRequest.js';
 import { OutfitContext } from './RelatedAndOutfit.jsx';
+import { handleOutfitAction } from './helpers.js'
 
 const OutfitCard = ({ product, currProduct }) => {
   const [outfitImg, setOutfitImg] = useState('');
@@ -56,7 +57,7 @@ const OutfitCard = ({ product, currProduct }) => {
   }, []);
 
   const handleRemove = () => {
-    outfitsContext.handleOutfitAction(false, product.id);
+    handleOutfitAction(false, product.id);
   };
 
   return (
