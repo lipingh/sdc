@@ -12,6 +12,7 @@ import StarRating from '../RatingsAndReviews/StarRating.jsx';
 import calculateRating from '../../helper.js';
 import { getReviewsMeta } from '../../reviewRequest.js';
 import { OutfitContext } from './RelatedAndOutfit.jsx';
+import { handleOutfitAction } from './helpers.js'
 
 const RelatedCard = ({ product, currProduct }) => {
   const [relatedImg, setRelatedImg] = useState('');
@@ -68,19 +69,7 @@ const RelatedCard = ({ product, currProduct }) => {
   const handleStarClick = () => {
     const newInOutfit = !inOutfit;
     // move to helper functions?
-    if (newInOutfit) {
-      const storageOutfits = JSON.parse(window.localStorage.getItem('outfits'));
-      storageOutfits.push(product.id);
-      window.localStorage.setItem('outfits', JSON.stringify(storageOutfits));
-    } else {
-      const storageOutfits = JSON.parse(window.localStorage.getItem('outfits'));
-      storageOutfits.forEach((id, index) => {
-        if (id === product.id) {
-          storageOutfits.splice(index, 1);
-        }
-      });
-      window.localStorage.setItem('outfits', JSON.stringify(storageOutfits));
-    }
+    handleOutfitAction(newInOutfit, product.id);
     setInOutfit(newInOutfit);
   };
 
