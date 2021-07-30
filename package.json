@@ -39,6 +39,9 @@
     "webpack-cli": "^4.7.2"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.35",
+    "@fortawesome/free-solid-svg-icons": "^5.15.3",
+    "@fortawesome/react-fontawesome": "^0.1.14",
     "axios": "^0.21.1",
     "circleci": "^0.3.3",
     "express": "^4.17.1",
