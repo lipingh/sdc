@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import OutfitCard from './OutfitCard.jsx';
-import './related-list.css';
+import './list.css';
 import options from '../config/config.js';
 
 const OutfitList = () => {
@@ -94,14 +94,14 @@ const OutfitList = () => {
   };
 
   return (
-    <div className="related">
-      {current !== 0 && <button type="button" className="btn-related-left" onClick={prevCard}>prev</button>}
-      <div className="related-list" style={{ width: `${cards * 230}px` }} ref={listRef}>
+    <div className="list-section">
+      {current !== 0 && <button type="button" className="btn-list-left" onClick={prevCard}>prev</button>}
+      <div className="list-cards" style={{ width: `${cards * 230}px` }} ref={listRef}>
         {outfits.map((product) => (
           <OutfitCard key={product.id} product={product} currProduct={currProduct} />
         ))}
       </div>
-      {current !== len - cards && <button type="button" className="btn-related-right" onClick={nextCard}>next</button>}
+      {current !== len - cards && <button type="button" className="btn-list-right" onClick={nextCard}>next</button>}
     </div>
   );
 };
