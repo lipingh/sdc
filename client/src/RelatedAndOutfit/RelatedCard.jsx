@@ -64,6 +64,7 @@ const RelatedCard = ({ product, currProduct }) => {
 
   const handleStarClick = () => {
     const newInOutfit = !inOutfit;
+    // move to helper functions?
     if (newInOutfit) {
       const storageOutfits = JSON.parse(window.localStorage.getItem('outfits'));
       storageOutfits.push(product.id);
