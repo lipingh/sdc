@@ -9,6 +9,8 @@ const RelatedList = () => {
   const [current, setCurrent] = useState(0);
   const [len, setLen] = useState(0);
   const [related, setRelated] = useState([]);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [cards, setCards] = useState(3);
 
   const getRelatedFromIds = (idList) => {
     const relatedList = [];
@@ -44,9 +46,20 @@ const RelatedList = () => {
       });
   };
 
+  const updateWidth = () => {
+    setWindowWidth(window.innerWidth);
+  };
+
   useEffect(() => {
     getRelated();
+    window.addEventListener('resize', updateWidth);
+    return () => { window.removeEventListener('resize', updateWidth); };
   }, []);
+
+  useEffect(() => {
+    const possibleCards = Math.floor((windowWidth - 100) / 230);
+    setCards(possibleCards);
+  }, [windowWidth]);
 
   const listRef = useRef(null);
 
@@ -83,12 +96,12 @@ const RelatedList = () => {
   return (
     <div className="related">
       {current !== 0 && <button type="button" className="btn-related-left" onClick={prevCard}>prev</button>}
-      <div className="related-list" ref={listRef}>
+      <div className="related-list" style={{ width: `${cards * 230}px` }} ref={listRef}>
         {related.map((product) => (
           <RelatedCard key={product.id} product={product} currProduct={currProduct} />
         ))}
       </div>
-      {current !== len - 4 && <button type="button" className="btn-related-right" onClick={nextCard}>next</button>}
+      {current !== len - cards && <button type="button" className="btn-related-right" onClick={nextCard}>next</button>}
     </div>
   );
 };
