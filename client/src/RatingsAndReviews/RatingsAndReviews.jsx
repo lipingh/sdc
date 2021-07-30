@@ -43,10 +43,6 @@ const RatingsAndReviews = () => {
     if (node) observer.current.observe(node);
   }, [loading, hasMore]);
 
-  // useEffect(() => {
-  //   setFilteredReviews(reviews);
-  // }, []);
-
   useEffect(() => {
     getReviewsMeta(productId).then((result) => {
       setRatings(result.ratings);
@@ -114,14 +110,14 @@ const RatingsAndReviews = () => {
           <div className="review-list-container">
             {reviews.length === 0
               ? (
-                <span ref={lastReviewRef}>
-                  No More Reviews Found or Loading...
+                <span ref={lastReviewRef} key={0}>
+                  No More Reviews Found
                 </span>
               )
               : reviews.map((review, i) => {
                 if (reviews.length === i + 1) {
                   return (
-                    <div key={review.review_id} ref={lastReviewRef}>
+                    <div ref={lastReviewRef} key={review.review_id}>
                       <ReviewListItem review={review} />
                     </div>
                   );

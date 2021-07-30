@@ -36,14 +36,16 @@ const useAllReviews = (productId, page, sortOption, ratingFilter) => {
           newReviews = res.data.results.filter((review) => review.rating === ratingFilter);
         } else {
           newReviews = res.data.results;
-          // setReviews((prev) => [...prev, ...res.data.results]);
         }
-        // console.log('res', res.data.results);
-        // console.log('filtered', newReviews);
-        // setReviews((prev) => [...new Set([...prev, ...newReviews])]);
         setReviews((prev) => [...prev, ...newReviews]);
+        // const allReviews = [...reviews, ...newReviews];
+        // const uniqueReviews = [...new Map(
+        //   allReviews.map((review) => [review.review_id, review]),
+        // ).values()];
+        // console.log('reviews before', allReviews);
+        // console.log('reviews after', uniqueReviews);
+        // setReviews(uniqueReviews);
         setHasMore(res.data.results.length > 0);
-        // setReviews((prev) => [...prev, ...res.data.results]);
         setLoading(false);
       }).catch((e) => {
         if (axios.isCancel(e)) return;
