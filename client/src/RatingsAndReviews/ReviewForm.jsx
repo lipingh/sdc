@@ -191,8 +191,8 @@ const ReviewForm = ({
           <input type="text" maxLength="60" placeholder="Example: purchase ever!" required />
         </div>
         <div className="review-body" onChange={(e) => setBody(e.target.value)}>
-          <lable>Add a written review</lable>
-          <textarea type="text" maxLength="1000" placeholder="Example: Why did you like the product or not?" required />
+          Add a written review
+          <textarea id="review" type="text" maxLength="1000" placeholder="Example: Why did you like the product or not?" required />
         </div>
         <div>
           Choose photos:
