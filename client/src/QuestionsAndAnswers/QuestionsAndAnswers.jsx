@@ -8,6 +8,8 @@ import SearchQuestions from './SearchQuestions.jsx'
 
 const QuestionsAndAnswers = () => {
   const [questions, setQuestions] = useState([]);
+  const [search, setSearch] = useState('');
+  const [originalQuestions, setOriginalQuestions] = useState([]);
 
   const getQuestions = () => {
     axios.get(`${options.url}qa/questions?product_id=13027`, {
@@ -23,10 +25,22 @@ const QuestionsAndAnswers = () => {
         );
         const finalOrder = allInOrder(inQHelpOrder);
         setQuestions(finalOrder);
+        setOriginalQuestions(finalOrder);
       })
       .catch((res, err) => {
         res.end('could not get questions', err);
       });
+  };
+
+  const handleSearch = (e) => {
+    setSearch(e.target.value);
+    if (search.length + 1 > 2) {
+      setQuestions(questions.filter((question) => (
+        question.question_body.toLowerCase().includes(search.toLowerCase()) ? question : null
+      )));
+    } else {
+      setQuestions(originalQuestions);
+    }
   };
 
   useEffect(() => {
@@ -36,7 +50,7 @@ const QuestionsAndAnswers = () => {
   return (
     <>
       <h3>Questions and Answers</h3>
-      <SearchQuestions />
+      <SearchQuestions search={search} handleSearch={handleSearch} />
       <div className="q-a">
         <QuestionsList questions={questions} />
       </div>
