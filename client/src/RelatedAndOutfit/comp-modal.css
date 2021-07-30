@@ -32,6 +32,10 @@
   left: 10px;
 }
 
+.comp-table-features {
+  overflow: scroll;
+}
+
 .comp-titles {
   display: flex;
   justify-content: space-between;
