@@ -6,19 +6,10 @@ import './reviews.css';
 import StarRating from './StarRating.jsx';
 
 const ReviewListItem = ({ review }) => {
+  // console.log('current review', review);
   const [helpfull, setHelpfull] = useState(review.helpfulness);
   const [reported, setReported] = useState(false);
   const [disableHelpful, setDisableHelpful] = useState(false);
-  const formatDate = (dateString) => {
-    const d = new Date(dateString);
-    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December',
-    ];
-    const month = monthNames[d.getMonth()];
-    const day = d.getDate() + 1;
-    const year = d.getFullYear();
-    return `${month} ${day}, ${year}`;
-  };
   const handleAddHelpful = () => {
     setDisableHelpful(!disableHelpful);
     setHelpfull(() => (disableHelpful ? helpfull - 1 : helpfull + 1));
@@ -62,15 +53,25 @@ const ReviewListItem = ({ review }) => {
           {review.reviewer_name}
           {review.email ? <span>(Verified Purchaser)</span> : null}
           {', '}
-          {formatDate(review.date)}
+          {new Date(review.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
         </span>
       </div>
       <div className="review-summary">{review.summary}</div>
       <div>{review.body}</div>
+      <div className="photos-container">
+        {review.photos ? review.photos.map((photo) => <img key={photo.id} src={photo.url} alt="" width="30%" height="30%" />) : null}
+      </div>
       <div>
         {review.recommend ? <span>&#10003; I recommend this product</span> : null}
       </div>
-      {/* {review.response ? <div>{review.response}</div> : ''} */}
+      {review.response ? (
+        <div className="review-response">
+          <strong>
+            Response:
+          </strong>
+          <div>{review.response}</div>
+        </div>
+      ) : null}
       <div>
         <span>Helpful?</span>
         <span onClick={handleAddHelpful} onKeyDown={() => { }} role="link" tabIndex={0}>
@@ -95,9 +96,11 @@ ReviewListItem.propTypes = {
     reviewer_name: PropTypes.string,
     date: PropTypes.string,
     body: PropTypes.string,
+    photos: PropTypes.arrayOf(PropTypes.object),
     recommend: PropTypes.bool,
     helpfulness: PropTypes.number,
     email: PropTypes.string,
+    response: PropTypes.string,
   }),
 };
 ReviewListItem.defaultProps = {

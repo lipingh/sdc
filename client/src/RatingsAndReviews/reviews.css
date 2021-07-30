@@ -56,3 +56,11 @@
 .review-body>textarea {
   width: 60%;
 }
+
+.photos-container {
+  display: flex;
+}
+
+.review-list {
+  height: 1000px
+}
