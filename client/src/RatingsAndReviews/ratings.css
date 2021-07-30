@@ -109,3 +109,40 @@
   height: 18px;
   background-color: #f44336;
 }
+
+.full-factor-bar {
+  display: flex;
+  flex-flow: column;
+  border-radius: 0;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  justify-content: space-between;
+  margin-top: -1.2rem;
+}
+
+.factors {
+  margin-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.indicator {
+  position: relative;
+  z-index: 2;
+  font-size: 1.0em;
+  margin-top: -2rem;
+}
+
+.factor-bar {
+  display: flex;
+  border-radius: 0;
+  background-color: hsla(0, 0%, 85%, 60%);
+  width: 50%;
+  height: 0.7rem;
+  border: 1px;
+}
+
+/* .bar-row {
+  display: flex;
+  flex-flow: column;
+} */
