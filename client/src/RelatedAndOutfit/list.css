@@ -1,9 +1,10 @@
-.related {
+.list-section {
   display: flex;
   justify-content: left;
+  min-height: 337px;
 }
 
-.related-list {
+.list-cards {
   display: flex;
   overflow: hidden;
   position: relative;
