@@ -2,14 +2,25 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const ProductBreakDown = ({ characteristics }) => (
-  <div>
-    {Object.keys(characteristics).map((character) => (
-      <div key={character}>
-        {character}
-        :
-        {parseFloat(characteristics[character].value).toFixed(2)}
-      </div>
-    ))}
+  <div className="factors">
+    <div className="full-factor-bar">
+      {Object.keys(characteristics).map((character) => {
+        // const indicatorValue = parseFloat(characteristics[character].value) * 20 - 5;
+        const indicatorValue = (parseFloat(characteristics[character].value) * 50) / 5;
+        return (
+          <div key={character} className="bar-row">
+            <span className="factor-side">{character}</span>
+            <span className="factor-bar">
+              {parseFloat(characteristics[character].value).toFixed(1)}
+            </span>
+            <span className="indicator" style={{ margin: `${indicatorValue}%` }}>
+              &#9662;
+            </span>
+          </div>
+        );
+      })}
+
+    </div>
   </div>
 );
 

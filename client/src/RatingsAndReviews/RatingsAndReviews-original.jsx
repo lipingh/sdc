@@ -1,60 +1,31 @@
-import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import StarRating from './StarRating.jsx';
 import RatingsBreakDown from './RatingsBreakDown.jsx';
 import ProductBreakDown from './ProductBreakDown.jsx';
 import ReviewForm from './ReviewForm.jsx';
 import ReviewList from './ReviewList.jsx';
-import ReviewListItem from './ReviewListItem.jsx';
 import calculateRating from '../../helper.js';
 import { getReviewsMeta, getReviewsById } from '../../reviewRequest.js';
-import getAllReviews from './getAllReviews.js';
 import './ratings.css';
 
 const RatingsAndReviews = () => {
+  const productId = 13023;
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [recommended, setRecommended] = useState(0);
   const [notRecommended, setNotRecommended] = useState(0);
   const [ratings, setRatings] = useState({});
   const [characteristics, setCharacteristics] = useState({});
   const ratingsBreakDown = useMemo(() => calculateRating(ratings), [ratings]);
-  // const [reviews, setReviews] = useState([]);
-
+  const [reviews, setReviews] = useState([]);
+  const [filteredReviews, setFilteredReviews] = useState([]);
   const [sortOption, setSortOption] = useState('relevant');
-  const [productId, setProductId] = useState(13023);
   const [page, setPage] = useState(1);
-  const {
-    reviews, hasMore, loading, error
-  } = getAllReviews(productId, page, sortOption);
-  const [filteredReviews, setFilteredReviews] = useState(reviews);
-  const observer = useRef();
-  const lastReviewRef = useCallback((node) => {
-    if (loading) return;
-    if (observer.current) {
-      observer.current.disconnect();
-    }
-    observer.current = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting && hasMore) {
-        setPage((prev) => prev + 1);
-      }
-    });
-    if (node) observer.current.observe(node);
-  }, [loading, hasMore]);
-
-  console.log(filteredReviews);
-
-  // const params = {
-  //   product_id: productId,
-  //   page,
-  //   count: 2,
-  //   sort: sortOption,
-  // };
-
-  // useEffect(() => {
-  //   getReviewsById(params).then((result) => {
-  //     setReviews(result);
-  //     setFilteredReviews(result);
-  //   });
-  // }, [sortOption]);
+  const params = {
+    product_id: productId,
+    page,
+    count: 20,
+    sort: sortOption,
+  };
 
   useEffect(() => {
     getReviewsMeta(productId).then((result) => {
@@ -64,6 +35,13 @@ const RatingsAndReviews = () => {
       setCharacteristics(result.characteristics);
     });
   }, [productId]);
+
+  useEffect(() => {
+    getReviewsById(params).then((result) => {
+      setReviews(result);
+      setFilteredReviews(result);
+    });
+  }, [sortOption]);
 
   // input rating is a digit number
   const handleFilterByRating = (rating) => {
@@ -79,7 +57,7 @@ const RatingsAndReviews = () => {
   };
 
   return (
-    <div id="review-form-modal" className="reviews-root">
+    <div className="reviews-root">
       <h3>Ratings &amp; Reviews</h3>
       <div className="ratings-reviews">
         <div className="breakdown">
@@ -115,11 +93,9 @@ const RatingsAndReviews = () => {
               <option value="newest">Newest</option>
             </select>
           </div>
-          {filteredReviews.map((review) => <ReviewListItem review={review} key={review.review_id} />
-          )}
-          {/* <ReviewList
-            reviews={filteredReviews}
-          /> */}
+          <div className="review-list-container">
+            <ReviewList reviews={filteredReviews} />
+          </div>
           <button type="button">MORE REVIEWS</button>
           <button type="button" onClick={() => setShowReviewForm(true)}>ADD A REVIEW  + </button>
         </div>

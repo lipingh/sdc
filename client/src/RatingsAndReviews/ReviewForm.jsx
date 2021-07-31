@@ -74,7 +74,7 @@ const ReviewForm = ({
     <div className="review-form-modal">
       <form className="review-form" onSubmit={addReviews}>
         <button className="close-button" type="button" onClick={onClose}>X</button>
-        <div className="revirw-form-row">
+        <div className="review-form-row">
           {ratingError
             ? <span style={{ color: 'red' }}>&#9888; Please select overall rating</span> : null}
           <div

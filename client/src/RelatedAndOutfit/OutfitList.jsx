@@ -1,59 +1,27 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, {
+  useState, useRef, useEffect, useContext,
+} from 'react';
 import axios from 'axios';
-import RelatedCard from './RelatedCard.jsx';
+import OutfitCard from './OutfitCard.jsx';
 import './list.css';
 import options from '../config/config.js';
+import { OutfitContext } from './RelatedAndOutfit.jsx';
 
-const RelatedList = () => {
+const OutfitList = () => {
+  // get current product from global state
   const [currProduct, setCurrProduct] = useState({});
   const [current, setCurrent] = useState(0);
   const [len, setLen] = useState(0);
-  const [related, setRelated] = useState([]);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [cards, setCards] = useState(3);
-
-  const getRelatedFromIds = (idList) => {
-    const relatedList = [];
-    idList.forEach((id) => {
-      axios.get(`${options.url}products/${id}`, {
-        headers: options.headers,
-      })
-        .then((res) => {
-          // condition should eventually use id of the current page (from global state) to ignore it
-          if (id !== 13029) {
-            relatedList.push(res.data);
-            const newRelated = related.concat(relatedList);
-            setRelated(newRelated);
-          } else {
-            setCurrProduct(res.data);
-          }
-        })
-        .catch((err) => {
-          throw err;
-        });
-    });
-  };
-
-  const getRelated = () => {
-    // should eventually use id of the current page (global state not hard code)
-    axios.get(`${options.url}products/13029/related`, {
-      headers: options.headers,
-    })
-      .then((res) => {
-        setLen(res.data.length - 1);
-        getRelatedFromIds(res.data);
-      })
-      .catch((err) => {
-        throw err;
-      });
-  };
+  const [cards, setCards] = useState(0);
+  const outfitsContext = useContext(OutfitContext);
 
   const updateWidth = () => {
     setWindowWidth(window.innerWidth);
   };
 
   useEffect(() => {
-    getRelated();
+    setLen(outfitsContext.outfits.length - 1);
     window.addEventListener('resize', updateWidth);
     return () => { window.removeEventListener('resize', updateWidth); };
   }, []);
@@ -102,8 +70,8 @@ const RelatedList = () => {
     <div className="list-section">
       {current !== 0 && <button type="button" className="btn-list-left" onClick={prevCard}>prev</button>}
       <div className="list-cards" style={{ width: `${cards * 230}px` }} ref={listRef}>
-        {related.map((product) => (
-          <RelatedCard key={product.id} product={product} currProduct={currProduct} />
+        {outfitsContext.outfits.map((product) => (
+          <OutfitCard key={product.id} product={product} currProduct={currProduct} />
         ))}
       </div>
       {current !== len - cards && <button type="button" className="btn-list-right" onClick={nextCard}>next</button>}
@@ -111,4 +79,4 @@ const RelatedList = () => {
   );
 };
 
-export default RelatedList;
+export default OutfitList;

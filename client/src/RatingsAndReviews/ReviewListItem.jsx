@@ -4,12 +4,14 @@ import axios from 'axios';
 import options from '../config/config';
 import './reviews.css';
 import StarRating from './StarRating.jsx';
+import ImageModal from './ImageModal.jsx';
 
 const ReviewListItem = ({ review }) => {
   // console.log('current review', review);
   const [helpfull, setHelpfull] = useState(review.helpfulness);
   const [reported, setReported] = useState(false);
   const [disableHelpful, setDisableHelpful] = useState(false);
+  const [showFullImage, setShowFullImage] = useState(false);
   const handleAddHelpful = () => {
     setDisableHelpful(!disableHelpful);
     setHelpfull(() => (disableHelpful ? helpfull - 1 : helpfull + 1));
@@ -59,8 +61,29 @@ const ReviewListItem = ({ review }) => {
       <div className="review-summary">{review.summary}</div>
       <div>{review.body}</div>
       <div className="photos-container">
-        {review.photos ? review.photos.map((photo) => <img key={photo.id} src={photo.url} alt="" width="30%" height="30%" />) : null}
+        {review.photos.map((photo) => (
+          <div key={photo.id}>
+            <img
+              src={photo.url}
+              aria-label="save"
+              alt=""
+              width="50"
+              height="60"
+              onClick={() => setShowFullImage((prev) => !prev)}
+              onKeyPress={() => { }}
+              role="presentation"
+            />
+            <ImageModal
+              showFullImage={showFullImage}
+              url={photo.url}
+              onClose={() => setShowFullImage((prev) => !prev)}
+            />
+          </div>
+
+        ))}
+        ;
       </div>
+
       <div>
         {review.recommend ? <span>&#10003; I recommend this product</span> : null}
       </div>

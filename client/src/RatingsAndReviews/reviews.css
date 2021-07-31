@@ -10,11 +10,11 @@
 
 .review-form-modal {
   position: fixed;
-  top: 1000px;
+  /* top: 500px;
   left: 20px;
   right: 0px;
-  bottom: 0px;
-  z-index: 1000;
+  bottom: 0px; */
+  z-index: 100;
 }
 
 .review-form {
@@ -23,12 +23,12 @@
   position: fixed;
   top: 0%;
   left: 50%;
-  width: 80%;
-  height: 50%;
+  width: 70%;
+  height: 70%;
   transform: translate(-50%, 50%);
   background-color: lightblue;
-  padding: 25px;
-  z-index: 1000;
+  padding: 0px;
+  z-index: 100;
 }
 
 .review-form>div {
@@ -61,6 +61,14 @@
   display: flex;
 }
 
-.review-list {
-  height: 1000px
+.review-list-container {
+  height: 500px;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+.add-review-button {
+  position: relative;
+  bottom: 0.1rem;
+  right: 0.5rem;
 }

@@ -14,29 +14,29 @@ import { getReviewsMeta } from '../../reviewRequest.js';
 import { OutfitContext } from './RelatedAndOutfit.jsx';
 import { handleOutfitAction } from './helpers.js'
 
-const RelatedCard = ({ product, currProduct }) => {
-  const [relatedImg, setRelatedImg] = useState('');
+const OutfitCard = ({ product, currProduct }) => {
+  const [outfitImg, setOutfitImg] = useState('');
   const [salePrice, setSalePrice] = useState('');
   const [defaultPrice, setDefaultPrice] = useState('');
-  const [inOutfit, setInOutfit] = useState(false);
+  const [inOutfit, setInOutfit] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const [ratings, setRatings] = useState({});
   const ratingsBreakDown = useMemo(() => calculateRating(ratings), [ratings]);
   const outfitsContext = useContext(OutfitContext);
 
   const setDefaultData = (stylesObj) => {
-    let relatedStyleInd = 0;
-    for (let i = 0; i < stylesObj.results.length; i++) {
+    let outfitStyleInd = 0;
+    for (let i = 0; i < stylesObj.results.length; i += 1) {
       if (stylesObj.results[i]['default?']) {
-        relatedStyleInd = i;
+        outfitStyleInd = i;
         break;
       }
     }
-    setRelatedImg(stylesObj.results[relatedStyleInd].photos[0].thumbnail_url);
+    setOutfitImg(stylesObj.results[outfitStyleInd].photos[0].thumbnail_url);
     setDefaultPrice(product.default_price);
-    setSalePrice(stylesObj.results[relatedStyleInd].sale_price);
+    setSalePrice(stylesObj.results[outfitStyleInd].sale_price);
   };
-  const getRelatedStylesFromIds = () => {
+  const getOutfitStylesFromIds = () => {
     axios.get(`${options.url}products/${product.id}/styles`, {
       headers: options.headers,
     })
@@ -48,44 +48,28 @@ const RelatedCard = ({ product, currProduct }) => {
       });
   };
 
-  const isInOutfit = () => {
-    // use global storage for outfit list
-    outfitsContext.outfits.forEach((outfitItem) => {
-      if (outfitItem.id === product.id) {
-        setInOutfit(true);
-      }
-    });
-  };
-
   useEffect(() => {
-    getRelatedStylesFromIds();
+    getOutfitStylesFromIds();
     getReviewsMeta(product.id)
       .then((res) => {
         setRatings(res.ratings);
       });
-    isInOutfit();
   }, []);
 
-  const handleStarClick = () => {
-    const newInOutfit = !inOutfit;
-    // move to helper functions?
-    handleOutfitAction(newInOutfit, product.id);
-    setInOutfit(newInOutfit);
+  const handleRemove = () => {
+    handleOutfitAction(false, product.id);
   };
 
   return (
     <div className="list-card">
       <img
-        src={relatedImg}
+        src={outfitImg}
         alt={product.name}
         width="200"
         height="200"
         className="card-img"
       />
-      <div className="card-add-star" onClick={() => (handleStarClick())}>
-        {inOutfit ? <img src={fillStar} alt="star_icon_fill" />
-          : <img src={emptyStar} alt="star_icon_empty" />}
-      </div>
+      <button type="button" className="btn-outfit-remove" onClick={() => (handleRemove())}>X</button>
       <div className="card-category">
         {product.category.toUpperCase()}
       </div>
@@ -123,7 +107,7 @@ const RelatedCard = ({ product, currProduct }) => {
   );
 };
 
-RelatedCard.propTypes = {
+OutfitCard.propTypes = {
   product: PropTypes.shape({
     id: PropTypes.number,
     category: PropTypes.string,
@@ -141,9 +125,9 @@ RelatedCard.propTypes = {
   }),
 };
 
-RelatedCard.defaultProps = {
+OutfitCard.defaultProps = {
   product: {},
   currProduct: {},
 };
 
-export default RelatedCard;
+export default OutfitCard;
