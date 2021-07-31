@@ -9,6 +9,7 @@ export const OutfitContext = React.createContext();
 
 const RelatedAndOutfit = () => {
   const [outfits, setOutfits] = useState([]);
+  const [outfitIds, setOutfitIds] = useState([]);
 
   const getOutfitsFromIds = (idList) => {
     const outfitsList = [];
@@ -32,10 +33,31 @@ const RelatedAndOutfit = () => {
     getOutfitsFromIds(getOutfits());
   }, []);
 
+  useEffect(() => {
+    console.log('newIds: ', outfitIds);
+    getOutfitsFromIds(outfitIds);
+  }, [outfitIds]);
+
+  // const listenStorage = () => {
+  //   console.log(JSON.parse(window.localStorage.getItem('outfits')));
+  //   setOutfitIds(JSON.parse(window.localStorage.getItem('outfits')));
+  // };
+
+  // useEffect(() => {
+  //   window.addEventListener('storage', listenStorage);
+  //   return () => {
+  //     window.removeEventListener('storage', listenStorage);
+  //   };
+  // }, []);
+
+  // useEffect(() => {
+  //   getOutfitsFromIds(outfitIds);
+  // }, [outfitIds])
+
   return (
     <div id="comp-modal-portal" className="related-outfit">
       RELATED AND OUTFIT
-      <OutfitContext.Provider value={{ outfits, setOutfits }}>
+      <OutfitContext.Provider value={{ outfits, setOutfitIds }}>
         <div className="related-section">Related Products</div>
         <RelatedList />
         <div className="outfit-section">Your Outfit</div>

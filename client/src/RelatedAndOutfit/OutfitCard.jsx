@@ -57,7 +57,7 @@ const OutfitCard = ({ product, currProduct }) => {
   }, []);
 
   const handleRemove = () => {
-    handleOutfitAction(false, product.id);
+    outfitsContext.setOutfitIds(handleOutfitAction(false, product.id));
   };
 
   return (

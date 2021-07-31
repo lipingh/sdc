@@ -69,7 +69,7 @@ const RelatedCard = ({ product, currProduct }) => {
   const handleStarClick = () => {
     const newInOutfit = !inOutfit;
     // move to helper functions?
-    handleOutfitAction(newInOutfit, product.id);
+    console.log(handleOutfitAction(newInOutfit, product.id));
     setInOutfit(newInOutfit);
   };
 
