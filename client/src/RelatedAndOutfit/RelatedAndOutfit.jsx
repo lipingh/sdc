@@ -12,21 +12,25 @@ const RelatedAndOutfit = () => {
   const [outfitIds, setOutfitIds] = useState([]);
 
   const getOutfitsFromIds = (idList) => {
-    const outfitsList = [];
-    idList.forEach((id) => {
+    const getOutfitsArray = idList.map((id) => new Promise((resolve, reject) => {
       axios.get(`${options.url}products/${id}`, {
         headers: options.headers,
       })
         .then((res) => {
           // condition should eventually use id of the current page (from global state) to ignore it
-          outfitsList.push(res.data);
-          const newOutfits = outfits.concat(outfitsList);
-          setOutfits(newOutfits);
+          resolve(res.data);
         })
         .catch((err) => {
-          throw err;
+          reject(err);
         });
-    });
+    }));
+    Promise.all(getOutfitsArray)
+      .then((value) => {
+        setOutfits(value);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   useEffect(() => {
@@ -34,25 +38,8 @@ const RelatedAndOutfit = () => {
   }, []);
 
   useEffect(() => {
-    console.log('newIds: ', outfitIds);
     getOutfitsFromIds(outfitIds);
   }, [outfitIds]);
-
-  // const listenStorage = () => {
-  //   console.log(JSON.parse(window.localStorage.getItem('outfits')));
-  //   setOutfitIds(JSON.parse(window.localStorage.getItem('outfits')));
-  // };
-
-  // useEffect(() => {
-  //   window.addEventListener('storage', listenStorage);
-  //   return () => {
-  //     window.removeEventListener('storage', listenStorage);
-  //   };
-  // }, []);
-
-  // useEffect(() => {
-  //   getOutfitsFromIds(outfitIds);
-  // }, [outfitIds])
 
   return (
     <div id="comp-modal-portal" className="related-outfit">

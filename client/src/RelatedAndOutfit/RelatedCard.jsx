@@ -68,8 +68,7 @@ const RelatedCard = ({ product, currProduct }) => {
 
   const handleStarClick = () => {
     const newInOutfit = !inOutfit;
-    // move to helper functions?
-    console.log(handleOutfitAction(newInOutfit, product.id));
+    outfitsContext.setOutfitIds(handleOutfitAction(newInOutfit, product.id));
     setInOutfit(newInOutfit);
   };
 
