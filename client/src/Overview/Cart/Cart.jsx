@@ -11,8 +11,7 @@ import helperMethods from '../../RelatedAndOutfit/helpers.js';
 
 const Cart = () => {
   const contextData = useContext(ExpandContext);
-  // const [sku, setSku] = useState({});
-  const [skuIds, setSkuIds] = useState([]);
+  const [sku, setSku] = useState({});
   const [sizes, setSizes] = useState([]);
   const [quantities, setQuantities] = useState({});
   const [selectedSize, setSelectedSize] = useState('');
@@ -28,6 +27,7 @@ const Cart = () => {
   };
 
   const quantityChangeHandler = () => {
+    console.log(selectedQuan);
     setSelectedQuan(selectQuantity.current.value);
   };
 
@@ -40,24 +40,43 @@ const Cart = () => {
     setIsFavorite(!isFavorite);
   };
 
+  const addProduct = (id, quantity) => {
+    const data = {
+      sku_id: parseInt(id, 10),
+      count: parseInt(quantity, 10),
+    };
+    axios.post(`${options.url}cart`, data, { headers: options.headers })
+      .then(() => {
+        console.log('successful post request');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const buttonClickHandler = () => {
+    Object.keys(sku).forEach((skuId) => {
+      if (sku[skuId].size === selectedSize) {
+        addProduct(skuId, selectedQuan);
+      }
+    });
+  };
+
   useEffect(() => {
     axios.get(`${options.url}products/${contextData.currState.productId}/styles`, { headers: options.headers })
       .then((response) => {
-        // const skuData = {};
-        const skuIdData = [];
+        const skuData = {};
         const sizeData = [];
         const quantityData = {};
         for (const [key, value] of Object.entries(response.data.results[contextData.currState.styleIndex].skus)) {
           if (key !== 'null' && value.quantity > 0) {
-            // skuData[key] = value;
-            skuIdData.push(key);
+            skuData[key] = value;
             sizeData.push(value.size);
             quantityData[value.size] = value.quantity; // {'M': 12}
           }
         }
-        // setSku(skuData);
+        setSku(skuData);
         setSizes(sizeData);
-        setSkuIds(skuIdData);
         setQuantities(quantityData);
       })
       .catch((err) => {
@@ -85,7 +104,7 @@ const Cart = () => {
                 <option value={index + 2} key={index}>{index + 2}</option>))}
           </select>
         ) : <select name="quantities" disabled className={style.quantity}><option value="">-</option></select>}
-      {sizes.length > 0 && <button type="button" className={style.addButton}>Add To Bag</button>}
+      {sizes.length > 0 && <button type="button" className={style.addButton} onClick={buttonClickHandler}>Add To Bag</button>}
       {isFavorite ? <img src={pinkHeart} alt="favorite button" className={style.favorite} onClick={favClickHandler} />
         : <img src={emptyHeart} alt="favorite button" className={style.favorite} onClick={favClickHandler} />}
     </div>
