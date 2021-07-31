@@ -7,6 +7,7 @@ import { ExpandContext } from '../Overview.jsx';
 import style from './Cart.module.css';
 import emptyHeart from './emptyheart.png';
 import pinkHeart from './pinkheart.png';
+import helperMethods from '../../RelatedAndOutfit/helpers.js';
 
 const Cart = () => {
   const contextData = useContext(ExpandContext);
@@ -31,6 +32,11 @@ const Cart = () => {
   };
 
   const favClickHandler = () => {
+    if (!isFavorite) { // add to local storage
+      helperMethods.handleOutfitAction(true, contextData.currState.productId);
+    } else { // remove from local storage
+      helperMethods.handleOutfitAction(false, contextData.currState.productId);
+    }
     setIsFavorite(!isFavorite);
   };
 
