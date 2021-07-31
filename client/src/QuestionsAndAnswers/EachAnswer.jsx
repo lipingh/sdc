@@ -36,10 +36,12 @@ const EachAnswer = ({ answer }) => {
       </div>
       <div className="Ahelp-report">
         <span>
-          by:
-          {answer.answerer_name}
-          ,
-          {' '}
+          <span className="seller">
+            {answer.answerer_name === 'Seller' ? `by: ${answer.answerer_name}, ` : null}
+          </span>
+          <span className="notSeller">
+            {answer.answerer_name !== 'Seller' ? `by: ${answer.answerer_name}, ` : null}
+          </span>
           {new Date(answer.date).toLocaleDateString(
             undefined, { year: 'numeric', month: 'long', day: 'numeric' },
           )}
