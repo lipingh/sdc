@@ -27,7 +27,6 @@ const Cart = () => {
   };
 
   const quantityChangeHandler = () => {
-    console.log(selectedQuan);
     setSelectedQuan(selectQuantity.current.value);
   };
 
@@ -68,13 +67,13 @@ const Cart = () => {
         const skuData = {};
         const sizeData = [];
         const quantityData = {};
-        for (const [key, value] of Object.entries(response.data.results[contextData.currState.styleIndex].skus)) {
-          if (key !== 'null' && value.quantity > 0) {
-            skuData[key] = value;
-            sizeData.push(value.size);
-            quantityData[value.size] = value.quantity; // {'M': 12}
-          }
-        }
+        const { skus } = response.data.results[contextData.currState.styleIndex];
+
+        Object.keys(skus).forEach((key) => {
+          skuData[key] = skus[key];
+          sizeData.push(skus[key].size);
+          quantityData[skus[key].size] = skus[key].quantity;
+        });
         setSku(skuData);
         setSizes(sizeData);
         setQuantities(quantityData);
