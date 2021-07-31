@@ -44,3 +44,6 @@
 .QSubmit {
   width:15%;
 }
+.asterisk {
+  text-decoration-color: red;
+}
