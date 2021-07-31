@@ -62,7 +62,6 @@ const EachAnswer = ({ answer }) => {
     </div>
   );
 };
-// regarding the on click issue above, it leads into a rabbit hole of accessability functionality.
 
 EachAnswer.propTypes = {
   answer: PropTypes.shape({
