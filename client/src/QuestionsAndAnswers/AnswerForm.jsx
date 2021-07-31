@@ -20,9 +20,9 @@ const AnswerForm = ({ questionId, questionBody, showAnswerForm, handleAnswerForm
       showErrM(false);
 
       const data = {
-        body, name, email,
+        body, name, email, photos: [],
       };
-      axios.post(`${options.url}qa/questions/:${questionId}/answers`, data, { headers: options.headers })
+      axios.post(`${options.url}qa/questions/${questionId}/answers`, data, { headers: options.headers })
         .then(() => {
           showM(true);
           setBody('');
@@ -30,7 +30,7 @@ const AnswerForm = ({ questionId, questionBody, showAnswerForm, handleAnswerForm
           setEmail('');
         })
         .catch((err) => {
-          Promise.reject(err);
+          console.error(err);
         });
     } else {
       showErrM(true);
@@ -69,7 +69,7 @@ const AnswerForm = ({ questionId, questionBody, showAnswerForm, handleAnswerForm
         </div>
         <input className="AEmail" type="email" placeholder="Example: abcde@abc.com" onChange={(e) => { setEmail(e.target.value); }} required />
         <span>For authentication reasons, you will not be emailed.</span>
-        <button className="ASubmit" type="submit" onClick={handleSubmitQuestion}>Submit Question</button>
+        <button className="ASubmit" type="submit" onClick={handleSubmitQuestion}>Submit Answer</button>
       </form>
     </div>,
     document.getElementById('questions'),
