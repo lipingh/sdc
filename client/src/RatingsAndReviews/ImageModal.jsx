@@ -6,10 +6,10 @@ const ImageModal = ({ showFullImage, url, id, handleClickPhoto }) => {
     return null;
   }
   return ReactDOM.createPortal(
-    <>
+    <div className="image-window-">
       <button type="button" onClick={() => handleClickPhoto(id)}>X</button>
       <img src={url} alt="" />
-    </>,
+    </div>,
     document.getElementById('image-modal'),
   );
 };
