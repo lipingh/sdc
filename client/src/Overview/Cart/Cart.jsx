@@ -5,6 +5,8 @@ import axios from 'axios';
 import options from '../../config/config.js';
 import { ExpandContext } from '../Overview.jsx';
 import style from './Cart.module.css';
+import emptyHeart from './emptyheart.png';
+import pinkHeart from './pinkheart.png';
 
 const Cart = () => {
   const contextData = useContext(ExpandContext);
@@ -17,6 +19,7 @@ const Cart = () => {
   const [availableQuantity, setAvailableQuantity] = useState(0);
   const selectSize = useRef(null);
   const selectQuantity = useRef(null);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   const sizeChangeHandler = () => {
     setSelectedSize(selectSize.current.value);
@@ -27,6 +30,10 @@ const Cart = () => {
     setSelectedQuan(selectQuantity.current.value);
   };
 
+  const favClickHandler = () => {
+    setIsFavorite(!isFavorite);
+  };
+
   useEffect(() => {
     axios.get(`${options.url}products/${contextData.currState.productId}/styles`, { headers: options.headers })
       .then((response) => {
@@ -35,7 +42,7 @@ const Cart = () => {
         const sizeData = [];
         const quantityData = {};
         for (const [key, value] of Object.entries(response.data.results[contextData.currState.styleIndex].skus)) {
-          if (key !== 'null') {
+          if (key !== 'null' && value.quantity > 0) {
             // skuData[key] = value;
             skuIdData.push(key);
             sizeData.push(value.size);
@@ -52,17 +59,17 @@ const Cart = () => {
       });
   }, [contextData.currState.styleIndex, contextData.currState.productId]);
   return (
-    <div>
-      {sizes.length
+    <div className={style.cart}>
+      {sizes.length > 0
         ? (
-          <select name="sizes" ref={selectSize} onChange={sizeChangeHandler}>
+          <select name="sizes" ref={selectSize} onChange={sizeChangeHandler} className={style.size}>
             <option value="">SELECT SIZE</option>
             {sizes.map((size, index) => (<option value={size} key={index}>{size}</option>))}
           </select>
         ) : <select name="sizes" disabled><option value="">OUT OF STOCK</option></select>}
       {availableQuantity > 0
         ? (
-          <select name="quantities" ref={selectQuantity} onChange={quantityChangeHandler}>
+          <select name="quantities" ref={selectQuantity} onChange={quantityChangeHandler} className={style.quantity}>
             <option value="1">1</option>
             {availableQuantity >= 15
               ? (
@@ -71,7 +78,10 @@ const Cart = () => {
               ) : [...Array(availableQuantity - 1)].map((element, index) => (
                 <option value={index + 2} key={index}>{index + 2}</option>))}
           </select>
-        ) : <select name="quantities" disabled><option value="">-</option></select>}
+        ) : <select name="quantities" disabled className={style.quantity}><option value="">-</option></select>}
+      {sizes.length > 0 && <button type="button" className={style.addButton}>Add To Bag</button>}
+      {isFavorite ? <img src={pinkHeart} alt="favorite button" className={style.favorite} onClick={favClickHandler} />
+        : <img src={emptyHeart} alt="favorite button" className={style.favorite} onClick={favClickHandler} />}
     </div>
   );
 };
