@@ -17,7 +17,6 @@ const RelatedAndOutfit = () => {
         headers: options.headers,
       })
         .then((res) => {
-          // condition should eventually use id of the current page (from global state) to ignore it
           resolve(res.data);
         })
         .catch((err) => {

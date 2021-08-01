@@ -26,7 +26,7 @@ const RelatedCard = ({ product, currProduct }) => {
 
   const setDefaultData = (stylesObj) => {
     let relatedStyleInd = 0;
-    for (let i = 0; i < stylesObj.results.length; i++) {
+    for (let i = 0; i < stylesObj.results.length; i += 1) {
       if (stylesObj.results[i]['default?']) {
         relatedStyleInd = i;
         break;
@@ -92,11 +92,24 @@ const RelatedCard = ({ product, currProduct }) => {
         {product.name}
       </div>
       <div className="card-price">
-        <div className="card-default-price">
-          $
-          {defaultPrice}
-        </div>
-        <div className="card-sale-price">{salePrice || ''}</div>
+        {salePrice ? (
+          <>
+            <span className="sale-price" style={{ color: 'red' }}>
+              $
+              {salePrice}
+            </span>
+            <span className="old-price">
+              $
+              {defaultPrice}
+            </span>
+          </>
+        )
+          : (
+            <span>
+              $
+              {defaultPrice}
+            </span>
+          )}
       </div>
       <div className="card-rating">
         {isNaN(ratingsBreakDown.averageRatings.toFixed(1))

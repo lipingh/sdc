@@ -5,20 +5,17 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import options from '../config/config.js';
 import './card.css';
-import emptyStar from './assets/star-icon-empty.png';
-import fillStar from './assets/star-icon-fill.png';
 import ComparisonModal from './ComparisonModal.jsx';
 import StarRating from '../RatingsAndReviews/StarRating.jsx';
 import calculateRating from '../../helper.js';
 import { getReviewsMeta } from '../../reviewRequest.js';
 import { OutfitContext } from './RelatedAndOutfit.jsx';
-import { handleOutfitAction } from './helpers.js'
+import { handleOutfitAction } from './helpers.js';
 
 const OutfitCard = ({ product, currProduct }) => {
   const [outfitImg, setOutfitImg] = useState('');
   const [salePrice, setSalePrice] = useState('');
   const [defaultPrice, setDefaultPrice] = useState('');
-  const [inOutfit, setInOutfit] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const [ratings, setRatings] = useState({});
   const ratingsBreakDown = useMemo(() => calculateRating(ratings), [ratings]);
@@ -77,11 +74,24 @@ const OutfitCard = ({ product, currProduct }) => {
         {product.name}
       </div>
       <div className="card-price">
-        <div className="card-default-price">
-          $
-          {defaultPrice}
-        </div>
-        <div className="card-sale-price">{salePrice || ''}</div>
+        {salePrice ? (
+          <>
+            <span className="sale-price" style={{ color: 'red' }}>
+              $
+              {salePrice}
+            </span>
+            <span className="old-price">
+              $
+              {defaultPrice}
+            </span>
+          </>
+        )
+          : (
+            <span>
+              $
+              {defaultPrice}
+            </span>
+          )}
       </div>
       <div className="card-rating">
         {isNaN(ratingsBreakDown.averageRatings.toFixed(1))
