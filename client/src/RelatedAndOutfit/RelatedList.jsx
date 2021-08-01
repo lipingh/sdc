@@ -25,6 +25,7 @@ const RelatedList = () => {
             const newRelated = related.concat(relatedList);
             setRelated(newRelated);
           } else {
+            //and set current product from global state
             setCurrProduct(res.data);
           }
         })

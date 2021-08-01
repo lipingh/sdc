@@ -21,10 +21,13 @@ const OutfitList = () => {
   };
 
   useEffect(() => {
-    setLen(outfitsContext.outfits.length - 1);
     window.addEventListener('resize', updateWidth);
     return () => { window.removeEventListener('resize', updateWidth); };
   }, []);
+
+  useEffect(() => {
+    setLen(outfitsContext.outfits.length - 1);
+  }, [outfitsContext.outfits]);
 
   useEffect(() => {
     let possibleCards = Math.floor((windowWidth - 100) / 230);
