@@ -4,10 +4,13 @@ import './QandA-list.css';
 import options from '../config/config.js';
 import QuestionsList from './QuestionsList.jsx';
 import allInOrder from './Helpers.js';
-import SearchQuestions from './SearchQuestions.jsx'
+import SearchQuestions from './SearchQuestions.jsx';
+import QuestionForm from './QuestionForm.jsx';
 
 const QuestionsAndAnswers = () => {
   const [questions, setQuestions] = useState([]);
+  const [moreQuestions, showMoreQuestions] = useState(false);
+  const [showQuestionsForm, setQuestionForm] = useState(false);
   const [search, setSearch] = useState('');
   const [originalQuestions, setOriginalQuestions] = useState([]);
 
@@ -43,18 +46,40 @@ const QuestionsAndAnswers = () => {
     }
   };
 
+  const handleMoreQuestions = () => {
+    showMoreQuestions((more) => !more);
+  };
+
   useEffect(() => {
     getQuestions();
   }, []);
 
   return (
-    <>
+    <div id="questions">
       <h3>Questions and Answers</h3>
-      <SearchQuestions search={search} handleSearch={handleSearch} />
+      <SearchQuestions
+        handleSearch={handleSearch}
+      />
+      <QuestionForm
+        showQuestionForm={showQuestionsForm}
+        handleQuestionForm={() => { setQuestionForm(false); }}
+      />
       <div className="q-a">
-        <QuestionsList questions={questions} />
+        <QuestionsList
+          questions={questions}
+          moreQuestions={moreQuestions}
+          handleMoreQuestions={handleMoreQuestions}
+        />
+        <button
+          className="more-questions-button"
+          type="button"
+          onClick={handleMoreQuestions}
+        >
+          {moreQuestions ? 'Hide Questions' : 'More Answered Questions'}
+        </button>
+        <button type="button" onClick={() => { setQuestionForm(true); }}>Add a Question</button>
       </div>
-    </>
+    </div>
   );
 };
 

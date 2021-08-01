@@ -3,11 +3,12 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import options from '../config/config';
 import AnswerList from './AnswerList.jsx';
+import AnswerForm from './AnswerForm.jsx';
 
 const EachQuestion = ({ question }) => {
   const [helpful, setHelpful] = useState(question.question_helpfulness);
   const [voted, setVoted] = useState(false);
-
+  const [showAnswerForm, setShow] = useState(false);
   const handleHelpClick = () => {
     if (!voted) {
       setVoted((vote) => !vote);
@@ -43,10 +44,24 @@ const EachQuestion = ({ question }) => {
           >
             {voted ? 'You thought this was helpful | ' : ` Helpful? Yes: ${helpful} | `}
           </span>
-          <span> Report</span>
+          <span> Report | </span>
+          <span
+            onKeyPress={() => {}}
+            role="button"
+            tabIndex="0"
+            onClick={() => { setShow(true); }}
+          >
+            Add Answer
+          </span>
         </div>
       </div>
       <AnswerList answers={question.answers} />
+      <AnswerForm
+        questionId={question.question_id}
+        questionBody={question.question_body}
+        showAnswerForm={showAnswerForm}
+        handleAnswerForm={() => { setShow(false); }}
+      />
     </>
   );
 };
