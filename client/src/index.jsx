@@ -53,7 +53,6 @@ const App = () => {
   useEffect(() => {
     getProductInfo(state.productId)
       .then((res) => {
-        console.log('res: ', res);
         dispatch({ type: 'updateName', data: res.name });
         dispatch({ type: 'updateCategory', data: res.category });
         dispatch({ type: 'updateFeatures', data: res.features });
