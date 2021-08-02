@@ -21,6 +21,7 @@ const handleOutfitAction = (bool, productId) => {
     }
     window.localStorage.setItem('outfits', JSON.stringify(storageOutfits));
   }
+  return storageOutfits;
 };
 
 module.exports = {

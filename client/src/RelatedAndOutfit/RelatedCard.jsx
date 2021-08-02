@@ -12,7 +12,8 @@ import StarRating from '../RatingsAndReviews/StarRating.jsx';
 import calculateRating from '../../helper.js';
 import { getReviewsMeta } from '../../reviewRequest.js';
 import { OutfitContext } from './RelatedAndOutfit.jsx';
-import { handleOutfitAction } from './helpers.js'
+import { handleOutfitAction } from './helpers.js';
+import { globalContext } from '../index.jsx';
 
 const RelatedCard = ({ product, currProduct }) => {
   const [relatedImg, setRelatedImg] = useState('');
@@ -23,10 +24,11 @@ const RelatedCard = ({ product, currProduct }) => {
   const [ratings, setRatings] = useState({});
   const ratingsBreakDown = useMemo(() => calculateRating(ratings), [ratings]);
   const outfitsContext = useContext(OutfitContext);
+  const globalData = useContext(globalContext);
 
   const setDefaultData = (stylesObj) => {
     let relatedStyleInd = 0;
-    for (let i = 0; i < stylesObj.results.length; i++) {
+    for (let i = 0; i < stylesObj.results.length; i += 1) {
       if (stylesObj.results[i]['default?']) {
         relatedStyleInd = i;
         break;
@@ -68,13 +70,16 @@ const RelatedCard = ({ product, currProduct }) => {
 
   const handleStarClick = () => {
     const newInOutfit = !inOutfit;
-    // move to helper functions?
-    handleOutfitAction(newInOutfit, product.id);
+    outfitsContext.setOutfitIds(handleOutfitAction(newInOutfit, product.id));
     setInOutfit(newInOutfit);
   };
 
+  const handleCardClick = () => {
+    globalData.dispatch({ type: 'changeProductId', data: product.id });
+  };
+
   return (
-    <div className="list-card">
+    <div className="list-card" onClick={() => (handleCardClick())}>
       <img
         src={relatedImg}
         alt={product.name}
@@ -93,11 +98,24 @@ const RelatedCard = ({ product, currProduct }) => {
         {product.name}
       </div>
       <div className="card-price">
-        <div className="card-default-price">
-          $
-          {defaultPrice}
-        </div>
-        <div className="card-sale-price">{salePrice || ''}</div>
+        {salePrice ? (
+          <>
+            <span className="sale-price" style={{ color: 'red' }}>
+              $
+              {salePrice}
+            </span>
+            <span className="old-price">
+              $
+              {defaultPrice}
+            </span>
+          </>
+        )
+          : (
+            <span>
+              $
+              {defaultPrice}
+            </span>
+          )}
       </div>
       <div className="card-rating">
         {isNaN(ratingsBreakDown.averageRatings.toFixed(1))

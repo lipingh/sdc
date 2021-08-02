@@ -4,7 +4,17 @@
 }
 
 .comp-features {
-  position: sticky;
-  left: 50%;
-  transform: translate(-50%);
+  position: sticky ;
+  width: 33%;
+  text-align: center;
+ }
+
+ .comp-current {
+   width: 33%;
+   text-align: left;
+ }
+
+ .comp-related {
+   width: 33%;
+   text-align: right;
  }
