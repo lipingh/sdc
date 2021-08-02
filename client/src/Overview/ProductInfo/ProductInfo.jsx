@@ -40,6 +40,8 @@ const ProductInfo = () => {
         if (response.data.results[contextData.currState.styleIndex].sale_price !== null) {
           setOnSale(true);
           setSalePrice(response.data.results[contextData.currState.styleIndex].sale_price);
+        } else {
+          setOnSale(false);
         }
       })
       .catch((err) => {
