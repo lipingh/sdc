@@ -19,7 +19,9 @@ const useAllQuestions = (productId, page, searched) => {
     setLoading(true);
     setError(false);
 
-    axios.get(`${options.url}questions/`, {
+    axios({
+      method: 'GET',
+      url: `${options.url}qa/questions/`,
       headers: options.headers,
       params: {
         product_id: productId,

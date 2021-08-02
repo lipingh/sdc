@@ -6,7 +6,7 @@ import QuestionsAndAnswers from './QuestionsAndAnswers/QuestionsAndAnswers.jsx';
 import RatingsAndReviews from './RatingsAndReviews/RatingsAndReviews.jsx';
 
 const initialState = {
-  productId: 13023,
+  productId: 13027,
 };
 
 const reducer = (state, action) => {
