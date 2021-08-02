@@ -1,0 +1,49 @@
+.question-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: fixed;
+  top: 0%;
+  left: 50%;
+  width: 50%;
+  height: 40%;
+  transform: translate(-50%, 50%);
+  background-color: #ffffff;
+  padding: 25px;
+  z-index: 1000;
+}
+
+.question-overlay {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background-color: rgba(0, 0, 0, .6);
+  z-index: 1000;
+}
+
+.QBody {
+  width:100%;
+  height: 40%;
+}
+
+.QName {
+  width:50%;
+}
+
+.QEmail {
+  width:50%;
+}
+
+.XButton {
+  width:5%;
+  height:5%;
+}
+
+.QSubmit {
+  width:15%;
+}
+.asterisk {
+  text-decoration-color: red;
+}

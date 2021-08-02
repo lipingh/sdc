@@ -1,5 +1,5 @@
 import React, {
-  useState, useEffect, useMemo, useRef, useCallback,
+  useState, useEffect, useMemo, useRef, useCallback, useContext
 } from 'react';
 import StarRating from './StarRating.jsx';
 import RatingsBreakDown from './RatingsBreakDown.jsx';
@@ -10,16 +10,18 @@ import calculateRating from '../../helper.js';
 import { getReviewsMeta, getReviewsById } from '../../reviewRequest.js';
 import useAllReviews from './useAllReviews.js';
 import './ratings.css';
+import { globalContext } from '../index.jsx';
 
 const RatingsAndReviews = () => {
-  const productId = 13023;
+  const globalData = useContext(globalContext);
+  const productId = globalData.state.productId;
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [recommended, setRecommended] = useState(0);
   const [notRecommended, setNotRecommended] = useState(0);
   const [ratings, setRatings] = useState({});
   const [characteristics, setCharacteristics] = useState({});
   const ratingsBreakDown = useMemo(() => calculateRating(ratings), [ratings]);
-  const [totalReviews, setTotalReviews] = useState(0);
+  // const [totalReviews, setTotalReviews] = useState(0);
   const [sortOption, setSortOption] = useState('relevant');
   // const [productId, setProductId] = useState(13023);
   const [page, setPage] = useState(1);

@@ -4,14 +4,14 @@
   justify-content: center;
 } */
 .answer-list {
-  height:100px;
-  width: 30%;
+  height:200px;
+  width: 50%;
   overflow:hidden;
   overflow-y:scroll;
 }
 .questions-list {
-  height:350px;
-  width: 70%;
+  height:450px;
+  width: 80%;
   overflow:hidden;
   overflow-y:scroll;
 }
@@ -19,7 +19,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 70%;
+  width: 80%;
 }
 .a-entry {
   display: flex;

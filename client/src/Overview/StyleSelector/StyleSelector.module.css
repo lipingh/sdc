@@ -11,12 +11,12 @@
 }
 
 .flex {
-  margin-top: 15px;
+  margin-top: 10px;
   display: flex;
   flex-wrap: wrap;
   width: 350px;
   height: 200px;
-  align-items: stretch;
+  align-content: space-around;
 }
 
 .selector {

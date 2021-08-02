@@ -11,7 +11,13 @@ const ReviewListItem = ({ review }) => {
   const [helpfull, setHelpfull] = useState(review.helpfulness);
   const [reported, setReported] = useState(false);
   const [disableHelpful, setDisableHelpful] = useState(false);
-  const [showFullImage, setShowFullImage] = useState(false);
+  // const [showFullImage, setShowFullImage] = useState(false);
+  const [showFullImage, setShowFullImage] = useState({});
+  const handleClickPhoto = (photoId) => {
+    const showFullImageCopy = { ...showFullImage };
+    showFullImageCopy[photoId] = !showFullImageCopy[photoId];
+    setShowFullImage(showFullImageCopy);
+  };
   const handleAddHelpful = () => {
     setDisableHelpful(!disableHelpful);
     setHelpfull(() => (disableHelpful ? helpfull - 1 : helpfull + 1));
@@ -69,14 +75,15 @@ const ReviewListItem = ({ review }) => {
               alt=""
               width="50"
               height="60"
-              onClick={() => setShowFullImage((prev) => !prev)}
+              onClick={() => handleClickPhoto(photo.id)}
               onKeyPress={() => { }}
               role="presentation"
             />
             <ImageModal
-              showFullImage={showFullImage}
+              showFullImage={showFullImage[photo.id]}
               url={photo.url}
-              onClose={() => setShowFullImage((prev) => !prev)}
+              id={photo.id}
+              handleClickPhoto={() => handleClickPhoto(photo.id)}
             />
           </div>
 

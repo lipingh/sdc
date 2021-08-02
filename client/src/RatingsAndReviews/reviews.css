@@ -72,3 +72,12 @@
   bottom: 0.1rem;
   right: 0.5rem;
 }
+
+.image-window-modal {
+  position: fixed;
+  top: 500px;
+  left: 20px;
+  right: 0px;
+  bottom: 0px;
+  z-index: 100;
+}
