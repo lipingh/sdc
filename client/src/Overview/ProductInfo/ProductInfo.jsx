@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import options from '../../config/config.js';
-import helperMethods from '../../../reviewRequest.js';
 import { ExpandContext } from '../Overview.jsx';
 import { globalContext } from '../../index.jsx';
-import calculateRating from '../../../helper.js';
 import StarRating from '../../RatingsAndReviews/StarRating.jsx'
 import style from './ProductInfo.module.css';
 
@@ -20,14 +18,9 @@ const ProductInfo = () => {
   const [salePrice, setSalePrice] = useState('');
 
   useEffect(() => {
-    helperMethods.getReviewsMeta(globalData.state.productId)
-      .then((res) => {
-        setAverageRating(calculateRating(res.ratings).averageRatings);
-        setTotalReview(calculateRating(res.ratings).totalReviews);
-      })
-      .catch((err) => {
-        console.log('review star data fetching error', err);
-      });
+    setAverageRating(globalData.state.ratingsBreakDown.averageRatings);
+    setTotalReview(globalData.state.ratingsBreakDown.totalReviews);
+
     axios.get(`${options.url}products/${globalData.state.productId}`, { headers: options.headers })
       .then((response) => {
         setCategory(response.data.category);
@@ -49,7 +42,7 @@ const ProductInfo = () => {
       .catch((err) => {
         console.log('styles data fetching err', err);
       });
-  }, [contextData.currState.styleIndex, globalData.state.productId]);
+  }, [contextData.currState.styleIndex, globalData.state.productId, globalData.state.ratingsBreakDown]);
 
   return (
     <div>
