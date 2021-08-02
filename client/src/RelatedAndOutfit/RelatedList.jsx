@@ -13,26 +13,26 @@ const RelatedList = () => {
   const [cards, setCards] = useState(3);
 
   const getRelatedFromIds = (idList) => {
-    const relatedList = [];
-    idList.forEach((id) => {
+    // should eventually use id of the current page (from global state) to set current product
+    const relatedIdList = idList.filter((id) => (id !== 13029));
+    const relatedArray = relatedIdList.map((id) => new Promise((resolve, reject) => {
       axios.get(`${options.url}products/${id}`, {
         headers: options.headers,
       })
         .then((res) => {
-          // condition should eventually use id of the current page (from global state) to ignore it
-          if (id !== 13029) {
-            relatedList.push(res.data);
-            const newRelated = related.concat(relatedList);
-            setRelated(newRelated);
-          } else {
-            //and set current product from global state
-            setCurrProduct(res.data);
-          }
+          resolve(res.data);
         })
         .catch((err) => {
-          throw err;
+          reject(err);
         });
-    });
+    }));
+    Promise.all(relatedArray)
+      .then((value) => {
+        setRelated(value);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const getRelated = () => {
