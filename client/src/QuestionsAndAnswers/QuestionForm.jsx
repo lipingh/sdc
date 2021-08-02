@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import ReactDOM from 'react-dom';
 import './QForm.css';
 import axios from 'axios';
 import options from '../config/config.js';
+import { globalContext } from '../index.jsx';
+
 
 const QuestionForm = ({ showQuestionForm, handleQuestionForm }) => {
   if (!showQuestionForm) return null;
@@ -12,6 +14,8 @@ const QuestionForm = ({ showQuestionForm, handleQuestionForm }) => {
   const [email, setEmail] = useState('');
   const [showSubmitM, showM] = useState(false);
   const [showErr, showErrM] = useState(false);
+  const globalData = useContext(globalContext);
+
 
   const handleSubmitQuestion = (e) => {
     e.preventDefault();
@@ -20,7 +24,7 @@ const QuestionForm = ({ showQuestionForm, handleQuestionForm }) => {
       showErrM(false);
 
       const data = {
-        body, name, email, product_id: 13027,
+        body, name, email, product_id: globalData.state.productId,
       };
       axios.post(`${options.url}qa/questions`, data, { headers: options.headers })
         .then(() => {

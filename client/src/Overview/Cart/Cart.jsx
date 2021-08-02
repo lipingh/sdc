@@ -4,6 +4,7 @@ import React, {
 import axios from 'axios';
 import options from '../../config/config.js';
 import { ExpandContext } from '../Overview.jsx';
+import { globalContext } from '../../index.jsx';
 import style from './Cart.module.css';
 import emptyHeart from './emptyheart.png';
 import pinkHeart from './pinkheart.png';
@@ -11,6 +12,7 @@ import helperMethods from '../../RelatedAndOutfit/helpers.js';
 
 const Cart = () => {
   const contextData = useContext(ExpandContext);
+  const globalData = useContext(globalContext);
   const [sku, setSku] = useState({});
   const [sizes, setSizes] = useState([]);
   const [quantities, setQuantities] = useState({});
@@ -32,9 +34,9 @@ const Cart = () => {
 
   const favClickHandler = () => {
     if (!isFavorite) { // add to local storage
-      helperMethods.handleOutfitAction(true, contextData.currState.productId);
+      helperMethods.handleOutfitAction(true, globalData.state.productId);
     } else { // remove from local storage
-      helperMethods.handleOutfitAction(false, contextData.currState.productId);
+      helperMethods.handleOutfitAction(false, globalData.state.productId);
     }
     setIsFavorite(!isFavorite);
   };
@@ -62,7 +64,7 @@ const Cart = () => {
   };
 
   useEffect(() => {
-    axios.get(`${options.url}products/${contextData.currState.productId}/styles`, { headers: options.headers })
+    axios.get(`${options.url}products/${globalData.state.productId}/styles`, { headers: options.headers })
       .then((response) => {
         const skuData = {};
         const sizeData = [];
@@ -81,7 +83,7 @@ const Cart = () => {
       .catch((err) => {
         console.log('styles data fetching err', err);
       });
-  }, [contextData.currState.styleIndex, contextData.currState.productId]);
+  }, [contextData.currState.styleIndex, globalData.state.productId]);
   return (
     <div className={style.cart}>
       {sizes.length > 0
