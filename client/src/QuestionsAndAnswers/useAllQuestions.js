@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import allInOrder from './Helpers.js';
 import options from '../config/config';
 
 const useAllQuestions = (productId, page, searched) => {
@@ -9,7 +10,7 @@ const useAllQuestions = (productId, page, searched) => {
   const [hasMore, setHasMore] = useState(false);
 
   useEffect(() => {
-    setQuestions([]);
+    setQuestionsI([]);
   }, [productId]);
 
   useEffect(() => {
@@ -27,10 +28,28 @@ const useAllQuestions = (productId, page, searched) => {
       },
       cancelToken: new CancelToken((c) => { cancel = c; }),
     })
-    .then((res) => {
-      
-    })
-  });
+      .then((res) => {
+        const notReported = res.data.results.filter((question) => (
+          !question.reported
+        // !question.reported ? question : null
+        ));
+        const inQHelpOrder = notReported.sort(
+          (a, b) => b.question_helpfulness - a.question_helpfulness,
+        );
+        const finalOrder = allInOrder(inQHelpOrder);
+        setQuestionsI((prev) => [...prev, ...finalOrder]);
+        setHasMore(res.data.results.length > 0);
+        setLoading(false);
+      })
+      .catch((e) => {
+        if (axios.isCancel(e)) return;
+        setError(true);
+      });
+    return () => cancel();
+  }, [productId]);
+  return {
+    loading, error, questionsInfinate, hasMore,
+  };
 };
 
 export default useAllQuestions;
