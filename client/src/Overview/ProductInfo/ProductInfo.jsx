@@ -3,12 +3,14 @@ import axios from 'axios';
 import options from '../../config/config.js';
 import helperMethods from '../../../reviewRequest.js';
 import { ExpandContext } from '../Overview.jsx';
+import { globalContext } from '../../index.jsx';
 import calculateRating from '../../../helper.js';
 import StarRating from '../../RatingsAndReviews/StarRating.jsx'
 import style from './ProductInfo.module.css';
 
 const ProductInfo = () => {
   const contextData = useContext(ExpandContext);
+  const globalData = useContext(globalContext);
   const [averageRating, setAverageRating] = useState(0);
   const [totalReview, setTotalReview] = useState(0);
   const [category, setCategory] = useState('');
@@ -18,7 +20,7 @@ const ProductInfo = () => {
   const [salePrice, setSalePrice] = useState('');
 
   useEffect(() => {
-    helperMethods.getReviewsMeta(contextData.currState.productId)
+    helperMethods.getReviewsMeta(globalData.state.productId)
       .then((res) => {
         setAverageRating(calculateRating(res.ratings).averageRatings);
         setTotalReview(calculateRating(res.ratings).totalReviews);
@@ -26,7 +28,7 @@ const ProductInfo = () => {
       .catch((err) => {
         console.log('review star data fetching error', err);
       });
-    axios.get(`${options.url}products/${contextData.currState.productId}`, { headers: options.headers })
+    axios.get(`${options.url}products/${globalData.state.productId}`, { headers: options.headers })
       .then((response) => {
         setCategory(response.data.category);
         setProductName(response.data.name);
@@ -34,7 +36,7 @@ const ProductInfo = () => {
       .catch((err) => {
         console.log('product data fetching err', err);
       });
-    axios.get(`${options.url}products/${contextData.currState.productId}/styles`, { headers: options.headers })
+    axios.get(`${options.url}products/${globalData.state.productId}/styles`, { headers: options.headers })
       .then((response) => {
         setPrice(response.data.results[contextData.currState.styleIndex].original_price);
         if (response.data.results[contextData.currState.styleIndex].sale_price !== null) {
@@ -47,7 +49,7 @@ const ProductInfo = () => {
       .catch((err) => {
         console.log('styles data fetching err', err);
       });
-  }, [contextData.currState.styleIndex, contextData.currState.productId]);
+  }, [contextData.currState.styleIndex, globalData.state.productId]);
 
   return (
     <div>
@@ -57,7 +59,7 @@ const ProductInfo = () => {
       <a href="#" className={style.linkToReviewComponent}>{totalReview}</a>
       <h4 className={style.category}>{category}</h4>
       <h1 className={style.title}>{productName}</h1>
-      {onSale ? <><span style={{color: 'red'}}>${salePrice}</span><span className={style.oldPrice}>${price}</span></>
+      {onSale ? <><span style={{ color: 'red' }}>${salePrice}</span><span className={style.oldPrice}>${price}</span></>
         : <span>${price}</span>}
     </div>
   );
