@@ -15,12 +15,16 @@ import { globalContext } from '../index.jsx';
 const RatingsAndReviews = () => {
   const globalData = useContext(globalContext);
   const productId = globalData.state.productId;
+  const ratingsBreakDown = globalData.state.ratingsBreakDown;
   const [showReviewForm, setShowReviewForm] = useState(false);
-  const [recommended, setRecommended] = useState(0);
-  const [notRecommended, setNotRecommended] = useState(0);
+  const recommended = parseInt(globalData.state.recommended.true, 10);
+  const notRecommended = parseInt(globalData.state.recommended.false, 10);
+  const characteristics = globalData.state.characteristics;
+  // const [recommended, setRecommended] = useState(0);
+  // const [notRecommended, setNotRecommended] = useState(0);
   const [ratings, setRatings] = useState({});
-  const [characteristics, setCharacteristics] = useState({});
-  const ratingsBreakDown = useMemo(() => calculateRating(ratings), [ratings]);
+  // const [characteristics, setCharacteristics] = useState({});
+  // const ratingsBreakDown = useMemo(() => calculateRating(ratings), [ratings]);
   // const [totalReviews, setTotalReviews] = useState(0);
   const [sortOption, setSortOption] = useState('relevant');
   // const [productId, setProductId] = useState(13023);
@@ -45,14 +49,14 @@ const RatingsAndReviews = () => {
     if (node) observer.current.observe(node);
   }, [loading, hasMore]);
 
-  useEffect(() => {
-    getReviewsMeta(productId).then((result) => {
-      setRatings(result.ratings);
-      setRecommended(parseInt(result.recommended.true, 10));
-      setNotRecommended(parseInt(result.recommended.false, 10));
-      setCharacteristics(result.characteristics);
-    });
-  }, [productId]);
+  // useEffect(() => {
+  //   getReviewsMeta(productId).then((result) => {
+  //     setRatings(result.ratings);
+  //     setRecommended(parseInt(result.recommended.true, 10));
+  //     setNotRecommended(parseInt(result.recommended.false, 10));
+  //     setCharacteristics(result.characteristics);
+  //   });
+  // }, [productId]);
 
   // input rating is a digit number
   const handleFilterByRating = (rating) => {
