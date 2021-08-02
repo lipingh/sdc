@@ -46,3 +46,13 @@
   text-decoration: line-through;
   margin-left: 8px;
 }
+
+.plus-add-card {
+  margin-top: 30%;
+  text-align: center;
+  font-size: 100px;
+}
+
+.text-add-card {
+  text-align: center;
+}
