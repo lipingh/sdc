@@ -88,6 +88,10 @@ const OutfitList = () => {
     <div className="list-section">
       {current !== 0 && <button type="button" className="btn-list-left" onClick={prevCard}>prev</button>}
       <div className="list-cards" style={{ width: `${cards * 230}px` }} ref={listRef}>
+        <div className="list-card">
+          <div className="plus-add-card">+</div>
+          <div className="text-add-card">Add to Outfit</div>
+        </div>
         {outfitsContext.outfits.map((product) => (
           <OutfitCard key={product.id} product={product} currProduct={currProduct} />
         ))}
