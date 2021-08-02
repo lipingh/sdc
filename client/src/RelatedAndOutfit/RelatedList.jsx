@@ -15,6 +15,15 @@ const RelatedList = () => {
   const getRelatedFromIds = (idList) => {
     // should eventually use id of the current page (from global state) to set current product
     const relatedIdList = idList.filter((id) => (id !== 13029));
+    axios.get(`${options.url}products/13029`, {
+      headers: options.headers,
+    })
+      .then((res) => {
+        setCurrProduct(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     const relatedArray = relatedIdList.map((id) => new Promise((resolve, reject) => {
       axios.get(`${options.url}products/${id}`, {
         headers: options.headers,
