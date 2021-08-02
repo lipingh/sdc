@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import './QandA-list.css';
 import options from '../config/config.js';
@@ -6,6 +6,7 @@ import QuestionsList from './QuestionsList.jsx';
 import allInOrder from './Helpers.js';
 import SearchQuestions from './SearchQuestions.jsx';
 import QuestionForm from './QuestionForm.jsx';
+import { globalContext } from '../index.jsx';
 
 const QuestionsAndAnswers = () => {
   const [questions, setQuestions] = useState([]);
@@ -13,15 +14,15 @@ const QuestionsAndAnswers = () => {
   const [showQuestionsForm, setQuestionForm] = useState(false);
   const [search, setSearch] = useState('');
   const [originalQuestions, setOriginalQuestions] = useState([]);
+  const globalData = useContext(globalContext);
 
   const getQuestions = () => {
-    axios.get(`${options.url}qa/questions?product_id=13027`, {
+    axios.get(`${options.url}qa/questions?product_id=${globalData.state.productId}`, {
       headers: options.headers,
     })
       .then((res) => {
         const notReported = res.data.results.filter((question) => (
           !question.reported
-          // !question.reported ? question : null
         ));
         const inQHelpOrder = notReported.sort(
           (a, b) => b.question_helpfulness - a.question_helpfulness,
