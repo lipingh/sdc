@@ -5,6 +5,7 @@ import axios from 'axios';
 import style from './Gallery.module.css';
 import options from '../../config/config.js';
 import { ExpandContext } from '../Overview.jsx';
+import { globalContext } from '../../index.jsx';
 
 const Gallery = () => {
   const [styles, setStyles] = useState([]);
@@ -15,6 +16,7 @@ const Gallery = () => {
   const imageMove = useRef(null);
   const entireGallery = useRef(null);
   const contextData = useContext(ExpandContext);
+  const globalData = useContext(globalContext);
 
   const buttonClickHandler = (direction) => (
     () => {
@@ -72,7 +74,7 @@ const Gallery = () => {
   };
 
   useEffect(() => {
-    axios.get(`${options.url}products/${contextData.currState.productId}/styles`, { headers: options.headers })
+    axios.get(`${options.url}products/${globalData.state.productId}/styles`, { headers: options.headers })
       .then((response) => {
         setStyles(response.data.results);
         const imgs = response.data.results[contextData.currState.styleIndex]
@@ -85,7 +87,7 @@ const Gallery = () => {
       .catch((err) => {
         console.log('styles data fetching err', err);
       });
-  }, [contextData.currState.styleIndex, contextData.currState.productId]);
+  }, [contextData.currState.styleIndex, globalData.state.productId]);
 
   return (
     <div className={style.gallery} ref={entireGallery}>
@@ -116,7 +118,7 @@ const Gallery = () => {
         </div>
         {currImgIndex !== images.length - 1 ? <button type="button" className={style.clickNext} onClick={buttonClickHandler('next')}>&gt;</button>
           : <div />}
-        <div className={style.expand} onClick={expandButtonClickHandler}/>
+        <div className={style.expand} onClick={expandButtonClickHandler} />
       </div>
     </div>
   );
