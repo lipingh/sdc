@@ -1,8 +1,11 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, {
+  useState, useRef, useEffect, useContext,
+} from 'react';
 import axios from 'axios';
 import RelatedCard from './RelatedCard.jsx';
 import './list.css';
 import options from '../config/config.js';
+import { globalContext } from '../index.jsx'
 
 const RelatedList = () => {
   const [currProduct, setCurrProduct] = useState({});
@@ -11,11 +14,12 @@ const RelatedList = () => {
   const [related, setRelated] = useState([]);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [cards, setCards] = useState(3);
+  const globalData = useContext(globalContext);
 
   const getRelatedFromIds = (idList) => {
     // should eventually use id of the current page (from global state) to set current product
-    const relatedIdList = idList.filter((id) => (id !== 13029));
-    axios.get(`${options.url}products/13029`, {
+    const relatedIdList = idList.filter((id) => (id !== globalData.state.productId));
+    axios.get(`${options.url}products/${globalData.state.productId}`, {
       headers: options.headers,
     })
       .then((res) => {
@@ -46,7 +50,7 @@ const RelatedList = () => {
 
   const getRelated = () => {
     // should eventually use id of the current page (global state not hard code)
-    axios.get(`${options.url}products/13029/related`, {
+    axios.get(`${options.url}products/${globalData.state.productId}/related`, {
       headers: options.headers,
     })
       .then((res) => {

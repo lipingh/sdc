@@ -6,6 +6,7 @@ import OutfitCard from './OutfitCard.jsx';
 import './list.css';
 import options from '../config/config.js';
 import { OutfitContext } from './RelatedAndOutfit.jsx';
+import { globalContext } from '../index.jsx';
 
 const OutfitList = () => {
   // get current product from global state
@@ -15,6 +16,7 @@ const OutfitList = () => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [cards, setCards] = useState(0);
   const outfitsContext = useContext(OutfitContext);
+  const globalData = useContext(globalContext);
 
   const updateWidth = () => {
     setWindowWidth(window.innerWidth);
@@ -30,7 +32,8 @@ const OutfitList = () => {
   }, [outfitsContext.outfits]);
 
   useEffect(() => {
-    axios.get(`${options.url}products/13029`, {
+    // get current product from global state
+    axios.get(`${options.url}products/${globalData.state.productId}`, {
       headers: options.headers,
     })
       .then((res) => {
@@ -39,7 +42,7 @@ const OutfitList = () => {
       .catch((err) => {
         console.log(err);
       });
-  });
+  }, [currProduct]);
 
   useEffect(() => {
     let possibleCards = Math.floor((windowWidth - 100) / 230);

@@ -11,6 +11,7 @@ import calculateRating from '../../helper.js';
 import { getReviewsMeta } from '../../reviewRequest.js';
 import { OutfitContext } from './RelatedAndOutfit.jsx';
 import { handleOutfitAction } from './helpers.js';
+import { globalContext } from '../index.jsx';
 
 const OutfitCard = ({ product, currProduct }) => {
   const [outfitImg, setOutfitImg] = useState('');
@@ -20,6 +21,7 @@ const OutfitCard = ({ product, currProduct }) => {
   const [ratings, setRatings] = useState({});
   const ratingsBreakDown = useMemo(() => calculateRating(ratings), [ratings]);
   const outfitsContext = useContext(OutfitContext);
+  const globalData = useContext(globalContext);
 
   const setDefaultData = (stylesObj) => {
     let outfitStyleInd = 0;
@@ -57,8 +59,12 @@ const OutfitCard = ({ product, currProduct }) => {
     outfitsContext.setOutfitIds(handleOutfitAction(false, product.id));
   };
 
+  const handleCardClick = () => {
+    globalData.dispatch({ type: 'changeProductId', data: product.id });
+  };
+
   return (
-    <div className="list-card">
+    <div className="list-card" onClick={() => (handleCardClick())}>
       <img
         src={outfitImg}
         alt={product.name}
