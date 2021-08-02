@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import options from '../config/config.js';
 import RelatedList from './RelatedList.jsx';

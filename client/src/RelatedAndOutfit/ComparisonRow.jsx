@@ -4,15 +4,15 @@ import PropTypes from 'prop-types';
 
 const ComparisonRow = ({ feature }) => (
   <div className="comp-row">
-    <div className="comp-current">
+    <span className="comp-current">
       {feature.currVal}
-    </div>
-    <div className="comp-features">
+    </span>
+    <span className="comp-features">
       {feature.name}
-    </div>
-    <div className="comp-related">
+    </span>
+    <span className="comp-related">
       {feature.relatedVal}
-    </div>
+    </span>
   </div>
 );
 
