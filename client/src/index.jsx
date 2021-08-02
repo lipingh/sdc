@@ -4,7 +4,7 @@ import Overview from './Overview/Overview.jsx';
 import RelatedItems from './RelatedAndOutfit/RelatedAndOutfit.jsx';
 import QuestionsAndAnswers from './QuestionsAndAnswers/QuestionsAndAnswers.jsx';
 import RatingsAndReviews from './RatingsAndReviews/RatingsAndReviews.jsx';
-import { getReviewsMeta } from '../reviewRequest.js';
+import { getReviewsMeta, getProductInfo } from '../apiRequests.js';
 import calculateRating from '../helper.js';
 
 const initialState = {
@@ -18,8 +18,11 @@ const initialState = {
     averageRatings: 0,
     totalReviews: 0,
   },
-  recommended: { "false": 0, "true": 0 },
+  recommended: {},
   characteristics: {},
+  name: '',
+  category: '',
+  features: [],
 };
 
 const reducer = (state, action) => {
@@ -32,6 +35,12 @@ const reducer = (state, action) => {
       return { ...state, recommended: action.data };
     case 'updateCharacteristics':
       return { ...state, characteristics: action.data };
+    case 'updateName':
+      return { ...state, name: action.data };
+    case 'updateCategory':
+      return { ...state, category: action.data };
+    case 'updateFeatures':
+      return { ...state, features: action.data };
     default:
       return state;
   }
@@ -42,9 +51,17 @@ export const globalContext = React.createContext();
 const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   useEffect(() => {
+    getProductInfo(state.productId)
+      .then((res) => {
+        dispatch({ type: 'updateName', data: res.name });
+        dispatch({ type: 'updateCategory', data: res.category });
+        dispatch({ type: 'updateFeatures', data: res.features });
+      })
+      .catch((err) => {
+        console.log('product info data fetch error', err);
+      });
     getReviewsMeta(state.productId)
       .then((res) => {
-        // console.log(res);
         dispatch({ type: 'updateRecommended', data: res.recommended });
         dispatch({ type: 'updateCharacteristics', data: res.characteristics });
         dispatch({ type: 'updateRatingsBreakDown', data: calculateRating(res.ratings) });
@@ -53,6 +70,7 @@ const App = () => {
         console.log('review star data fetching error', err);
       });
   }, [state.productId]);
+
   return (
     <div>
       <globalContext.Provider value={{ state, dispatch }}>

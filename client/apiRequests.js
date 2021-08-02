@@ -20,4 +20,12 @@ const getReviewsMeta = (productId) => axios({
   .then((res) => res.data)
   .catch((err) => Promise.reject(err));
 
-module.exports = { getReviewsById, getReviewsMeta }
+const getProductInfo = (id) => axios({
+  url: `${options.url}products/${id}`,
+  method: 'get',
+  headers: options.headers,
+})
+  .then((res) => res.data)
+  .catch((err) => Promise.reject(err));
+
+module.exports = { getReviewsById, getReviewsMeta, getProductInfo };

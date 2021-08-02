@@ -7,7 +7,7 @@ import ProductBreakDown from './ProductBreakDown.jsx';
 import ReviewForm from './ReviewForm.jsx';
 import ReviewListItem from './ReviewListItem.jsx';
 import calculateRating from '../../helper.js';
-import { getReviewsMeta, getReviewsById } from '../../reviewRequest.js';
+import { getReviewsMeta, getReviewsById } from '../../apiRequests.js';
 import useAllReviews from './useAllReviews.js';
 import './ratings.css';
 import { globalContext } from '../index.jsx';

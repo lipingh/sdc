@@ -10,7 +10,7 @@ import fillStar from './assets/star-icon-fill.png';
 import ComparisonModal from './ComparisonModal.jsx';
 import StarRating from '../RatingsAndReviews/StarRating.jsx';
 import calculateRating from '../../helper.js';
-import { getReviewsMeta } from '../../reviewRequest.js';
+import { getReviewsMeta } from '../../apiRequests.js';
 import { OutfitContext } from './RelatedAndOutfit.jsx';
 import { handleOutfitAction } from './helpers.js';
 import { globalContext } from '../index.jsx';
