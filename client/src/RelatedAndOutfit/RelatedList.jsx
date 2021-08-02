@@ -74,7 +74,6 @@ const RelatedList = () => {
   useEffect(() => {
     setRelated([]);
     getRelated();
-
   }, [globalData.state.productId]);
 
   useEffect(() => {
