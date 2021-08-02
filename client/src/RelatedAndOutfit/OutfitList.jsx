@@ -30,6 +30,18 @@ const OutfitList = () => {
   }, [outfitsContext.outfits]);
 
   useEffect(() => {
+    axios.get(`${options.url}products/13029`, {
+      headers: options.headers,
+    })
+      .then((res) => {
+        setCurrProduct(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
+
+  useEffect(() => {
     let possibleCards = Math.floor((windowWidth - 100) / 230);
     if (possibleCards >= len) {
       possibleCards = len;
