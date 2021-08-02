@@ -53,7 +53,7 @@ const QuestionsAndAnswers = () => {
 
   useEffect(() => {
     getQuestions();
-  }, []);
+  }, [globalData.state.productId]);
 
   return (
     <div id="questions">
