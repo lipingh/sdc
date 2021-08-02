@@ -42,7 +42,7 @@ const OutfitList = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [currProduct]);
+  }, []);
 
   useEffect(() => {
     let possibleCards = Math.floor((windowWidth - 100) / 230);

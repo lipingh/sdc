@@ -52,7 +52,7 @@ const App = () => {
       .catch((err) => {
         console.log('review star data fetching error', err);
       });
-  }, []);
+  }, [state.productId]);
   return (
     <div>
       <globalContext.Provider value={{ state, dispatch }}>

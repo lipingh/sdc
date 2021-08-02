@@ -67,10 +67,13 @@ const RelatedList = () => {
   };
 
   useEffect(() => {
-    getRelated();
     window.addEventListener('resize', updateWidth);
     return () => { window.removeEventListener('resize', updateWidth); };
   }, []);
+
+  useEffect(() => {
+    getRelated();
+  }, [globalData.state.productId]);
 
   useEffect(() => {
     let possibleCards = Math.floor((windowWidth - 100) / 230);

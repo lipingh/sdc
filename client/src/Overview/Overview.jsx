@@ -5,7 +5,7 @@ import UserShop from './UserShop/UserShop.jsx';
 
 const initialState = {
   isExpanded: false,
-  productId: 13023,
+  // productId: 13023,
   styleIndex: 0,
 };
 
