@@ -56,6 +56,14 @@ const RelatedList = () => {
     setWindowWidth(window.innerWidth);
   };
 
+  const setPossibleCards = () => {
+    let possibleCards = Math.floor((windowWidth - 100) / 230);
+    if (possibleCards >= len) {
+      possibleCards = len;
+    }
+    setCards(possibleCards);
+  };
+
   useEffect(() => {
     window.addEventListener('resize', updateWidth);
     return () => { window.removeEventListener('resize', updateWidth); };
@@ -67,11 +75,7 @@ const RelatedList = () => {
   }, [globalData.state.productId]);
 
   useEffect(() => {
-    let possibleCards = Math.floor((windowWidth - 100) / 230);
-    if (possibleCards >= len) {
-      possibleCards = len;
-    }
-    setCards(possibleCards);
+    setPossibleCards();
   }, [windowWidth]);
 
   const listRef = useRef(null);
