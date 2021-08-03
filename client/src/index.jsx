@@ -1,6 +1,5 @@
 import React, { useReducer, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
-import { ThemeProvider } from 'styled-components';
 import Overview from './Overview/Overview.jsx';
 import RelatedItems from './RelatedAndOutfit/RelatedAndOutfit.jsx';
 import QuestionsAndAnswers from './QuestionsAndAnswers/QuestionsAndAnswers.jsx';
@@ -80,6 +79,7 @@ const App = () => {
 
   return (
     <div className={theme ? 'light' : 'dark'}>
+      <img src="logo.png" alt="" width="30%" height="30%" />
       <globalContext.Provider value={{ state, dispatch }}>
         <button type="button" className="themeButton" onClick={handleTheme}>
           Theme:
