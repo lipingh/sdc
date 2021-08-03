@@ -9,7 +9,6 @@ import ComparisonModal from './ComparisonModal.jsx';
 import StarRating from '../RatingsAndReviews/StarRating.jsx';
 import calculateRating from '../../helper.js';
 import { getReviewsMeta } from '../../apiRequests.js';
-import { OutfitContext } from './RelatedAndOutfit.jsx';
 import { handleOutfitAction } from './helpers.js';
 import { globalContext } from '../index.jsx';
 
@@ -20,7 +19,6 @@ const OutfitCard = ({ product }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [ratings, setRatings] = useState({});
   const ratingsBreakDown = useMemo(() => calculateRating(ratings), [ratings]);
-  const outfitsContext = useContext(OutfitContext);
   const globalData = useContext(globalContext);
 
   const setDefaultData = (stylesObj) => {
@@ -56,7 +54,7 @@ const OutfitCard = ({ product }) => {
   }, []);
 
   const handleRemove = () => {
-    outfitsContext.setOutfitIds(handleOutfitAction(false, product.id));
+    globalData.dispatch({ type: 'updateOutfitIds', data: handleOutfitAction(false, product.id) });
   };
 
   const handleCardClick = () => {

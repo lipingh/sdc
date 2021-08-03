@@ -67,9 +67,13 @@ const RelatedCard = ({ product }) => {
     isInOutfit();
   }, []);
 
+  useEffect(() => {
+    isInOutfit();
+  }, [globalData.state.outfits]);
+
   const handleStarClick = () => {
     const newInOutfit = !inOutfit;
-    outfitsContext.setOutfitIds(handleOutfitAction(newInOutfit, product.id));
+    globalData.dispatch({ type: 'updateOutfitIds', data: handleOutfitAction(newInOutfit, product.id) });
     setInOutfit(newInOutfit);
   };
 
