@@ -5,13 +5,12 @@ import options from '../config/config';
 import './reviews.css';
 import StarRating from './StarRating.jsx';
 import ImageModal from './ImageModal.jsx';
+import { updateReviewHelpful } from '../../apiRequests';
 
 const ReviewListItem = ({ review }) => {
-  // console.log('current review', review);
-  const [helpfull, setHelpfull] = useState(review.helpfulness);
+  const [helpful, sethelpful] = useState(review.helpfulness);
   const [reported, setReported] = useState(false);
   const [disableHelpful, setDisableHelpful] = useState(false);
-  // const [showFullImage, setShowFullImage] = useState(false);
   const [showFullImage, setShowFullImage] = useState({});
   const handleClickPhoto = (photoId) => {
     const showFullImageCopy = { ...showFullImage };
@@ -20,20 +19,21 @@ const ReviewListItem = ({ review }) => {
   };
   const handleAddHelpful = () => {
     setDisableHelpful(!disableHelpful);
-    setHelpfull(() => (disableHelpful ? helpfull - 1 : helpfull + 1));
-    axios.put(
-      `${options.url}reviews/${review.review_id}/helpful`,
-      {
-        helpfulness: helpfull,
-      },
-      {
-        headers: options.headers,
-      },
-    )
-      .then()
-      .catch((err) => {
-        throw err;
-      });
+    sethelpful(() => (disableHelpful ? helpful - 1 : helpful + 1));
+    updateReviewHelpful(review.review_id, helpful);
+    // axios.put(
+    //   `${options.url}reviews/${review.review_id}/helpful`,
+    //   {
+    //     helpfulness: helpful,
+    //   },
+    //   {
+    //     headers: options.headers,
+    //   },
+    // )
+    //   .then()
+    //   .catch((err) => {
+    //     throw err;
+    //   });
   };
 
   // TODO: which value should we update by click "report"? can't find in the reviews
@@ -106,7 +106,7 @@ const ReviewListItem = ({ review }) => {
         <span>Helpful?</span>
         <span onClick={handleAddHelpful} onKeyDown={() => { }} role="link" tabIndex={0}>
           Yes(
-          {helpfull}
+          {helpful}
           )
         </span>
         <span>{' | '}</span>

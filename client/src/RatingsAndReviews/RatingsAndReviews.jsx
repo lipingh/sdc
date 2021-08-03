@@ -1,5 +1,5 @@
 import React, {
-  useState, useEffect, useMemo, useRef, useCallback, useContext
+  useState, useEffect, useMemo, useRef, useCallback, useContext,
 } from 'react';
 import StarRating from './StarRating.jsx';
 import RatingsBreakDown from './RatingsBreakDown.jsx';
@@ -14,17 +14,12 @@ import { globalContext } from '../index.jsx';
 
 const RatingsAndReviews = () => {
   const globalData = useContext(globalContext);
-  const productId = globalData.state.productId;
-  const ratingsBreakDown = globalData.state.ratingsBreakDown;
+  const { productId } = globalData.state;
+  const { ratingsBreakDown } = globalData.state;
   const [showReviewForm, setShowReviewForm] = useState(false);
   const recommended = parseInt(globalData.state.recommended.true, 10);
   const notRecommended = parseInt(globalData.state.recommended.false, 10);
-  const characteristics = globalData.state.characteristics;
-  // const [recommended, setRecommended] = useState(0);
-  // const [notRecommended, setNotRecommended] = useState(0);
-  const [ratings, setRatings] = useState({});
-  // const [characteristics, setCharacteristics] = useState({});
-  // const ratingsBreakDown = useMemo(() => calculateRating(ratings), [ratings]);
+  const { characteristics } = globalData.state;
   // const [totalReviews, setTotalReviews] = useState(0);
   const [sortOption, setSortOption] = useState('relevant');
   // const [productId, setProductId] = useState(13023);
@@ -33,7 +28,6 @@ const RatingsAndReviews = () => {
   const {
     reviews, hasMore, loading, error,
   } = useAllReviews(productId, page, sortOption, ratingFilter);
-  // const [filteredReviews, setFilteredReviews] = useState(reviews);
 
   const observer = useRef(null);
   const lastReviewRef = useCallback((node) => {
@@ -130,7 +124,8 @@ const RatingsAndReviews = () => {
                     );
                   }
                   return <ReviewListItem key={review.review_id} review={review} />;
-                })}
+                })
+            }
             <div>{loading && 'Loading...'}</div>
             <div>{error && 'Error...'}</div>
           </div>
