@@ -18,24 +18,24 @@ const QuestionsAndAnswers = () => {
   const [search, setSearch] = useState('');
   const [originalQuestions, setOriginalQuestions] = useState([]);
   const globalData = useContext(globalContext);
-  const [page, setPage] = useState(1);
-  const {
-    loading, error, questionsInfinate, hasMore,
-  } = useAllQuestions(globalData.state.productId, page);
-  const observer = useRef(null);
+  // const [page, setPage] = useState(1);
+  // const {
+  //   loading, error, questionsInfinate, hasMore,
+  // } = useAllQuestions(globalData.state.productId, page);
+  // const observer = useRef(null);
 
-  const lastQuestionRef = useCallback((node) => {
-    if (loading) return;
-    if (observer.current) {
-      observer.current.disconnect();
-    }
-    observer.current = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting && hasMore) {
-        setPage((prev) => prev + 1);
-      }
-    });
-    if (node) observer.current.observe(node);
-  }, [loading, hasMore]);
+  // const lastQuestionRef = useCallback((node) => {
+  //   if (loading) return;
+  //   if (observer.current) {
+  //     observer.current.disconnect();
+  //   }
+  //   observer.current = new IntersectionObserver((entries) => {
+  //     if (entries[0].isIntersecting && hasMore) {
+  //       setPage((prev) => prev + 1);
+  //     }
+  //   });
+  //   if (node) observer.current.observe(node);
+  // }, [loading, hasMore]);
 
   const getQuestions = () => {
     axios.get(`${options.url}qa/questions?product_id=${globalData.state.productId}`, {
@@ -74,7 +74,7 @@ const QuestionsAndAnswers = () => {
 
   useEffect(() => {
     getQuestions();
-  }, []);
+  }, [globalData.state.productId]);
 
   return (
     <div id="questions">
@@ -88,12 +88,12 @@ const QuestionsAndAnswers = () => {
       />
       <div className="q-a">
         <QuestionsList
-          loading={loading}
-          error={error}
-          questions={questions}
-          questionsInfinate={questionsInfinate}
+          // loading={loading}
+          // error={error}
+          // questions={questions}
+          // questionsInfinate={questionsInfinate}
           moreQuestions={moreQuestions}
-          lastQuestionRef={lastQuestionRef}
+          // ref={lastQuestionRef}
         />
         <button
           className="more-questions-button"

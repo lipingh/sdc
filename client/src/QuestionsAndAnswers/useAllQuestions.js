@@ -8,6 +8,7 @@ const useAllQuestions = (productId, page, searched) => {
   const [error, setError] = useState(false);
   const [questionsInfinate, setQuestionsI] = useState([]);
   const [hasMore, setHasMore] = useState(false);
+  
 
   useEffect(() => {
     setQuestionsI([]);
