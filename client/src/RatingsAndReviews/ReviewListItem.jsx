@@ -32,6 +32,7 @@ const ReviewListItem = ({ review }) => {
   return (
     <div>
       <div className="review-list-overall">
+        {/* {review.review_id} */}
         <StarRating rating={review.rating} />
         <span>
           {review.reviewer_name}
@@ -49,6 +50,7 @@ const ReviewListItem = ({ review }) => {
               src={photo.url}
               aria-label="save"
               alt=""
+              onError={(e) => { e.target.onerror = null; e.target.src = 'Default.png'; }}
               width="50"
               height="60"
               onClick={() => handleClickPhoto(photo.id)}

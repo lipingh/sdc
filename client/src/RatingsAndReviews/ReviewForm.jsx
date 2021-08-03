@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { postReview } from '../../apiRequests';
 import Star from './Star.jsx';
 
-// const reviewFormModalRoot = document.getElementById('review-form');
 const ReviewForm = ({
   showModal, onClose, productId, characteristics,
 }) => {
@@ -37,7 +36,6 @@ const ReviewForm = ({
 
   const addPhotos = (e) => {
     setPhotos((prev) => [...prev, ...e.target.files]);
-    // console.log('photos', photos);
   };
   const addReviews = (e) => {
     e.preventDefault();
