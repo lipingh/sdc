@@ -44,7 +44,7 @@ const ProductInfo = () => {
       <div style={{ display: 'inline-block' }}>
         <StarRating rating={averageRating} />
       </div>
-      <a href="#" className={style.linkToReviewComponent}>{totalReview}</a>
+      <a href="#customerReviews" className={style.linkToReviewComponent}>{totalReview}</a>
       <h4 className={style.category}>{category}</h4>
       <h1 className={style.title}>{productName}</h1>
       {onSale ? <><span style={{ color: 'red' }}>${salePrice}</span><span className={style.oldPrice}>${price}</span></>
