@@ -1,39 +1,30 @@
 import React, {
-  useState, useEffect, useMemo, useRef, useCallback, useContext
+  useState, useEffect, useRef, useCallback, useContext,
 } from 'react';
 import StarRating from './StarRating.jsx';
 import RatingsBreakDown from './RatingsBreakDown.jsx';
 import ProductBreakDown from './ProductBreakDown.jsx';
 import ReviewForm from './ReviewForm.jsx';
 import ReviewListItem from './ReviewListItem.jsx';
-import calculateRating from '../../helper.js';
-import { getReviewsMeta, getReviewsById } from '../../apiRequests.js';
-import useAllReviews from './useAllReviews.js';
+import useAllReviews from './useAllReviews';
 import './ratings.css';
 import { globalContext } from '../index.jsx';
 
 const RatingsAndReviews = () => {
   const globalData = useContext(globalContext);
-  const productId = globalData.state.productId;
-  const ratingsBreakDown = globalData.state.ratingsBreakDown;
+  const { productId } = globalData.state;
+  const { ratingsBreakDown } = globalData.state;
   const [showReviewForm, setShowReviewForm] = useState(false);
   const recommended = parseInt(globalData.state.recommended.true, 10);
   const notRecommended = parseInt(globalData.state.recommended.false, 10);
-  const characteristics = globalData.state.characteristics;
-  // const [recommended, setRecommended] = useState(0);
-  // const [notRecommended, setNotRecommended] = useState(0);
-  const [ratings, setRatings] = useState({});
-  // const [characteristics, setCharacteristics] = useState({});
-  // const ratingsBreakDown = useMemo(() => calculateRating(ratings), [ratings]);
+  const { characteristics } = globalData.state;
   // const [totalReviews, setTotalReviews] = useState(0);
   const [sortOption, setSortOption] = useState('relevant');
-  // const [productId, setProductId] = useState(13023);
   const [page, setPage] = useState(1);
   const [ratingFilter, setRatingFilter] = useState(null);
   const {
     reviews, hasMore, loading, error,
   } = useAllReviews(productId, page, sortOption, ratingFilter);
-  // const [filteredReviews, setFilteredReviews] = useState(reviews);
 
   const observer = useRef(null);
   const lastReviewRef = useCallback((node) => {
@@ -49,19 +40,8 @@ const RatingsAndReviews = () => {
     if (node) observer.current.observe(node);
   }, [loading, hasMore]);
 
-  // useEffect(() => {
-  //   getReviewsMeta(productId).then((result) => {
-  //     setRatings(result.ratings);
-  //     setRecommended(parseInt(result.recommended.true, 10));
-  //     setNotRecommended(parseInt(result.recommended.false, 10));
-  //     setCharacteristics(result.characteristics);
-  //   });
-  // }, [productId]);
-
   // input rating is a digit number
   const handleFilterByRating = (rating) => {
-    // const filteredData = reviews.filter((review) => review.rating === rating);
-    // setFilteredReviews(filteredData);
     setRatingFilter(rating);
     setPage(1);
   };
@@ -72,9 +52,15 @@ const RatingsAndReviews = () => {
     setPage(1);
   };
   const handleAddReview = () => {
-    setTotalReviews((prev) => prev + 1);
+    // setTotalReviews((prev) => prev + 1);
     // setReviews([...reviews, newReview]);
   };
+
+  useEffect(() => {
+    setPage(1);
+    setSortOption('relevant');
+    setRatingFilter(null);
+  }, [productId]);
 
   return (
     <div className="reviews-root">
@@ -130,7 +116,8 @@ const RatingsAndReviews = () => {
                     );
                   }
                   return <ReviewListItem key={review.review_id} review={review} />;
-                })}
+                })
+            }
             <div>{loading && 'Loading...'}</div>
             <div>{error && 'Error...'}</div>
           </div>

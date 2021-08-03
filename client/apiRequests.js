@@ -1,5 +1,5 @@
 const axios = require('axios');
-const options = require('./src/config/config.js');
+const options = require('./src/config/config');
 
 const getReviewsById = (params) => (
   axios({
@@ -28,4 +28,38 @@ const getProductInfo = (id) => axios({
   .then((res) => res.data)
   .catch((err) => Promise.reject(err));
 
-module.exports = { getReviewsById, getReviewsMeta, getProductInfo };
+const updateReviewHelpful = (reviewId, helpful) => axios.put(
+  `${options.url}reviews/${reviewId}/helpful`,
+  {
+    helpfulness: helpful,
+  },
+  {
+    headers: options.headers,
+  },
+)
+  .then()
+  .catch((err) => {
+    throw err;
+  });
+
+const reportReview = (reviewId) => axios.put(
+  `${options.url}reviews/${reviewId}/report`, {},
+  {
+    headers: options.headers,
+  },
+)
+  .then()
+  .catch((err) => {
+    throw err;
+  });
+const postReview = (data) => axios.post(`${options.url}reviews`, data, { headers: options.headers })
+  .then()
+  .catch((err) => Promise.reject(err));
+module.exports = {
+  getReviewsById,
+  getReviewsMeta,
+  getProductInfo,
+  updateReviewHelpful,
+  reportReview,
+  postReview,
+};

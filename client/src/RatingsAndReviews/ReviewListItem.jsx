@@ -1,17 +1,14 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
-import options from '../config/config';
 import './reviews.css';
 import StarRating from './StarRating.jsx';
 import ImageModal from './ImageModal.jsx';
+import { updateReviewHelpful, reportReview } from '../../apiRequests';
 
 const ReviewListItem = ({ review }) => {
-  // console.log('current review', review);
-  const [helpfull, setHelpfull] = useState(review.helpfulness);
+  const [helpful, sethelpful] = useState(review.helpfulness);
   const [reported, setReported] = useState(false);
   const [disableHelpful, setDisableHelpful] = useState(false);
-  // const [showFullImage, setShowFullImage] = useState(false);
   const [showFullImage, setShowFullImage] = useState({});
   const handleClickPhoto = (photoId) => {
     const showFullImageCopy = { ...showFullImage };
@@ -20,37 +17,16 @@ const ReviewListItem = ({ review }) => {
   };
   const handleAddHelpful = () => {
     setDisableHelpful(!disableHelpful);
-    setHelpfull(() => (disableHelpful ? helpfull - 1 : helpfull + 1));
-    axios.put(
-      `${options.url}reviews/${review.review_id}/helpful`,
-      {
-        helpfulness: helpfull,
-      },
-      {
-        headers: options.headers,
-      },
-    )
-      .then()
-      .catch((err) => {
-        throw err;
-      });
+    sethelpful(() => (disableHelpful ? helpful - 1 : helpful + 1));
+    updateReviewHelpful(review.review_id, helpful);
   };
 
   // TODO: which value should we update by click "report"? can't find in the reviews
   const handleReport = () => {
     setReported(!reported);
-    axios.put(
-      `${options.url}reviews/${review.review_id}/report`, {},
-      {
-        headers: options.headers,
-      },
-    )
-      .then()
-      .catch((err) => {
-        throw err;
-      });
+    reportReview(review.review_id);
   };
-  // const email = 'lisa@gamil.com';
+  // const email = 'lisa@gmail.com';
   // TODO: review.email should also match the sale system as the verified purchaser
   // TODO: repsonse from seller section
   return (
@@ -88,7 +64,6 @@ const ReviewListItem = ({ review }) => {
           </div>
 
         ))}
-        ;
       </div>
 
       <div>
@@ -106,7 +81,7 @@ const ReviewListItem = ({ review }) => {
         <span>Helpful?</span>
         <span onClick={handleAddHelpful} onKeyDown={() => { }} role="link" tabIndex={0}>
           Yes(
-          {helpfull}
+          {helpful}
           )
         </span>
         <span>{' | '}</span>
