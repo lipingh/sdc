@@ -24,7 +24,7 @@ const ReviewForm = ({
   const [email, setEmail] = useState('');
   const [selection, setSelection] = useState(0);
   const [ratingError, setRatingError] = useState(true);
-  // const [numberOfPhotos, setNumberOfPhotos] = useState(0);
+
   const [photos, setPhotos] = useState([]);
   const hoverOver = (event) => {
     let val = 0;
@@ -37,7 +37,7 @@ const ReviewForm = ({
 
   const addPhotos = (e) => {
     setPhotos((prev) => [...prev, ...e.target.files]);
-    console.log('photos', photos);
+    // console.log('photos', photos);
   };
   const addReviews = (e) => {
     e.preventDefault();
@@ -61,6 +61,8 @@ const ReviewForm = ({
         characteristicsInfo[characteristics[key].id] = parseInt(quality, 10);
       }
     });
+    const photoUrls = photos.map((photo) => URL.createObjectURL(photo));
+    // console.log(photoUrls);
 
     const data = {
       product_id: productId,
@@ -70,6 +72,7 @@ const ReviewForm = ({
       recommend: recommend === 'true',
       name,
       email,
+      photos: photoUrls,
       characteristics: characteristicsInfo,
     };
     postReview(data);
