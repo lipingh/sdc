@@ -10,7 +10,7 @@
   overflow-y:scroll;
 }
 .questions-list {
-  height:450px;
+  height:400px;
   width: 80%;
   overflow:hidden;
   overflow-y:scroll;
@@ -36,4 +36,7 @@
 }
 .search-bar {
 width: 500px;
+}
+.seller {
+  font-weight: bold;
 }

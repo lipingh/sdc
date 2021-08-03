@@ -66,7 +66,10 @@ const ReviewForm = ({
       characteristics: characteristicsInfo,
     };
     postReview(data);
+    alert('We recived your review, thank you!');
+    onClose();
   };
+
   return ReactDOM.createPortal(
     <div className="review-form-modal">
       <form className="review-form" onSubmit={addReviews}>

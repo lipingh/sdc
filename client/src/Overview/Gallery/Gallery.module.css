@@ -60,20 +60,21 @@
   height: 90%;
   display: flex;
   flex-flow: column;
-  justify-content: space-between;
   align-items: center;
 }
 
 .highlight {
-  width: 70px;
+  width: 90px;
   height: 5px;
-  background-color: gray;
+  background-color: rgb(68, 160, 158);
   margin: 0 auto;
+  margin-top: -1px;
 }
 
 .selected {
   height: 18%;
   width: 100%;
+  margin-bottom: 11px;
 }
 
 .eachThumbnail {
