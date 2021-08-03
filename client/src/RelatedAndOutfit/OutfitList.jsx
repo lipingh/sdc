@@ -22,16 +22,20 @@ const OutfitList = () => {
   }, []);
 
   useEffect(() => {
-    setLen(outfitsContext.outfits.length - 1);
+    setLen(outfitsContext.outfits.length);
   }, [outfitsContext.outfits]);
 
-  useEffect(() => {
+  const setPossibleCards = () => {
     let possibleCards = Math.floor((windowWidth - 100) / 230);
     if (possibleCards >= len) {
       possibleCards = len;
     }
     setCards(possibleCards);
-  }, [windowWidth]);
+  };
+
+  useEffect(() => {
+    setPossibleCards();
+  }, [windowWidth, len]);
 
   const listRef = useRef(null);
 
@@ -77,7 +81,7 @@ const OutfitList = () => {
           <OutfitCard key={product.id} product={product} />
         ))}
       </div>
-      {current !== len - cards && <button type="button" className="btn-list-right" onClick={nextCard}>next</button>}
+      {current < len - cards && <button type="button" className="btn-list-right" onClick={nextCard}>next</button>}
     </div>
   );
 };

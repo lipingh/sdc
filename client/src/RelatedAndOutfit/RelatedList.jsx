@@ -77,7 +77,7 @@ const RelatedList = () => {
 
   useEffect(() => {
     setPossibleCards();
-  }, [windowWidth, len, cards]);
+  }, [windowWidth, len]);
 
   const listRef = useRef(null);
 
