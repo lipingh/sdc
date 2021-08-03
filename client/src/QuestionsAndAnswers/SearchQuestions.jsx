@@ -5,14 +5,14 @@ import PropTypes from 'prop-types';
 
 const SearchQuestions = ({ handleSearch }) => (
   <>
-    <form>
+    <form className="search-form">
       <input
         className="search-bar"
         type="text"
         onChange={(e) => { handleSearch(e); }}
         placeholder="Have a Question? Search for Answers ..."
       />
-      <FontAwesomeIcon icon={faSearch} />
+      <FontAwesomeIcon className="search-icon" icon={faSearch} />
     </form>
   </>
 );
