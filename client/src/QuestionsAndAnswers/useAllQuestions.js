@@ -3,12 +3,11 @@ import axios from 'axios';
 import allInOrder from './Helpers.js';
 import options from '../config/config';
 
-const useAllQuestions = (productId, page, searched) => {
+const useAllQuestions = (productId, page) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [questionsInfinate, setQuestionsI] = useState([]);
+  const [questionsInfinite, setQuestionsI] = useState([]);
   const [hasMore, setHasMore] = useState(false);
-  
 
   useEffect(() => {
     setQuestionsI([]);
@@ -34,7 +33,6 @@ const useAllQuestions = (productId, page, searched) => {
       .then((res) => {
         const notReported = res.data.results.filter((question) => (
           !question.reported
-        // !question.reported ? question : null
         ));
         const inQHelpOrder = notReported.sort(
           (a, b) => b.question_helpfulness - a.question_helpfulness,
@@ -49,9 +47,9 @@ const useAllQuestions = (productId, page, searched) => {
         setError(true);
       });
     return () => cancel();
-  }, [productId]);
+  }, [productId, page]);
   return {
-    loading, error, questionsInfinate, hasMore,
+    loading, error, questionsInfinite, hasMore,
   };
 };
 
