@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import ComparisonRow from './ComparisonRow.jsx';
 import './comp-modal.css';
+import { globalContext } from '../index.jsx';
 
 const ComparisonModal = ({
-  open, onClose, product, currProduct,
+  open, onClose, product,
 }) => {
   if (!open) {
     return null;
   }
+
+  const globalData = useContext(globalContext);
 
   const [sharedFeatures, setSharedFeatures] = useState([]);
   const [currProductFeatures, setCurrProductFeatures] = useState([]);
@@ -21,8 +24,8 @@ const ComparisonModal = ({
     const newSharedFeatures = [];
     const newCurrProductFeatures = [];
     const newRelatedProdFeatures = [];
-    for (let i = 0; i < currProduct.features.length; i += 1) {
-      const featureObj = currProduct.features[i];
+    for (let i = 0; i < globalData.state.features.length; i += 1) {
+      const featureObj = globalData.state.features[i];
       const featureName = featureObj.feature;
       let match = false;
       for (let j = 0; j < uniqRelatedFeatures.length; j += 1) {
@@ -70,7 +73,7 @@ const ComparisonModal = ({
           <div className="comp-titles">
             <div className="comp-title">{product.name}</div>
             <div className="comp-title-center">Features</div>
-            <div className="comp-title">{currProduct.name}</div>
+            <div className="comp-title">{globalData.state.name}</div>
           </div>
           <div className="comp-table-features" style={{ height: `${Math.floor(windowHt * 0.44)}px` }}>
             {sharedFeatures.map((feature) => <ComparisonRow key={`${product.id + feature.currVal}`} feature={feature} />)}

@@ -53,10 +53,15 @@ const reportReview = (reviewId) => axios.put(
     throw err;
   });
 
+const postReview = (data) => axios.post(`${options.url}reviews`, data, { headers: options.headers })
+  .then()
+  .catch((err) => Promise.reject(err));
+
 module.exports = {
   getReviewsById,
   getReviewsMeta,
   getProductInfo,
   updateReviewHelpful,
   reportReview,
+  postReview,
 };

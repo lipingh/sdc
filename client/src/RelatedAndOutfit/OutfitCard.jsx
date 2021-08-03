@@ -13,7 +13,7 @@ import { OutfitContext } from './RelatedAndOutfit.jsx';
 import { handleOutfitAction } from './helpers.js';
 import { globalContext } from '../index.jsx';
 
-const OutfitCard = ({ product, currProduct }) => {
+const OutfitCard = ({ product }) => {
   const [outfitImg, setOutfitImg] = useState('');
   const [salePrice, setSalePrice] = useState('');
   const [defaultPrice, setDefaultPrice] = useState('');
@@ -64,19 +64,21 @@ const OutfitCard = ({ product, currProduct }) => {
   };
 
   return (
-    <div className="list-card" onClick={() => (handleCardClick())}>
-      <img
-        src={outfitImg}
-        alt={product.name}
-        width="200"
-        height="200"
-        className="card-img"
-      />
+    <div className="list-card">
+      <div className="card-img-container" onClick={() => (handleCardClick())}>
+        <img
+          src={outfitImg}
+          alt={product.name}
+          width="200"
+          height="200"
+          className="card-img"
+        />
+      </div>
       <button type="button" className="btn-outfit-remove" onClick={() => (handleRemove())}>X</button>
       <div className="card-category">
         {product.category.toUpperCase()}
       </div>
-      <div className="card-name">
+      <div className="card-name" onClick={() => (handleCardClick())}>
         {product.name}
       </div>
       <div className="card-price">
@@ -115,7 +117,6 @@ const OutfitCard = ({ product, currProduct }) => {
           key={`comp${product.id}`}
           open={isOpen}
           product={product}
-          currProduct={currProduct}
           onClose={() => (setIsOpen(false))}
         />
       </div>
@@ -131,19 +132,10 @@ OutfitCard.propTypes = {
     name: PropTypes.string,
     features: PropTypes.instanceOf(Array),
   }),
-  currProduct: PropTypes.shape({
-    id: PropTypes.number,
-    category: PropTypes.string,
-    default_price: PropTypes.string,
-    name: PropTypes.string,
-    features: PropTypes.instanceOf(Array),
-
-  }),
 };
 
 OutfitCard.defaultProps = {
   product: {},
-  currProduct: {},
 };
 
 export default OutfitCard;

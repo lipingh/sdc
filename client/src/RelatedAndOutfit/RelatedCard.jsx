@@ -15,7 +15,7 @@ import { OutfitContext } from './RelatedAndOutfit.jsx';
 import { handleOutfitAction } from './helpers.js';
 import { globalContext } from '../index.jsx';
 
-const RelatedCard = ({ product, currProduct }) => {
+const RelatedCard = ({ product }) => {
   const [relatedImg, setRelatedImg] = useState('');
   const [salePrice, setSalePrice] = useState('');
   const [defaultPrice, setDefaultPrice] = useState('');
@@ -51,7 +51,6 @@ const RelatedCard = ({ product, currProduct }) => {
   };
 
   const isInOutfit = () => {
-    // use global storage for outfit list
     outfitsContext.outfits.forEach((outfitItem) => {
       if (outfitItem.id === product.id) {
         setInOutfit(true);
@@ -79,14 +78,16 @@ const RelatedCard = ({ product, currProduct }) => {
   };
 
   return (
-    <div className="list-card" onClick={() => (handleCardClick())}>
-      <img
-        src={relatedImg}
-        alt={product.name}
-        width="200"
-        height="200"
-        className="card-img"
-      />
+    <div className="list-card">
+      <div className="card-img-container" onClick={() => (handleCardClick())}>
+        <img
+          src={relatedImg}
+          alt={product.name}
+          width="200"
+          height="200"
+          className="card-img"
+        />
+      </div>
       <div className="card-add-star" onClick={() => (handleStarClick())}>
         {inOutfit ? <img src={fillStar} alt="star_icon_fill" />
           : <img src={emptyStar} alt="star_icon_empty" />}
@@ -94,7 +95,7 @@ const RelatedCard = ({ product, currProduct }) => {
       <div className="card-category">
         {product.category.toUpperCase()}
       </div>
-      <div className="card-name">
+      <div className="card-name" onClick={() => (handleCardClick())}>
         {product.name}
       </div>
       <div className="card-price">
@@ -133,7 +134,6 @@ const RelatedCard = ({ product, currProduct }) => {
           key={`comp${product.id}`}
           open={isOpen}
           product={product}
-          currProduct={currProduct}
           onClose={() => (setIsOpen(false))}
         />
       </div>
@@ -149,19 +149,10 @@ RelatedCard.propTypes = {
     name: PropTypes.string,
     features: PropTypes.instanceOf(Array),
   }),
-  currProduct: PropTypes.shape({
-    id: PropTypes.number,
-    category: PropTypes.string,
-    default_price: PropTypes.string,
-    name: PropTypes.string,
-    features: PropTypes.instanceOf(Array),
-
-  }),
 };
 
 RelatedCard.defaultProps = {
   product: {},
-  currProduct: {},
 };
 
 export default RelatedCard;
