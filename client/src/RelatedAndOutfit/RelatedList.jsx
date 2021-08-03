@@ -17,7 +17,9 @@ const RelatedList = () => {
 
   const getRelatedFromIds = (idList) => {
     const relatedIdList = idList.filter((id) => (id !== globalData.state.productId));
-    const relatedArray = relatedIdList.map((id) => new Promise((resolve, reject) => {
+    const unique = (value, index, self) => self.indexOf(value) === index;
+    const relatedUniqIdList = relatedIdList.filter(unique);
+    const relatedArray = relatedUniqIdList.map((id) => new Promise((resolve, reject) => {
       axios.get(`${options.url}products/${id}`, {
         headers: options.headers,
       })
