@@ -2,11 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const RatingsBreakDown = ({ ratings, handleFilterByRating }) => {
-  const percent1 = (ratings.oneStar * 100) / ratings.totalReviews;
-  const percent2 = (ratings.twoStar * 100) / ratings.totalReviews;
-  const percent3 = (ratings.threeStar * 100) / ratings.totalReviews;
-  const percent4 = (ratings.fourStar * 100) / ratings.totalReviews;
-  const percent5 = (ratings.fiveStar * 100) / ratings.totalReviews;
+  const percent1 = ratings.totalReviews === 0 ? 0
+    : (ratings.oneStar * 100) / ratings.totalReviews;
+  const percent2 = ratings.totalReviews === 0 ? 0
+    : (ratings.twoStar * 100) / ratings.totalReviews;
+  const percent3 = ratings.totalReviews === 0 ? 0
+    : (ratings.threeStar * 100) / ratings.totalReviews;
+  const percent4 = ratings.totalReviews === 0 ? 0
+    : (ratings.fourStar * 100) / ratings.totalReviews;
+  const percent5 = ratings.totalReviews === 0 ? 0
+    : (ratings.fiveStar * 100) / ratings.totalReviews;
   return (
     <div className="ratings-breakdown">
       <div className="row">

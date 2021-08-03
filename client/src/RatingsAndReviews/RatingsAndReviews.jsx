@@ -68,12 +68,17 @@ const RatingsAndReviews = () => {
       <div className="ratings-reviews">
         <div className="breakdown">
           <div className="overall-rating">
-            <div>{ratingsBreakDown.averageRatings.toFixed(1)}</div>
-            <StarRating rating={ratingsBreakDown.averageRatings} />
+            <div>{Number.isNaN(ratingsBreakDown.averageRatings) ? 'No reviews' : ratingsBreakDown.averageRatings.toFixed(1)}</div>
+            <StarRating rating={
+              Number.isNaN(ratingsBreakDown.averageRatings) ? 0
+                : ratingsBreakDown.averageRatings
+            }
+            />
           </div>
           <br />
           <div>
-            {((recommended * 100) / (recommended + notRecommended)).toFixed(0)}
+            {ratingsBreakDown.totalReviews !== 0
+              ? ((recommended * 100) / (recommended + notRecommended)).toFixed(0) : 0}
             % of reviews recommend this product
           </div>
           <br />
