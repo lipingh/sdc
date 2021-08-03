@@ -66,7 +66,7 @@ const ReviewForm = ({
       characteristics: characteristicsInfo,
     };
     postReview(data);
-    alert('We recived your review, thank you!');
+    alert('We received your review, thank you!');
     onClose();
   };
 
