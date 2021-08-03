@@ -4,6 +4,8 @@ import React, {
 import OutfitCard from './OutfitCard.jsx';
 import './list.css';
 import { OutfitContext } from './RelatedAndOutfit.jsx';
+import { handleOutfitAction } from './helpers.js';
+import { globalContext } from '../index.jsx'
 
 const OutfitList = () => {
   const [current, setCurrent] = useState(0);
@@ -11,6 +13,7 @@ const OutfitList = () => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [cards, setCards] = useState(0);
   const outfitsContext = useContext(OutfitContext);
+  const globalData = useContext(globalContext);
 
   const updateWidth = () => {
     setWindowWidth(window.innerWidth);
@@ -69,11 +72,15 @@ const OutfitList = () => {
     setCurrent(newCurrent);
   };
 
+  const handleAddToOutfit = () => {
+    outfitsContext.setOutfitIds(handleOutfitAction(true, globalData.state.productId));
+  };
+
   return (
     <div className="list-section">
       {current !== 0 && <button type="button" className="btn-list-left" onClick={prevCard}>prev</button>}
       <div className="list-cards" style={{ width: `${cards * 230}px` }} ref={listRef}>
-        <div className="list-card">
+        <div className="list-card" onClick={() => (handleAddToOutfit())}>
           <div className="plus-add-card">+</div>
           <div className="text-add-card">Add to Outfit</div>
         </div>

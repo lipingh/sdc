@@ -37,7 +37,6 @@ const RelatedList = () => {
       .catch((err) => {
         console.log(err);
       });
-    console.log(relatedUniqIdList);
     setLen(relatedUniqIdList.length);
   };
 
