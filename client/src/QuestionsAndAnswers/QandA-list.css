@@ -3,40 +3,49 @@
   flex-direction: column;
   justify-content: center;
 } */
+
 .answer-list {
-  height:200px;
+  height: 200px;
   width: 50%;
-  overflow:hidden;
-  overflow-y:scroll;
+  overflow: hidden;
+  overflow-y: scroll;
 }
+
 .questions-list {
-  height:400px;
+  height: 400px;
   width: 80%;
-  overflow:hidden;
-  overflow-y:scroll;
+  overflow: hidden;
+  overflow-y: scroll;
 }
+
 .q-entry {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   width: 80%;
 }
+
 .a-entry {
   display: flex;
   flex-direction: column;
 }
+
 .a-bullet {
   font-weight: bold;
 }
+
 #q-bullet {
   font-weight: bold;
 }
+
 .q-body {
   font-weight: bold;
 }
+
 .search-bar {
-width: 500px;
+  width: 500px;
 }
+
 .seller {
   font-weight: bold;
 }
