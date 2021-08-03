@@ -5,13 +5,14 @@ const ProductBreakDown = ({ characteristics }) => (
   <div className="factors">
     <div className="full-factor-bar">
       {Object.keys(characteristics).map((character) => {
-        // const indicatorValue = parseFloat(characteristics[character].value) * 20 - 5;
-        const indicatorValue = (parseFloat(characteristics[character].value) * 50) / 5;
+        const currentCharacterRating = parseFloat(characteristics[character].value);
+        const indicatorValue = Number.isNaN(currentCharacterRating) ? 0
+          : (currentCharacterRating * 50) / 5;
         return (
           <div key={character} className="bar-row">
             <span className="factor-side">{character}</span>
             <span className="factor-bar">
-              {parseFloat(characteristics[character].value).toFixed(1)}
+              {Number.isNaN(currentCharacterRating) ? 0 : currentCharacterRating.toFixed(1)}
             </span>
             <span className="indicator" style={{ margin: `${indicatorValue}%` }}>
               &#9662;
