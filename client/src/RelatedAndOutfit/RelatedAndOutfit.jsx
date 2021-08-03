@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import options from '../config/config.js';
 import RelatedList from './RelatedList.jsx';
 import OutfitList from './OutfitList.jsx';
 import { getOutfits } from './helpers.js';
+import { globalContext } from '../index.jsx';
 
 export const OutfitContext = React.createContext();
 
