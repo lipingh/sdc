@@ -8,7 +8,7 @@ const useAllReviews = (productId, page, sortOption, ratingFilter) => {
   const [reviews, setReviews] = useState([]);
   const [hasMore, setHasMore] = useState(false);
 
-  // every time we change the sort or product_id, empty pervious reviews
+  // every time we change the sort, product_id or ratingFilter, empty pervious reviews
   useEffect(() => {
     setReviews([]);
   }, [sortOption, productId, ratingFilter]);
@@ -18,7 +18,7 @@ const useAllReviews = (productId, page, sortOption, ratingFilter) => {
     let cancel;
     setLoading(true);
     setError(false);
-
+    // console.log(sortOption);
     axios({
       method: 'GET',
       url: `${options.url}reviews/`,
@@ -26,7 +26,7 @@ const useAllReviews = (productId, page, sortOption, ratingFilter) => {
       params: {
         product_id: productId,
         page,
-        count: 4,
+        count: 5,
         sort: sortOption,
       },
       cancelToken: new CancelToken((c) => (cancel = c)),
