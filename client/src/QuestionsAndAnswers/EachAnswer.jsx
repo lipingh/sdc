@@ -55,7 +55,7 @@ const EachAnswer = ({ answer }) => {
           role="button"
           tabIndex="0"
         >
-          {voted ? 'You thought this was helpful | ' : ` Helpful? Yes: ${helpful} | `}
+          {voted ? `You and ${helpful} others thought this was helpful | ` : ` Helpful? Yes: ${helpful} | `}
         </span>
         <span> Report</span>
       </div>
