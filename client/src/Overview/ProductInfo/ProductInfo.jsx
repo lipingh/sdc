@@ -21,14 +21,8 @@ const ProductInfo = () => {
     setAverageRating(globalData.state.ratingsBreakDown.averageRatings);
     setTotalReview(globalData.state.ratingsBreakDown.totalReviews);
 
-    axios.get(`${options.url}products/${globalData.state.productId}`, { headers: options.headers })
-      .then((response) => {
-        setCategory(response.data.category);
-        setProductName(response.data.name);
-      })
-      .catch((err) => {
-        console.log('product data fetching err', err);
-      });
+    setCategory(globalData.state.category);
+    setProductName(globalData.state.name);
     axios.get(`${options.url}products/${globalData.state.productId}/styles`, { headers: options.headers })
       .then((response) => {
         setPrice(response.data.results[contextData.currState.styleIndex].original_price);
@@ -42,7 +36,8 @@ const ProductInfo = () => {
       .catch((err) => {
         console.log('styles data fetching err', err);
       });
-  }, [contextData.currState.styleIndex, globalData.state.productId, globalData.state.ratingsBreakDown]);
+  }, [contextData.currState.styleIndex, globalData.state.productId,
+    globalData.state.ratingsBreakDown, globalData.state.name, globalData.state.category]);
 
   return (
     <div>
