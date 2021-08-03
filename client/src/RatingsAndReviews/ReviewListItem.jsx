@@ -50,7 +50,6 @@ const ReviewListItem = ({ review }) => {
               src={photo.url}
               aria-label="save"
               alt=""
-              onError={(e) => { e.target.onerror = null; e.target.src = 'Default.png'; }}
               width="50"
               height="60"
               onClick={() => handleClickPhoto(photo.id)}
