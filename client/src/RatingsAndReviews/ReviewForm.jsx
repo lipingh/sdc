@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import axios from 'axios';
-import options from '../config/config.js';
+import { postReview } from '../../apiRequests';
 import Star from './Star.jsx';
 
 // const reviewFormModalRoot = document.getElementById('review-form');
@@ -66,9 +65,7 @@ const ReviewForm = ({
       email,
       characteristics: characteristicsInfo,
     };
-    axios.post(`${options.url}reviews`, data, { headers: options.headers })
-      .then()
-      .catch((err) => { throw err; });
+    postReview(data);
   };
   return ReactDOM.createPortal(
     <div className="review-form-modal">
