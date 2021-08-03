@@ -16,7 +16,6 @@ const RelatedList = () => {
   const globalData = useContext(globalContext);
 
   const getRelatedFromIds = (idList) => {
-    // should eventually use id of the current page (from global state) to set current product
     const relatedIdList = idList.filter((id) => (id !== globalData.state.productId));
     const relatedArray = relatedIdList.map((id) => new Promise((resolve, reject) => {
       axios.get(`${options.url}products/${id}`, {
@@ -39,7 +38,6 @@ const RelatedList = () => {
   };
 
   const getRelated = () => {
-    // should eventually use id of the current page (global state not hard code)
     axios.get(`${options.url}products/${globalData.state.productId}/related`, {
       headers: options.headers,
     })

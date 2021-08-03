@@ -64,19 +64,21 @@ const OutfitCard = ({ product }) => {
   };
 
   return (
-    <div className="list-card" onClick={() => (handleCardClick())}>
-      <img
-        src={outfitImg}
-        alt={product.name}
-        width="200"
-        height="200"
-        className="card-img"
-      />
+    <div className="list-card">
+      <div className="card-img-container" onClick={() => (handleCardClick())}>
+        <img
+          src={outfitImg}
+          alt={product.name}
+          width="200"
+          height="200"
+          className="card-img"
+        />
+      </div>
       <button type="button" className="btn-outfit-remove" onClick={() => (handleRemove())}>X</button>
       <div className="card-category">
         {product.category.toUpperCase()}
       </div>
-      <div className="card-name">
+      <div className="card-name" onClick={() => (handleCardClick())}>
         {product.name}
       </div>
       <div className="card-price">

@@ -51,7 +51,6 @@ const RelatedCard = ({ product }) => {
   };
 
   const isInOutfit = () => {
-    // use global storage for outfit list
     outfitsContext.outfits.forEach((outfitItem) => {
       if (outfitItem.id === product.id) {
         setInOutfit(true);
@@ -74,19 +73,21 @@ const RelatedCard = ({ product }) => {
     setInOutfit(newInOutfit);
   };
 
-  // const handleCardClick = () => {
-  //   globalData.dispatch({ type: 'changeProductId', data: product.id });
-  // };
+  const handleCardClick = () => {
+    globalData.dispatch({ type: 'changeProductId', data: product.id });
+  };
 
   return (
-    <div className="list-card" /*onClick={() => (handleCardClick())}*/>
-      <img
-        src={relatedImg}
-        alt={product.name}
-        width="200"
-        height="200"
-        className="card-img"
-      />
+    <div className="list-card">
+      <div className="card-img-container" onClick={() => (handleCardClick())}>
+        <img
+          src={relatedImg}
+          alt={product.name}
+          width="200"
+          height="200"
+          className="card-img"
+        />
+      </div>
       <div className="card-add-star" onClick={() => (handleStarClick())}>
         {inOutfit ? <img src={fillStar} alt="star_icon_fill" />
           : <img src={emptyStar} alt="star_icon_empty" />}
@@ -94,7 +95,7 @@ const RelatedCard = ({ product }) => {
       <div className="card-category">
         {product.category.toUpperCase()}
       </div>
-      <div className="card-name">
+      <div className="card-name" onClick={() => (handleCardClick())}>
         {product.name}
       </div>
       <div className="card-price">

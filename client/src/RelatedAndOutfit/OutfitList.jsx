@@ -6,7 +6,6 @@ import './list.css';
 import { OutfitContext } from './RelatedAndOutfit.jsx';
 
 const OutfitList = () => {
-  // get current product from global state
   const [current, setCurrent] = useState(0);
   const [len, setLen] = useState(0);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
