@@ -51,6 +51,11 @@ border-radius: 2em;
   border-radius: 2em;
   border-color: purple;
 }
+.search-bar:focus {
+  cursor: pointer;
+  border-radius: 2em;
+  border-color: purple;
+}
 .search-icon {
   position: absolute;
     top: 6px;
