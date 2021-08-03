@@ -8,6 +8,7 @@ import AnswerForm from './AnswerForm.jsx';
 const EachQuestion = ({ question }) => {
   const [helpful, setHelpful] = useState(question.question_helpfulness);
   const [voted, setVoted] = useState(false);
+  const [reported, setReported] = useState(false);
   const [showAnswerForm, setShow] = useState(false);
   const handleHelpClick = () => {
     if (!voted) {
@@ -25,10 +26,29 @@ const EachQuestion = ({ question }) => {
         .then(() => {
 
         })
-        .catch((res, err) => {
-          res.end('could not make question more helpful', err);
+        .catch((err) => {
+          Promise.reject(err);
         });
     }
+  };
+
+  const handleReport = () => {
+    setReported(true);
+    axios.put(
+      `${options.url}qa/questions/${question.question_id}/report`,
+      {
+        reported: true,
+      },
+      {
+        headers: options.headers,
+      },
+    )
+      .then(() => {
+
+      })
+      .catch((err) => {
+        Promise.reject(err);
+      });
   };
 
   return (
@@ -44,7 +64,14 @@ const EachQuestion = ({ question }) => {
           >
             {voted ? `You and ${helpful} others thought this was helpful | ` : ` Helpful? Yes: ${helpful} | `}
           </span>
-          <span> Report | </span>
+          <span
+            onClick={handleReport}
+            onKeyPress={() => {}}
+            role="button"
+            tabIndex="0"
+          >
+            {reported ? 'Question was Reported | ' : ' Report | '}
+          </span>
           <span
             onKeyPress={() => {}}
             role="button"
@@ -72,6 +99,7 @@ EachQuestion.propTypes = {
     question_id: PropTypes.number,
     question_helpfulness: PropTypes.number,
     answers: PropTypes.arrayOf(PropTypes.object),
+    reported: PropTypes.bool,
   }),
 };
 

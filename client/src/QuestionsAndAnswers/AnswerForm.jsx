@@ -33,7 +33,7 @@ const AnswerForm = ({ questionId, questionBody, showAnswerForm, handleAnswerForm
           setEmail('');
         })
         .catch((err) => {
-          console.error(err);
+          Promise.reject(err);
         });
     } else {
       showErrM(true);
