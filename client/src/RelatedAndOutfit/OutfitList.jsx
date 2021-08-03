@@ -10,7 +10,6 @@ import { globalContext } from '../index.jsx';
 
 const OutfitList = () => {
   // get current product from global state
-  const [currProduct, setCurrProduct] = useState({});
   const [current, setCurrent] = useState(0);
   const [len, setLen] = useState(0);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -30,19 +29,6 @@ const OutfitList = () => {
   useEffect(() => {
     setLen(outfitsContext.outfits.length - 1);
   }, [outfitsContext.outfits]);
-
-  useEffect(() => {
-    // get current product from global state
-    axios.get(`${options.url}products/${globalData.state.productId}`, {
-      headers: options.headers,
-    })
-      .then((res) => {
-        setCurrProduct(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
 
   useEffect(() => {
     let possibleCards = Math.floor((windowWidth - 100) / 230);
@@ -93,7 +79,7 @@ const OutfitList = () => {
           <div className="text-add-card">Add to Outfit</div>
         </div>
         {outfitsContext.outfits.map((product) => (
-          <OutfitCard key={product.id} product={product} currProduct={currProduct} />
+          <OutfitCard key={product.id} product={product} />
         ))}
       </div>
       {current !== len - cards && <button type="button" className="btn-list-right" onClick={nextCard}>next</button>}

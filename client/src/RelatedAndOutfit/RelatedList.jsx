@@ -8,7 +8,6 @@ import options from '../config/config.js';
 import { globalContext } from '../index.jsx'
 
 const RelatedList = () => {
-  const [currProduct, setCurrProduct] = useState({});
   const [current, setCurrent] = useState(0);
   const [len, setLen] = useState(0);
   const [related, setRelated] = useState([]);
@@ -19,15 +18,6 @@ const RelatedList = () => {
   const getRelatedFromIds = (idList) => {
     // should eventually use id of the current page (from global state) to set current product
     const relatedIdList = idList.filter((id) => (id !== globalData.state.productId));
-    axios.get(`${options.url}products/${globalData.state.productId}`, {
-      headers: options.headers,
-    })
-      .then((res) => {
-        setCurrProduct(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
     const relatedArray = relatedIdList.map((id) => new Promise((resolve, reject) => {
       axios.get(`${options.url}products/${id}`, {
         headers: options.headers,
@@ -121,7 +111,7 @@ const RelatedList = () => {
       {current !== 0 && <button type="button" className="btn-list-left" onClick={prevCard}>prev</button>}
       <div className="list-cards" style={{ width: `${cards * 230}px` }} ref={listRef}>
         {related.map((product) => (
-          <RelatedCard key={product.id} product={product} currProduct={currProduct} />
+          <RelatedCard key={product.id} product={product} />
         ))}
       </div>
       {current !== len - cards && <button type="button" className="btn-list-right" onClick={nextCard}>next</button>}

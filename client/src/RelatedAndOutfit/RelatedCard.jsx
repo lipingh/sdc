@@ -15,7 +15,7 @@ import { OutfitContext } from './RelatedAndOutfit.jsx';
 import { handleOutfitAction } from './helpers.js';
 import { globalContext } from '../index.jsx';
 
-const RelatedCard = ({ product, currProduct }) => {
+const RelatedCard = ({ product }) => {
   const [relatedImg, setRelatedImg] = useState('');
   const [salePrice, setSalePrice] = useState('');
   const [defaultPrice, setDefaultPrice] = useState('');
@@ -133,7 +133,6 @@ const RelatedCard = ({ product, currProduct }) => {
           key={`comp${product.id}`}
           open={isOpen}
           product={product}
-          currProduct={currProduct}
           onClose={() => (setIsOpen(false))}
         />
       </div>
@@ -149,19 +148,10 @@ RelatedCard.propTypes = {
     name: PropTypes.string,
     features: PropTypes.instanceOf(Array),
   }),
-  currProduct: PropTypes.shape({
-    id: PropTypes.number,
-    category: PropTypes.string,
-    default_price: PropTypes.string,
-    name: PropTypes.string,
-    features: PropTypes.instanceOf(Array),
-
-  }),
 };
 
 RelatedCard.defaultProps = {
   product: {},
-  currProduct: {},
 };
 
 export default RelatedCard;

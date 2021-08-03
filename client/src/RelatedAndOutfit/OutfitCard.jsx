@@ -13,7 +13,7 @@ import { OutfitContext } from './RelatedAndOutfit.jsx';
 import { handleOutfitAction } from './helpers.js';
 import { globalContext } from '../index.jsx';
 
-const OutfitCard = ({ product, currProduct }) => {
+const OutfitCard = ({ product }) => {
   const [outfitImg, setOutfitImg] = useState('');
   const [salePrice, setSalePrice] = useState('');
   const [defaultPrice, setDefaultPrice] = useState('');
@@ -115,7 +115,6 @@ const OutfitCard = ({ product, currProduct }) => {
           key={`comp${product.id}`}
           open={isOpen}
           product={product}
-          currProduct={currProduct}
           onClose={() => (setIsOpen(false))}
         />
       </div>
@@ -131,19 +130,10 @@ OutfitCard.propTypes = {
     name: PropTypes.string,
     features: PropTypes.instanceOf(Array),
   }),
-  currProduct: PropTypes.shape({
-    id: PropTypes.number,
-    category: PropTypes.string,
-    default_price: PropTypes.string,
-    name: PropTypes.string,
-    features: PropTypes.instanceOf(Array),
-
-  }),
 };
 
 OutfitCard.defaultProps = {
   product: {},
-  currProduct: {},
 };
 
 export default OutfitCard;

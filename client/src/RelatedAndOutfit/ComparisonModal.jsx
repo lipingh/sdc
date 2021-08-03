@@ -1,20 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import ComparisonRow from './ComparisonRow.jsx';
 import './comp-modal.css';
+import { OutfitContext } from './RelatedAndOutfit.jsx';
 
 const ComparisonModal = ({
-  open, onClose, product, currProduct,
+  open, onClose, product,
 }) => {
   if (!open) {
     return null;
   }
 
+  const outfitsContext = useContext(OutfitContext);
+
   const [sharedFeatures, setSharedFeatures] = useState([]);
   const [currProductFeatures, setCurrProductFeatures] = useState([]);
   const [relatedProdFeatures, setRelatedProdFeatures] = useState([]);
   const [windowHt, setwindowHt] = useState(window.innerHeight);
+  const currProduct = outfitsContext.currProduct;
 
   const distributeFeatures = () => {
     const uniqRelatedFeatures = product.features;
