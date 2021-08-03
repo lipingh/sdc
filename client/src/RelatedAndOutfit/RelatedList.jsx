@@ -37,6 +37,8 @@ const RelatedList = () => {
       .catch((err) => {
         console.log(err);
       });
+    console.log(relatedUniqIdList);
+    setLen(relatedUniqIdList.length);
   };
 
   const getRelated = () => {
@@ -44,7 +46,6 @@ const RelatedList = () => {
       headers: options.headers,
     })
       .then((res) => {
-        setLen(res.data.length - 1);
         getRelatedFromIds(res.data);
       })
       .catch((err) => {
@@ -54,14 +55,6 @@ const RelatedList = () => {
 
   const updateWidth = () => {
     setWindowWidth(window.innerWidth);
-  };
-
-  const setPossibleCards = () => {
-    let possibleCards = Math.floor((windowWidth - 100) / 230);
-    if (possibleCards >= len) {
-      possibleCards = len;
-    }
-    setCards(possibleCards);
   };
 
   useEffect(() => {
@@ -74,9 +67,17 @@ const RelatedList = () => {
     getRelated();
   }, [globalData.state.productId]);
 
+  const setPossibleCards = () => {
+    let possibleCards = Math.floor((windowWidth - 100) / 230);
+    if (possibleCards >= len) {
+      possibleCards = len;
+    }
+    setCards(possibleCards);
+  };
+
   useEffect(() => {
     setPossibleCards();
-  }, [windowWidth]);
+  }, [windowWidth, len, cards]);
 
   const listRef = useRef(null);
 
@@ -118,7 +119,7 @@ const RelatedList = () => {
           <RelatedCard key={product.id} product={product} />
         ))}
       </div>
-      {current !== len - cards && <button type="button" className="btn-list-right" onClick={nextCard}>next</button>}
+      {current < len - cards && <button type="button" className="btn-list-right" onClick={nextCard}>next</button>}
     </div>
   );
 };
