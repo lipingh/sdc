@@ -26,7 +26,7 @@ const ReviewListItem = ({ review }) => {
     setReported(!reported);
     reportReview(review.review_id);
   };
-  // const email = 'lisa@gamil.com';
+  // const email = 'lisa@gmail.com';
   // TODO: review.email should also match the sale system as the verified purchaser
   // TODO: repsonse from seller section
   return (

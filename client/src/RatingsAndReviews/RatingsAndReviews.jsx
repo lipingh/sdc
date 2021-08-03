@@ -6,9 +6,7 @@ import RatingsBreakDown from './RatingsBreakDown.jsx';
 import ProductBreakDown from './ProductBreakDown.jsx';
 import ReviewForm from './ReviewForm.jsx';
 import ReviewListItem from './ReviewListItem.jsx';
-import calculateRating from '../../helper.js';
-import { getReviewsMeta, getReviewsById } from '../../apiRequests.js';
-import useAllReviews from './useAllReviews.js';
+import useAllReviews from './useAllReviews';
 import './ratings.css';
 import { globalContext } from '../index.jsx';
 
@@ -41,15 +39,6 @@ const RatingsAndReviews = () => {
     });
     if (node) observer.current.observe(node);
   }, [loading, hasMore]);
-
-  // useEffect(() => {
-  //   getReviewsMeta(productId).then((result) => {
-  //     setRatings(result.ratings);
-  //     setRecommended(parseInt(result.recommended.true, 10));
-  //     setNotRecommended(parseInt(result.recommended.false, 10));
-  //     setCharacteristics(result.characteristics);
-  //   });
-  // }, [productId]);
 
   // input rating is a digit number
   const handleFilterByRating = (rating) => {
