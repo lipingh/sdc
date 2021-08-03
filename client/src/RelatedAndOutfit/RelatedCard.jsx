@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import options from '../config/config.js';
 import './card.css';
 import emptyStar from './assets/star-icon-empty.png';
-import fillStar from './assets/star-icon-fill.png';
 import ComparisonModal from './ComparisonModal.jsx';
 import StarRating from '../RatingsAndReviews/StarRating.jsx';
 import calculateRating from '../../helper.js';
@@ -71,11 +70,11 @@ const RelatedCard = ({ product }) => {
     isInOutfit();
   }, [globalData.state.outfits]);
 
-  const handleStarClick = () => {
-    const newInOutfit = !inOutfit;
-    globalData.dispatch({ type: 'updateOutfitIds', data: handleOutfitAction(newInOutfit, product.id) });
-    setInOutfit(newInOutfit);
-  };
+  // const handleStarClick = () => {
+  //   const newInOutfit = !inOutfit;
+  //   globalData.dispatch({ type: 'updateOutfitIds', data: handleOutfitAction(newInOutfit, product.id) });
+  //   setInOutfit(newInOutfit);
+  // };
 
   const handleCardClick = () => {
     globalData.dispatch({ type: 'changeProductId', data: product.id });
@@ -92,9 +91,19 @@ const RelatedCard = ({ product }) => {
           className="card-img"
         />
       </div>
-      <div className="card-add-star" onClick={() => (handleStarClick())}>
-        {inOutfit ? <img src={fillStar} alt="star_icon_fill" />
-          : <img src={emptyStar} alt="star_icon_empty" />}
+      <div className="card-add-star" onClick={() => (setIsOpen(true))}>
+        <img src={emptyStar} alt="star_icon_empty" />
+        {isOpen ? (
+          <ComparisonModal
+            key={`comp${product.id}`}
+            open={isOpen}
+            product={product}
+            onClose={() => (setIsOpen(false))}
+          />
+        )
+          : null}
+        <div className="modal-comparison">
+      </div>
       </div>
       <div className="card-category">
         {product.category.toUpperCase()}
@@ -131,15 +140,6 @@ const RelatedCard = ({ product }) => {
               <StarRating rating={ratingsBreakDown.averageRatings} />
             </>
           )}
-      </div>
-      <div className="modal-comparison">
-        <button type="button" className="btn-modal-comparison" onClick={() => (setIsOpen(true))}>Compare</button>
-        <ComparisonModal
-          key={`comp${product.id}`}
-          open={isOpen}
-          product={product}
-          onClose={() => (setIsOpen(false))}
-        />
       </div>
     </div>
   );
