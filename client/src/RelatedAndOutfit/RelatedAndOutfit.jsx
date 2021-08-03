@@ -1,15 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import options from '../config/config.js';
 import RelatedList from './RelatedList.jsx';
 import OutfitList from './OutfitList.jsx';
 import { getOutfits } from './helpers.js';
+import { globalContext } from '../index.jsx';
 
 export const OutfitContext = React.createContext();
 
 const RelatedAndOutfit = () => {
   const [outfits, setOutfits] = useState([]);
   const [outfitIds, setOutfitIds] = useState([]);
+  const [currProduct, setCurrProduct] = useState({});
+  const globalData = useContext(globalContext);
+
+  const getCurrProductFromId = (id) => {
+    axios.get(`${options.url}products/${id}`, {
+      headers: options.headers,
+    })
+      .then((res) => {
+        setCurrProduct(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const getOutfitsFromIds = (idList) => {
     const getOutfitsArray = idList.map((id) => new Promise((resolve, reject) => {
@@ -33,6 +48,7 @@ const RelatedAndOutfit = () => {
   };
 
   useEffect(() => {
+    getCurrProductFromId(globalData.state.productId);
     getOutfitsFromIds(getOutfits());
   }, []);
 
@@ -43,7 +59,7 @@ const RelatedAndOutfit = () => {
   return (
     <div id="comp-modal-portal" className="related-outfit">
       RELATED AND OUTFIT
-      <OutfitContext.Provider value={{ outfits, setOutfitIds }}>
+      <OutfitContext.Provider value={{ outfits, currProduct, setOutfitIds }}>
         <div className="related-section">Related Products</div>
         <RelatedList />
         <div className="outfit-section">Your Outfit</div>
