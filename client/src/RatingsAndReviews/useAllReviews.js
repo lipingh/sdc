@@ -45,7 +45,6 @@ const useAllReviews = (productId, page, sortOption, ratingFilter) => {
         if (axios.isCancel(e)) return;
         setError(true);
       });
-    return () => cancel();
   }, [productId, page, sortOption, ratingFilter]);
   return {
     loading, error, reviews, hasMore,

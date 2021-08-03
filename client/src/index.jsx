@@ -8,7 +8,7 @@ import { getReviewsMeta, getProductInfo } from '../apiRequests.js';
 import calculateRating from '../helper.js';
 
 const initialState = {
-  productId: 13023,
+  productId: 13027,
   ratingsBreakDown: {
     oneStar: 0,
     twoStar: 0,
