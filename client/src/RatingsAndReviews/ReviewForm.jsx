@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { postReview } from '../../apiRequests';
 import Star from './Star.jsx';
 
-// const reviewFormModalRoot = document.getElementById('review-form');
 const ReviewForm = ({
   showModal, onClose, productId, characteristics,
 }) => {
@@ -24,14 +23,20 @@ const ReviewForm = ({
   const [email, setEmail] = useState('');
   const [selection, setSelection] = useState(0);
   const [ratingError, setRatingError] = useState(true);
+  const [photos, setPhotos] = useState([]);
+
   const hoverOver = (event) => {
     let val = 0;
     if (event && event.target && event.target.getAttribute('data-star-id')) val = event.target.getAttribute('data-star-id');
     setSelection(val);
   };
+
   useEffect(() => {
   }, [ratingError]);
 
+  const addPhotos = (e) => {
+    setPhotos((prev) => [...prev, ...e.target.files]);
+  };
   const addReviews = (e) => {
     e.preventDefault();
     if (ratingError) {
@@ -54,6 +59,8 @@ const ReviewForm = ({
         characteristicsInfo[characteristics[key].id] = parseInt(quality, 10);
       }
     });
+    const photoUrls = photos.map((photo) => URL.createObjectURL(photo));
+    // console.log(photoUrls);
 
     const data = {
       product_id: productId,
@@ -63,6 +70,7 @@ const ReviewForm = ({
       recommend: recommend === 'true',
       name,
       email,
+      photos: photoUrls,
       characteristics: characteristicsInfo,
     };
     postReview(data);
@@ -195,8 +203,11 @@ const ReviewForm = ({
           <textarea id="review" type="text" maxLength="1000" placeholder="Example: Why did you like the product or not?" required />
         </div>
         <div>
-          Choose photos:
-          <input type="file" id="upload-photo" accept="image/*" multiple />
+          <span>
+            {photos.length < 5 ? 'Upload your photos: '
+              : 'Photo limit reached'}
+          </span>
+          <input type="file" id="upload-photo" accept="image/*" onChange={addPhotos} disabled={photos.length >= 5} />
         </div>
         <div className="review-name" onChange={(e) => setReviewName(e.target.value)}>
           Nickname

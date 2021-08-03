@@ -32,6 +32,7 @@ const ReviewListItem = ({ review }) => {
   return (
     <div>
       <div className="review-list-overall">
+        {/* {review.review_id} */}
         <StarRating rating={review.rating} />
         <span>
           {review.reviewer_name}
