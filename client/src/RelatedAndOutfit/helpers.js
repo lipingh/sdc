@@ -10,6 +10,7 @@ const getOutfits = () => {
 const handleOutfitAction = (bool, productId) => {
   let storageOutfits = JSON.parse(window.localStorage.getItem('outfits'));
   if (bool) {
+    storageOutfits = storageOutfits.filter((id) => id !== productId);
     storageOutfits.unshift(productId);
     window.localStorage.setItem('outfits', JSON.stringify(storageOutfits));
   } else {
