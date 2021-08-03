@@ -1,12 +1,9 @@
 import React, {
   useState, useRef, useEffect, useContext,
 } from 'react';
-import axios from 'axios';
 import OutfitCard from './OutfitCard.jsx';
 import './list.css';
-import options from '../config/config.js';
 import { OutfitContext } from './RelatedAndOutfit.jsx';
-import { globalContext } from '../index.jsx';
 
 const OutfitList = () => {
   // get current product from global state
@@ -15,7 +12,6 @@ const OutfitList = () => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [cards, setCards] = useState(0);
   const outfitsContext = useContext(OutfitContext);
-  const globalData = useContext(globalContext);
 
   const updateWidth = () => {
     setWindowWidth(window.innerWidth);

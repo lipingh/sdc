@@ -74,12 +74,12 @@ const RelatedCard = ({ product }) => {
     setInOutfit(newInOutfit);
   };
 
-  const handleCardClick = () => {
-    globalData.dispatch({ type: 'changeProductId', data: product.id });
-  };
+  // const handleCardClick = () => {
+  //   globalData.dispatch({ type: 'changeProductId', data: product.id });
+  // };
 
   return (
-    <div className="list-card" onClick={() => (handleCardClick())}>
+    <div className="list-card" /*onClick={() => (handleCardClick())}*/>
       <img
         src={relatedImg}
         alt={product.name}
