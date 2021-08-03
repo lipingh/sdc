@@ -64,7 +64,6 @@ const ReviewListItem = ({ review }) => {
           </div>
 
         ))}
-        ;
       </div>
 
       <div>
