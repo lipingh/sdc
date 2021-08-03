@@ -57,22 +57,27 @@ const EachQuestion = ({ question }) => {
         <span className="q-body">{`Q: ${question.question_body}`}</span>
         <div className="Qhelp-report">
           <span
+            className="helpful"
             onClick={handleHelpClick}
             onKeyPress={() => {}}
             role="button"
             tabIndex="0"
           >
-            {voted ? `You and ${helpful} others thought this was helpful | ` : ` Helpful? Yes: ${helpful} | `}
+            {voted ? `You and ${helpful} others thought this was helpful` : ` Helpful? Yes: ${helpful}`}
           </span>
+          <span>{'  |  '}</span>
           <span
+            className="reported"
             onClick={handleReport}
             onKeyPress={() => {}}
             role="button"
             tabIndex="0"
           >
-            {reported ? 'Question was Reported | ' : ' Report | '}
+            {reported ? 'Question was Reported ' : ' Report'}
           </span>
+          <span>{'  |  '}</span>
           <span
+            className="add-answer"
             onKeyPress={() => {}}
             role="button"
             tabIndex="0"

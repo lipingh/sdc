@@ -42,13 +42,19 @@ const QuestionsAndAnswers = () => {
           moreQuestions={moreQuestions}
         />
         <button
-          className="more-questions-button"
+          className="questions-buttons"
           type="button"
           onClick={handleMoreQuestions}
         >
           {moreQuestions ? 'Hide Questions' : 'More Answered Questions'}
         </button>
-        <button type="button" onClick={() => { setQuestionForm(true); }}>Add a Question</button>
+        <button
+          className="questions-buttons"
+          type="button"
+          onClick={() => { setQuestionForm(true); }}
+        >
+          Add a Question
+        </button>
       </div>
     </div>
   );

@@ -56,31 +56,35 @@ const EachAnswer = ({ answer }) => {
       </div>
       <div className="Ahelp-report">
         <span>
+          <span className="seller">By: </span>
           <span className="seller">
-            {answer.answerer_name === 'Seller' ? `by: ${answer.answerer_name}, ` : null}
+            {answer.answerer_name === 'Seller' ? `${answer.answerer_name}, ` : null}
           </span>
           <span className="notSeller">
-            {answer.answerer_name !== 'Seller' ? `by: ${answer.answerer_name}, ` : null}
+            {answer.answerer_name !== 'Seller' ? `${answer.answerer_name}, ` : null}
           </span>
-          {new Date(answer.date).toLocaleDateString(
+          {` ${new Date(answer.date).toLocaleDateString(
             undefined, { year: 'numeric', month: 'long', day: 'numeric' },
-          )}
+          )}`}
         </span>
         <span
+          className="helpful"
           onClick={handleHelpClick}
           onKeyPress={() => {}}
           role="button"
           tabIndex="0"
         >
-          {voted ? `You and ${helpful} others thought this was helpful | ` : ` Helpful? Yes: ${helpful} | `}
+          {voted ? `You and ${helpful} others thought this was helpful` : ` Helpful? Yes: ${helpful}`}
         </span>
+        <span>{'  |  '}</span>
         <span
+          className="reported"
           onClick={handleReport}
           onKeyPress={() => {}}
           role="button"
           tabIndex="0"
         >
-          {reported ? ' | Answer was Reported' : ' | Report'}
+          {reported ? 'Answer was Reported' : 'Report'}
         </span>
       </div>
     </div>
