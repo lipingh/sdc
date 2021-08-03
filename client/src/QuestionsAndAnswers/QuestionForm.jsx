@@ -46,7 +46,7 @@ const QuestionForm = ({ showQuestionForm, handleQuestionForm }) => {
       <form className="question-form">
         <button className="XButton" type="button" onClick={handleQuestionForm}>X</button>
         <h3 className="QTitle">Ask Your Question</h3>
-        <h4 className="QSubTitle">About the product name</h4>
+        <h4 className="QSubTitle">{`About the ${globalData.state.name}`}</h4>
         <span style={{ color: 'green' }}>{showSubmitM ? 'Question submitted!' : null}</span>
         <span style={{ color: 'red' }}>{showErr ? 'You must enter the following: question with a ?, nickname, and email' : null}</span>
         <div>
