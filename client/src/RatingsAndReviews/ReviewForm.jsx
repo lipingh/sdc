@@ -23,8 +23,8 @@ const ReviewForm = ({
   const [email, setEmail] = useState('');
   const [selection, setSelection] = useState(0);
   const [ratingError, setRatingError] = useState(true);
-
   const [photos, setPhotos] = useState([]);
+
   const hoverOver = (event) => {
     let val = 0;
     if (event && event.target && event.target.getAttribute('data-star-id')) val = event.target.getAttribute('data-star-id');
