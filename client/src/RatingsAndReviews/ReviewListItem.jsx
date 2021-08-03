@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
-import options from '../config/config';
 import './reviews.css';
 import StarRating from './StarRating.jsx';
 import ImageModal from './ImageModal.jsx';
-import { updateReviewHelpful } from '../../apiRequests';
+import { updateReviewHelpful, reportReview } from '../../apiRequests';
 
 const ReviewListItem = ({ review }) => {
   const [helpful, sethelpful] = useState(review.helpfulness);
@@ -21,34 +19,12 @@ const ReviewListItem = ({ review }) => {
     setDisableHelpful(!disableHelpful);
     sethelpful(() => (disableHelpful ? helpful - 1 : helpful + 1));
     updateReviewHelpful(review.review_id, helpful);
-    // axios.put(
-    //   `${options.url}reviews/${review.review_id}/helpful`,
-    //   {
-    //     helpfulness: helpful,
-    //   },
-    //   {
-    //     headers: options.headers,
-    //   },
-    // )
-    //   .then()
-    //   .catch((err) => {
-    //     throw err;
-    //   });
   };
 
   // TODO: which value should we update by click "report"? can't find in the reviews
   const handleReport = () => {
     setReported(!reported);
-    axios.put(
-      `${options.url}reviews/${review.review_id}/report`, {},
-      {
-        headers: options.headers,
-      },
-    )
-      .then()
-      .catch((err) => {
-        throw err;
-      });
+    reportReview(review.review_id);
   };
   // const email = 'lisa@gamil.com';
   // TODO: review.email should also match the sale system as the verified purchaser

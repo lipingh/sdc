@@ -42,9 +42,21 @@ const updateReviewHelpful = (reviewId, helpful) => axios.put(
     throw err;
   });
 
+const reportReview = (reviewId) => axios.put(
+  `${options.url}reviews/${reviewId}/report`, {},
+  {
+    headers: options.headers,
+  },
+)
+  .then()
+  .catch((err) => {
+    throw err;
+  });
+
 module.exports = {
   getReviewsById,
   getReviewsMeta,
   getProductInfo,
   updateReviewHelpful,
+  reportReview,
 };

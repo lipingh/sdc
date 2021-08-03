@@ -1,5 +1,5 @@
 import React, {
-  useState, useEffect, useMemo, useRef, useCallback, useContext,
+  useState, useEffect, useRef, useCallback, useContext,
 } from 'react';
 import StarRating from './StarRating.jsx';
 import RatingsBreakDown from './RatingsBreakDown.jsx';
@@ -22,7 +22,6 @@ const RatingsAndReviews = () => {
   const { characteristics } = globalData.state;
   // const [totalReviews, setTotalReviews] = useState(0);
   const [sortOption, setSortOption] = useState('relevant');
-  // const [productId, setProductId] = useState(13023);
   const [page, setPage] = useState(1);
   const [ratingFilter, setRatingFilter] = useState(null);
   const {
@@ -54,8 +53,6 @@ const RatingsAndReviews = () => {
 
   // input rating is a digit number
   const handleFilterByRating = (rating) => {
-    // const filteredData = reviews.filter((review) => review.rating === rating);
-    // setFilteredReviews(filteredData);
     setRatingFilter(rating);
     setPage(1);
   };
@@ -66,9 +63,15 @@ const RatingsAndReviews = () => {
     setPage(1);
   };
   const handleAddReview = () => {
-    setTotalReviews((prev) => prev + 1);
+    // setTotalReviews((prev) => prev + 1);
     // setReviews([...reviews, newReview]);
   };
+
+  useEffect(() => {
+    setPage(1);
+    setSortOption('relevant');
+    setRatingFilter(null);
+  }, [productId]);
 
   return (
     <div className="reviews-root">
