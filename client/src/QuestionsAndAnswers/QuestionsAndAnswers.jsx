@@ -52,8 +52,8 @@ const QuestionsAndAnswers = () => {
         setQuestions(finalOrder);
         setOriginalQuestions(finalOrder);
       })
-      .catch((res, err) => {
-        res.end('could not get questions', err);
+      .catch((err) => {
+        Promise.reject(err);
       });
   };
 
