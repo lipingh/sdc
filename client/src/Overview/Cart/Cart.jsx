@@ -83,12 +83,14 @@ const Cart = () => {
       .catch((err) => {
         console.log('styles data fetching err', err);
       });
+    setSelectedSize('');
+    setAvailableQuantity(0);
   }, [contextData.currState.styleIndex, globalData.state.productId]);
   return (
     <div className={style.cart}>
       {sizes.length > 0
         ? (
-          <select name="sizes" ref={selectSize} onChange={sizeChangeHandler} className={style.size}>
+          <select name="sizes" ref={selectSize} value={selectedSize} onChange={sizeChangeHandler} className={style.size}>
             <option value="">SELECT SIZE</option>
             {sizes.map((size, index) => (<option value={size} key={index}>{size}</option>))}
           </select>
