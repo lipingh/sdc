@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import ReactDOM from 'react-dom';
 import './AForm.css';
 import axios from 'axios';
 import options from '../config/config.js';
+import { globalContext } from '../index.jsx';
 
 const AnswerForm = ({ questionId, questionBody, showAnswerForm, handleAnswerForm }) => {
   if (!showAnswerForm) return null;
@@ -12,6 +13,8 @@ const AnswerForm = ({ questionId, questionBody, showAnswerForm, handleAnswerForm
   const [email, setEmail] = useState('');
   const [showSubmitM, showM] = useState(false);
   const [showErr, showErrM] = useState(false);
+  const globalData = useContext(globalContext);
+
 
   const handleSubmitQuestion = (e) => {
     e.preventDefault();
@@ -42,7 +45,7 @@ const AnswerForm = ({ questionId, questionBody, showAnswerForm, handleAnswerForm
       <form className="answer-form">
         <button className="XButton" type="button" onClick={handleAnswerForm}>X</button>
         <h3 className="ATitle">Submit your Answer</h3>
-        <h4 className="ASubTitle">{`product name: ${questionBody}`}</h4>
+        <h4 className="ASubTitle">{`${globalData.state.name}: ${questionBody}`}</h4>
         <span style={{ color: 'green' }}>{showSubmitM ? 'Answer submitted!' : null}</span>
         <span style={{ color: 'red' }}>{showErr ? 'You must enter the following: answer, nickname, and email' : null}</span>
         <div>
