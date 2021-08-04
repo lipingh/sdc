@@ -81,8 +81,8 @@ const ReviewForm = ({
   return ReactDOM.createPortal(
     <div className="review-form-modal">
       <form className="review-form" onSubmit={addReviews}>
-        <button className="close-button" type="button" onClick={onClose}>X</button>
-        <div className="review-form-row">
+        <button className="buttons XButton" type="button" onClick={onClose}>X</button>
+        <div>
           {ratingError
             ? <span style={{ color: 'red' }}>&#9888; Please select overall rating</span> : null}
           <div
@@ -217,7 +217,7 @@ const ReviewForm = ({
           Email
           <input type="email" maxLength="60" required />
         </div>
-        <button type="submit" className="review-form-submit-button">Submit</button>
+        <button type="submit" className="buttons QSubmit">Submit</button>
       </form>
     </div>,
     document.getElementById('review-form-modal'),
