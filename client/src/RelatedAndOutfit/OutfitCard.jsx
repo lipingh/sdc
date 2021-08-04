@@ -79,12 +79,14 @@ const OutfitCard = ({ product }) => {
       <div className="card-name" onClick={() => (handleCardClick())}>
         {product.name}
       </div>
-      <div className="card-price">
+      <div className="card-price" onClick={() => (handleCardClick())}>
         {salePrice ? (
           <>
             <span className="sale-price" style={{ color: 'red' }}>
-              $
-              {salePrice}
+              <strong>
+                $
+                {salePrice}
+              </strong>
             </span>
             <span className="old-price">
               $
@@ -94,8 +96,10 @@ const OutfitCard = ({ product }) => {
         )
           : (
             <span>
-              $
-              {defaultPrice}
+              <strong>
+                $
+                {defaultPrice}
+              </strong>
             </span>
           )}
       </div>

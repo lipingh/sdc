@@ -4,8 +4,8 @@ import React, {
 import OutfitCard from './OutfitCard.jsx';
 import './list.css';
 import { OutfitContext } from './RelatedAndOutfit.jsx';
-import { handleOutfitAction } from './helpers.js';
-import { globalContext } from '../index.jsx'
+import { handleOutfitAction, getOutfits } from './helpers.js';
+import { globalContext } from '../index.jsx';
 
 const OutfitList = () => {
   const [current, setCurrent] = useState(0);
@@ -14,19 +14,32 @@ const OutfitList = () => {
   const [cards, setCards] = useState(0);
   const outfitsContext = useContext(OutfitContext);
   const globalData = useContext(globalContext);
+  const [isInOutfit, setIsInOutfit] = useState(false);
 
   const updateWidth = () => {
     setWindowWidth(window.innerWidth);
   };
 
+  const checkInOutfit = () => {
+    let match = false;
+    getOutfits().forEach((id) => {
+      if (id === globalData.state.productId) {
+        match = true;
+      }
+    });
+    setIsInOutfit(match);
+  };
+
   useEffect(() => {
+    checkInOutfit();
     window.addEventListener('resize', updateWidth);
     return () => { window.removeEventListener('resize', updateWidth); };
   }, []);
 
   useEffect(() => {
-    setLen(outfitsContext.outfits.length);
-  }, [outfitsContext.outfits]);
+    checkInOutfit();
+    setLen(outfitsContext.outfits.length + 1);
+  }, [outfitsContext.outfits, isInOutfit]);
 
   const setPossibleCards = () => {
     let possibleCards = Math.floor((windowWidth - 100) / 230);
@@ -79,19 +92,32 @@ const OutfitList = () => {
   return (
     <div className="list-section">
       <div className="list-btn-container">
-        {current !== 0 && <button type="button" className="btn-list-left" onClick={prevCard}>&#8678;</button>}
+        {current !== 0 && <button type="button" className="btn-list-left" onClick={prevCard}>&#10094;</button>}
       </div>
       <div className="list-cards" style={{ width: `${cards * 230}px` }} ref={listRef}>
-        <div className="list-card" onClick={() => (handleAddToOutfit())}>
-          <div className="plus-add-card">+</div>
-          <div className="text-add-card">Add to Outfit</div>
-        </div>
+        {isInOutfit
+          ? (
+            <div className="list-card">
+              <div className="added-card-text">
+                <div className="plus-add-card">&#10003;</div>
+                <div className="text-add-card">Added to Outfit!</div>
+              </div>
+            </div>
+          )
+          : (
+            <div className="add-outfit-card" onClick={() => (handleAddToOutfit())}>
+              <div className="add-card-text">
+                <div className="plus-add-card">+</div>
+                <div className="text-add-card">Add to Outfit</div>
+              </div>
+            </div>
+          )}
         {outfitsContext.outfits.map((product) => (
           <OutfitCard key={product.id} product={product} />
         ))}
       </div>
       <div className="list-btn-container">
-        {current < len - cards && <button type="button" className="btn-list-right" onClick={nextCard}>&#8680;</button>}
+        {current < len - cards && <button type="button" className="btn-list-right" onClick={nextCard}>&#10095;</button>}
       </div>
     </div>
   );
