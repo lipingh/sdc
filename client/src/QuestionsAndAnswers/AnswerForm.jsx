@@ -43,7 +43,7 @@ const AnswerForm = ({ questionId, questionBody, showAnswerForm, handleAnswerForm
   return ReactDOM.createPortal(
     <div className="answer-overlay">
       <form className="answer-form">
-        <button className="XButton" type="button" onClick={handleAnswerForm}>X</button>
+        <button className="buttons XButton" type="button" onClick={handleAnswerForm}>X</button>
         <h3 className="ATitle">Submit your Answer</h3>
         <h4 className="ASubTitle">{`${globalData.state.name}: ${questionBody}`}</h4>
         <span style={{ color: 'green' }}>{showSubmitM ? 'Answer submitted!' : null}</span>
@@ -72,7 +72,7 @@ const AnswerForm = ({ questionId, questionBody, showAnswerForm, handleAnswerForm
         </div>
         <input className="AEmail" type="email" placeholder="Example: abcde@abc.com" onChange={(e) => { setEmail(e.target.value); }} required />
         <span>For authentication reasons, you will not be emailed.</span>
-        <button className="ASubmit" type="submit" onClick={handleSubmitQuestion}>Submit Answer</button>
+        <button className="buttons ASubmit" type="submit" onClick={handleSubmitQuestion}>Submit Answer</button>
       </form>
     </div>,
     document.getElementById('questions'),

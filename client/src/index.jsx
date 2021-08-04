@@ -83,8 +83,8 @@ const App = () => {
     <div className={theme ? 'allSizes light' : 'allSizes dark'}>
       <img src="logo.png" alt="" width="30%" height="30%" />
       <globalContext.Provider value={{ state, dispatch }}>
-        <button type="button" className="themeButton" onClick={() => setTheme((prev) => !prev)}>
-          {theme ? ' Light-Mode' : ' Dark-Mode'}
+        <button type="button" className="buttons themeButton" onClick={() => setTheme((prev) => !prev)}>
+          {theme ? 'SWITCH TO DARK-MODE' : 'SWITCH TO LIGHT-MODE'}
         </button>
         <Overview />
         <RelatedItems />

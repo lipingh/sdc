@@ -45,17 +45,19 @@
   position: absolute;
   top: 10px;
   right: 10px;
+}
+.buttons {
   display: inline-block;
-  border: 0.2em solid var(--fontBody-color);
+  border: 0.17em solid var(--fontBody-color);
   border-radius: 2em;
-  background-color: var(--color-secondary);
+  background-color: var(--color-three);
   box-sizing: border-box;
   font-weight: 350;
-  font-size: 15px;
+  text-align: center;
+  color: var(--fontBody-color);
 }
-
-.themeButton:hover {
-  color: white;
-  background-color: rgb(38, 50, 56);
+.buttons:hover {
+  color: var(--color-three);
+  background-color: var(--fontBody-color);
   cursor: pointer;
 }
