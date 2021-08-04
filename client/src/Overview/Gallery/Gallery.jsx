@@ -75,8 +75,8 @@ const Gallery = () => {
       const w = magnifyArea.offsetWidth;
       const h = magnifyArea.offsetHeight;
 
-      clientX = (clientX / w) * 80;
-      clientY = (clientY / h) * 80;
+      clientX = (clientX / w) * 70;
+      clientY = (clientY / h) * 70;
       magnifyImg.style.transform = `translate(-${clientX}%, -${clientY}%) scale(2.5)`;
     }
     magnifyArea.addEventListener('mousemove', listener);
