@@ -34,9 +34,9 @@ const Cart = () => {
 
   const favClickHandler = () => {
     if (!isFavorite) { // add to local storage
-      helperMethods.handleOutfitAction(true, globalData.state.productId);
+      globalData.dispatch({ type: 'updateOutfitIds', data: helperMethods.handleOutfitAction(true, globalData.state.productId) });
     } else { // remove from local storage
-      helperMethods.handleOutfitAction(false, globalData.state.productId);
+      globalData.dispatch({ type: 'updateOutfitIds', data: helperMethods.handleOutfitAction(false, globalData.state.productId) });
     }
     setIsFavorite(!isFavorite);
   };
@@ -85,7 +85,12 @@ const Cart = () => {
       });
     setSelectedSize('');
     setAvailableQuantity(0);
-  }, [contextData.currState.styleIndex, globalData.state.productId]);
+    if (globalData.state.outfits.includes(globalData.state.productId)) {
+      setIsFavorite(true);
+    } else {
+      setIsFavorite(false);
+    }
+  }, [contextData.currState.styleIndex, globalData.state.productId, globalData.state.outfits]);
   return (
     <div className={style.cart}>
       {sizes.length > 0

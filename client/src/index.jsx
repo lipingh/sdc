@@ -6,6 +6,7 @@ import QuestionsAndAnswers from './QuestionsAndAnswers/QuestionsAndAnswers.jsx';
 import RatingsAndReviews from './RatingsAndReviews/RatingsAndReviews.jsx';
 import { getReviewsMeta, getProductInfo } from '../apiRequests.js';
 import calculateRating from '../helper.js';
+import outfitHelpers from './RelatedAndOutfit/helpers.js';
 import './global.css';
 
 const initialState = {
@@ -24,6 +25,7 @@ const initialState = {
   name: '',
   category: '',
   features: [],
+  outfits: [],
 };
 
 const reducer = (state, action) => {
@@ -42,6 +44,8 @@ const reducer = (state, action) => {
       return { ...state, category: action.data };
     case 'updateFeatures':
       return { ...state, features: action.data };
+    case 'updateOutfitIds':
+      return { ...state, outfits: action.data };
     default:
       return state;
   }
@@ -70,6 +74,7 @@ const App = () => {
       .catch((err) => {
         console.log('review star data fetching error', err);
       });
+    dispatch({ type: 'updateOutfitIds', data: outfitHelpers.getOutfits() });
   }, [state.productId]);
 
   const [theme, setTheme] = useState(true);

@@ -10,7 +10,7 @@ export const OutfitContext = React.createContext();
 
 const RelatedAndOutfit = () => {
   const [outfits, setOutfits] = useState([]);
-  const [outfitIds, setOutfitIds] = useState([]);
+  const globalData = useContext(globalContext);
 
   const getOutfitsFromIds = (idList) => {
     const getOutfitsArray = idList.map((id) => new Promise((resolve, reject) => {
@@ -34,17 +34,13 @@ const RelatedAndOutfit = () => {
   };
 
   useEffect(() => {
-    getOutfitsFromIds(getOutfits());
-  }, []);
-
-  useEffect(() => {
-    getOutfitsFromIds(outfitIds);
-  }, [outfitIds]);
+    getOutfitsFromIds(globalData.state.outfits);
+  }, [globalData.state.outfits]);
 
   return (
     <div id="comp-modal-portal" className="related-outfit">
       RELATED AND OUTFIT
-      <OutfitContext.Provider value={{ outfits, setOutfitIds }}>
+      <OutfitContext.Provider value={{ outfits }}>
         <div className="related-section">Related Products</div>
         <RelatedList />
         <div className="outfit-section">Your Outfit</div>

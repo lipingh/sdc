@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import options from '../config/config.js';
 import './card.css';
 import emptyStar from './assets/star-icon-empty.png';
-import fillStar from './assets/star-icon-fill.png';
 import ComparisonModal from './ComparisonModal.jsx';
 import StarRating from '../RatingsAndReviews/StarRating.jsx';
 import calculateRating from '../../helper.js';
@@ -67,14 +66,22 @@ const RelatedCard = ({ product }) => {
     isInOutfit();
   }, []);
 
-  const handleStarClick = () => {
-    const newInOutfit = !inOutfit;
-    outfitsContext.setOutfitIds(handleOutfitAction(newInOutfit, product.id));
-    setInOutfit(newInOutfit);
-  };
+  useEffect(() => {
+    isInOutfit();
+  }, [globalData.state.outfits]);
+
+  // const handleStarClick = () => {
+  //   const newInOutfit = !inOutfit;
+  //   globalData.dispatch({ type: 'updateOutfitIds', data: handleOutfitAction(newInOutfit, product.id) });
+  //   setInOutfit(newInOutfit);
+  // };
 
   const handleCardClick = () => {
     globalData.dispatch({ type: 'changeProductId', data: product.id });
+  };
+
+  const handleStarClick = () => {
+    setIsOpen(!isOpen);
   };
 
   return (
@@ -88,9 +95,16 @@ const RelatedCard = ({ product }) => {
           className="card-img"
         />
       </div>
-      <div className="card-add-star" onClick={() => (handleStarClick())}>
-        {inOutfit ? <img src={fillStar} alt="star_icon_fill" />
-          : <img src={emptyStar} alt="star_icon_empty" />}
+      <div role="button" className="card-add-star">
+        <img src={emptyStar} alt="star_icon_empty" onClick={() => (handleStarClick())} />
+        <div className="modal-comparison">
+          <ComparisonModal
+            key={`comp${product.id}`}
+            open={isOpen}
+            product={product}
+            onClose={handleStarClick}
+          />
+      </div>
       </div>
       <div className="card-category">
         {product.category.toUpperCase()}
@@ -119,7 +133,7 @@ const RelatedCard = ({ product }) => {
           )}
       </div>
       <div className="card-rating">
-        {isNaN(ratingsBreakDown.averageRatings.toFixed(1))
+        {Number.isNaN(ratingsBreakDown.averageRatings)
           ? <div className="card-rating-none">No ratings</div>
           : (
             <>
@@ -127,15 +141,6 @@ const RelatedCard = ({ product }) => {
               <StarRating rating={ratingsBreakDown.averageRatings} />
             </>
           )}
-      </div>
-      <div className="modal-comparison">
-        <button type="button" className="btn-modal-comparison" onClick={() => (setIsOpen(true))}>Compare</button>
-        <ComparisonModal
-          key={`comp${product.id}`}
-          open={isOpen}
-          product={product}
-          onClose={() => (setIsOpen(false))}
-        />
       </div>
     </div>
   );

@@ -88,11 +88,11 @@ const ComparisonModal = ({
 };
 
 ComparisonModal.propTypes = {
-  open: PropTypes.bool,
+  open: PropTypes.bool.isRequired,
 };
 
-ComparisonModal.defaultProps = {
-  open: false,
-};
+// ComparisonModal.defaultProps = {
+//   open: false,
+// };
 
 export default ComparisonModal;

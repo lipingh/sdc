@@ -73,7 +73,7 @@ const OutfitList = () => {
   };
 
   const handleAddToOutfit = () => {
-    outfitsContext.setOutfitIds(handleOutfitAction(true, globalData.state.productId));
+    globalData.dispatch({ type: 'updateOutfitIds', data: handleOutfitAction(true, globalData.state.productId) });
   };
 
   return (
