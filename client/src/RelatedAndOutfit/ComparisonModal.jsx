@@ -67,8 +67,10 @@ const ComparisonModal = ({
     <>
       <div className="comparison-overlay" />
       <div className="comparison-window">
-        <div className="comparing">COMPARING</div>
-        <button type="button" className="btn-close-comp-modal" onClick={onClose}>X</button>
+        <div className="comp-modal-bar">
+          <div className="comparing">COMPARING</div>
+          <button type="button" className="btn-close-comp-modal buttons" onClick={onClose}>X</button>
+        </div>
         <div className="comp-table">
           <div className="comp-titles">
             <div className="comp-title">{product.name}</div>
@@ -91,8 +93,8 @@ ComparisonModal.propTypes = {
   open: PropTypes.bool.isRequired,
 };
 
-// ComparisonModal.defaultProps = {
-//   open: false,
-// };
+ComparisonModal.defaultProps = {
+  open: false,
+};
 
 export default ComparisonModal;
