@@ -8,7 +8,7 @@
   width: 50%;
   height: 40%;
   transform: translate(-50%, 50%);
-  background-color: var(--color-three);
+  background-color: var(--color-secondary);
   padding: 25px;
   z-index: 1000;
   border-radius: 5px;

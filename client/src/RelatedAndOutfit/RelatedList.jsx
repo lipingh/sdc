@@ -67,7 +67,7 @@ const RelatedList = () => {
   }, [globalData.state.productId]);
 
   const setPossibleCards = () => {
-    let possibleCards = Math.floor((windowWidth - 100) / 230);
+    let possibleCards = Math.floor((windowWidth - 165) / 230);
     if (possibleCards >= len) {
       possibleCards = len;
     }
@@ -113,7 +113,7 @@ const RelatedList = () => {
   return (
     <div className="list-section">
       <div className="list-btn-container">
-        {current !== 0 && <button type="button" className="btn-list-left" onClick={prevCard}>&#8678;</button>}
+        {current !== 0 && <button type="button" className="btn-list-left" onClick={prevCard}>&#10094;</button>}
       </div>
       <div className="list-cards" style={{ width: `${cards * 230}px` }} ref={listRef}>
         {related.map((product) => (
@@ -121,7 +121,7 @@ const RelatedList = () => {
         ))}
       </div>
       <div className="list-btn-container">
-        {current < len - cards && <button type="button" className="btn-list-right" onClick={nextCard}>&#8680;</button>}
+        {current < len - cards && <button type="button" className="btn-list-right" onClick={nextCard}>&#10095;</button>}
       </div>
     </div>
   );

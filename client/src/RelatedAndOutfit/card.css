@@ -1,4 +1,4 @@
-.list-card {
+.list-card, .add-outfit-card {
   height: 325px;
   min-width: 220px;
   margin: 5px;
@@ -22,6 +22,10 @@
   top: 15px;
   right: 15px;
   position: absolute;
+}
+.card-add-star:hover {
+  cursor: pointer;
+  background: radial-gradient(circle, gold 30%, rgba(255,255,255,0) 70%);
 }
 
 .card-add-star img {
@@ -53,6 +57,9 @@
   top: 15px;
   right: 15px;
   position: absolute;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-top: 1.5px;
 }
 
 .old-price {
@@ -75,4 +82,22 @@
   padding-bottom: 3px;
   color: var(--title-color);
   font-size: var(--list-size);
+}
+
+.add-outfit-card:hover {
+  background-color: var(--color-four);
+  cursor: pointer;
+}
+
+.card-name:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.card-price:hover {
+  cursor: pointer;
+}
+
+.card-img-container:hover {
+  cursor: pointer;
 }
