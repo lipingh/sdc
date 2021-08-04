@@ -44,7 +44,7 @@ const QuestionForm = ({ showQuestionForm, handleQuestionForm }) => {
   return ReactDOM.createPortal(
     <div className="question-overlay">
       <form className="question-form">
-        <button className="XButton" type="button" onClick={handleQuestionForm}>X</button>
+        <button className="buttons XButton" type="button" onClick={handleQuestionForm}>X</button>
         <h3 className="QTitle">Ask Your Question</h3>
         <h4 className="QSubTitle">{`About the ${globalData.state.name}`}</h4>
         <span style={{ color: 'green' }}>{showSubmitM ? 'Question submitted!' : null}</span>
@@ -73,7 +73,7 @@ const QuestionForm = ({ showQuestionForm, handleQuestionForm }) => {
         </div>
         <input className="QEmail" type="email" placeholder="Example: abcde@abc.com" onChange={(e) => { setEmail(e.target.value); }} required />
         <span>For authentication reasons, you will not be emailed.</span>
-        <button className="QSubmit" type="submit" onClick={handleSubmitQuestion}>Submit Question</button>
+        <button className="buttons QSubmit" type="submit" onClick={handleSubmitQuestion}>Submit Question</button>
       </form>
     </div>,
     document.getElementById('questions'),
