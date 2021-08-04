@@ -21,18 +21,14 @@ const ReviewListItem = ({ review }) => {
     updateReviewHelpful(review.review_id, helpful);
   };
 
-  // TODO: which value should we update by click "report"? can't find in the reviews
   const handleReport = () => {
     setReported(!reported);
     reportReview(review.review_id);
   };
-  // const email = 'lisa@gmail.com';
-  // TODO: review.email should also match the sale system as the verified purchaser
-  // TODO: repsonse from seller section
+
   return (
     <div>
       <div className="review-list-overall">
-        {/* {review.review_id} */}
         <StarRating rating={review.rating} />
         <span>
           {review.reviewer_name}
@@ -79,7 +75,6 @@ const ReviewListItem = ({ review }) => {
         </div>
       ) : null}
       <div>
-        {/* <span>Helpful?</span> */}
         <span className="helpful" onClick={handleAddHelpful} onKeyDown={() => { }} role="link" tabIndex={0}>
           Helpful?
           Yes(
