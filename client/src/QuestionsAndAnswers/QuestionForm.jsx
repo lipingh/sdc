@@ -5,7 +5,6 @@ import axios from 'axios';
 import options from '../config/config.js';
 import { globalContext } from '../index.jsx';
 
-
 const QuestionForm = ({ showQuestionForm, handleQuestionForm }) => {
   if (!showQuestionForm) return null;
 
@@ -15,7 +14,6 @@ const QuestionForm = ({ showQuestionForm, handleQuestionForm }) => {
   const [showSubmitM, showM] = useState(false);
   const [showErr, showErrM] = useState(false);
   const globalData = useContext(globalContext);
-
 
   const handleSubmitQuestion = (e) => {
     e.preventDefault();
@@ -58,6 +56,7 @@ const QuestionForm = ({ showQuestionForm, handleQuestionForm }) => {
           type="text"
           maxLength="1000"
           placeholder="Your Question"
+          value={body}
           onChange={(e) => { setBody(e.target.value); }}
           required
         />
@@ -65,13 +64,21 @@ const QuestionForm = ({ showQuestionForm, handleQuestionForm }) => {
           <span>What is your nickname?</span>
           <span className="asterisk" style={{ color: 'red' }}>*</span>
         </div>
-        <input className="QName" type="text" maxLength="1000" placeholder="Example: jackson11!" onChange={(e) => { setName(e.target.value); }} required />
+        <input
+          className="QName"
+          type="text"
+          maxLength="1000"
+          placeholder="Example: jackson11!"
+          value={name}
+          onChange={(e) => { setName(e.target.value); }}
+          required
+        />
         <span>For privacy reasons, do not use your full name or email address.</span>
         <div>
           <span>Your email</span>
           <span className="asterisk" style={{ color: 'red' }}>*</span>
         </div>
-        <input className="QEmail" type="email" placeholder="Example: abcde@abc.com" onChange={(e) => { setEmail(e.target.value); }} required />
+        <input className="QEmail" type="email" placeholder="Example: abcde@abc.com" value={email} onChange={(e) => { setEmail(e.target.value); }} required />
         <span>For authentication reasons, you will not be emailed.</span>
         <button className="buttons QSubmit" type="submit" onClick={handleSubmitQuestion}>Submit Question</button>
       </form>
