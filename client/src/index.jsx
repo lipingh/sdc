@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from 'react';
+import React, { useReducer, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import Overview from './Overview/Overview.jsx';
 import RelatedItems from './RelatedAndOutfit/RelatedAndOutfit.jsx';
@@ -7,6 +7,7 @@ import RatingsAndReviews from './RatingsAndReviews/RatingsAndReviews.jsx';
 import { getReviewsMeta, getProductInfo } from '../apiRequests.js';
 import calculateRating from '../helper.js';
 import outfitHelpers from './RelatedAndOutfit/helpers.js';
+import './global.css';
 
 const initialState = {
   productId: 13027,
@@ -76,9 +77,19 @@ const App = () => {
     dispatch({ type: 'updateOutfitIds', data: outfitHelpers.getOutfits() });
   }, [state.productId]);
 
+  const [theme, setTheme] = useState(true);
+  const handleTheme = () => {
+    setTheme((prev) => !prev);
+  };
+
   return (
-    <div>
+    <div className={theme ? 'light' : 'dark'}>
+      <img src="logo.png" alt="" width="30%" height="30%" />
       <globalContext.Provider value={{ state, dispatch }}>
+        <button type="button" className="themeButton" onClick={handleTheme}>
+          Theme:
+          {theme ? ' light' : ' dark'}
+        </button>
         <Overview />
         <RelatedItems />
         <QuestionsAndAnswers />
@@ -87,4 +98,5 @@ const App = () => {
     </div>
   );
 };
+
 ReactDOM.render(<App />, document.getElementById('app'));
