@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-const ImageModal = ({ showFullImage, url, id, handleClickPhoto }) => {
+const ImageModal = ({
+  showFullImage, url, id, handleClickPhoto,
+}) => {
   if (!showFullImage) {
     return null;
   }

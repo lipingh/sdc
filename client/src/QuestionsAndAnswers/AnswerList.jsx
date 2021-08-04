@@ -20,7 +20,7 @@ const AnswerList = ({ answers }) => {
           ))}
         </ul>
         <button
-          className="more-answers-button"
+          className="buttons more-answers-button"
           type="button"
           onClick={handleMoreAnswers}
         >
@@ -41,7 +41,7 @@ const AnswerList = ({ answers }) => {
         ))}
       </ul>
       <button
-        className="more-answers-button"
+        className="buttons more-answers-button"
         type="button"
         onClick={handleMoreAnswers}
       >

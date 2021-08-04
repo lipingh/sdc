@@ -18,7 +18,6 @@ const RatingsAndReviews = () => {
   const recommended = parseInt(globalData.state.recommended.true, 10);
   const notRecommended = parseInt(globalData.state.recommended.false, 10);
   const { characteristics } = globalData.state;
-  // const [totalReviews, setTotalReviews] = useState(0);
   const [sortOption, setSortOption] = useState('relevant');
   const [page, setPage] = useState(1);
   const [ratingFilter, setRatingFilter] = useState(null);
@@ -50,10 +49,6 @@ const RatingsAndReviews = () => {
     setSortOption(option);
     setRatingFilter(null);
     setPage(1);
-  };
-  const handleAddReview = () => {
-    // setTotalReviews((prev) => prev + 1);
-    // setReviews([...reviews, newReview]);
   };
 
   useEffect(() => {
@@ -126,7 +121,6 @@ const RatingsAndReviews = () => {
             <div>{loading && 'Loading...'}</div>
             <div>{error && 'Error...'}</div>
           </div>
-          {/* <button type="button">MORE REVIEWS</button> */}
           <button className="add-review-button " type="button" onClick={() => setShowReviewForm(true)}>ADD A REVIEW  + </button>
         </div>
 
@@ -136,7 +130,6 @@ const RatingsAndReviews = () => {
         productId={productId}
         characteristics={characteristics}
         onClose={() => setShowReviewForm(false)}
-        handleAddReview={handleAddReview}
       />
     </div>
   );

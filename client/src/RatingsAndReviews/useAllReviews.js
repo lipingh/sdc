@@ -18,7 +18,6 @@ const useAllReviews = (productId, page, sortOption, ratingFilter) => {
     let cancel;
     setLoading(true);
     setError(false);
-    // console.log(sortOption);
     axios({
       method: 'GET',
       url: `${options.url}reviews/`,
@@ -29,7 +28,7 @@ const useAllReviews = (productId, page, sortOption, ratingFilter) => {
         count: 5,
         sort: sortOption,
       },
-      cancelToken: new CancelToken((c) => (cancel = c)),
+      cancelToken: new CancelToken((c) => { cancel = c; }),
     })
       .then((res) => {
         let newReviews;
@@ -45,6 +44,7 @@ const useAllReviews = (productId, page, sortOption, ratingFilter) => {
         if (axios.isCancel(e)) return;
         setError(true);
       });
+    return () => cancel();
   }, [productId, page, sortOption, ratingFilter]);
   return {
     loading, error, reviews, hasMore,

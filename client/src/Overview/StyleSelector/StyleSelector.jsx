@@ -4,7 +4,7 @@ import options from '../../config/config.js';
 import { ExpandContext } from '../Overview.jsx';
 import { globalContext } from '../../index.jsx';
 import style from './StyleSelector.module.css';
-import checkmark from './checkmark.png';
+import checkmark from './greenmark.png';
 
 const StyleSelector = () => {
   const contextData = useContext(ExpandContext);
@@ -44,7 +44,7 @@ const StyleSelector = () => {
               <img src={thumbnailurl} alt="style thumbnail" className={style.thumbnail} />
             </div>
             {contextData.currState.styleIndex === index
-              && <div className={style.checkmark}><img src={checkmark} alt="checkmark" /></div>}
+              && <div className={style.checkmark}><img src={checkmark} alt="checkmark" style={{ width: '30px', height: '30px' }} /></div>}
           </div>
         ))}
       </div>
