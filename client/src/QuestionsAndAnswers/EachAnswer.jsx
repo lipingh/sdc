@@ -6,6 +6,7 @@ import options from '../config/config';
 const EachAnswer = ({ answer }) => {
   const [helpful, setHelpful] = useState(answer.helpfulness);
   const [voted, setVoted] = useState(false);
+  const [reported, setReported] = useState(false);
   const handleHelpClick = () => {
     if (!voted) {
       setVoted((vote) => !vote);
@@ -28,6 +29,25 @@ const EachAnswer = ({ answer }) => {
     }
   };
 
+  const handleReport = () => {
+    setReported(true);
+    axios.put(
+      `${options.url}qa/answers/${answer.id}/report`,
+      {
+        reported: true,
+      },
+      {
+        headers: options.headers,
+      },
+    )
+      .then(() => {
+
+      })
+      .catch((err) => {
+        Promise.reject(err);
+      });
+  };
+
   return (
     <div className="a-entry">
       <div>
@@ -36,28 +56,36 @@ const EachAnswer = ({ answer }) => {
       </div>
       <div className="Ahelp-report">
         <span>
+          <span className="seller">By: </span>
           <span className="seller">
-            {answer.answerer_name === 'Seller' ? `by: ${answer.answerer_name}, ` : null}
+            {answer.answerer_name === 'Seller' ? `${answer.answerer_name}, ` : null}
           </span>
           <span className="notSeller">
-            {answer.answerer_name !== 'Seller' ? `by: ${answer.answerer_name}, ` : null}
+            {answer.answerer_name !== 'Seller' ? `${answer.answerer_name}, ` : null}
           </span>
-          {new Date(answer.date).toLocaleDateString(
+          {` ${new Date(answer.date).toLocaleDateString(
             undefined, { year: 'numeric', month: 'long', day: 'numeric' },
-          )}
-          {' '}
-          |
-          {' '}
+          )}`}
         </span>
         <span
+          className="helpful"
           onClick={handleHelpClick}
           onKeyPress={() => {}}
           role="button"
           tabIndex="0"
         >
-          {voted ? `You and ${helpful} others thought this was helpful | ` : ` Helpful? Yes: ${helpful} | `}
+          {voted ? `You and ${helpful} others thought this was helpful` : ` Helpful? Yes: ${helpful}`}
         </span>
-        <span> Report</span>
+        <span>{'  |  '}</span>
+        <span
+          className="reported"
+          onClick={handleReport}
+          onKeyPress={() => {}}
+          role="button"
+          tabIndex="0"
+        >
+          {reported ? 'Answer was Reported' : 'Report'}
+        </span>
       </div>
     </div>
   );

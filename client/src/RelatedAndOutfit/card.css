@@ -36,6 +36,13 @@
   margin-bottom: 2%;
 }
 
+.card-rating-none {
+  display: flex;
+  justify-content: left;
+  align-items: baseline;
+  margin-top: 2%;
+}
+
 .btn-outfit-remove {
   top: 15px;
   right: 15px;
