@@ -5,7 +5,9 @@ import axios from 'axios';
 import options from '../config/config.js';
 import { globalContext } from '../index.jsx';
 
-const AnswerForm = ({ questionId, questionBody, showAnswerForm, handleAnswerForm }) => {
+const AnswerForm = ({
+  questionId, questionBody, showAnswerForm, handleAnswerForm,
+}) => {
   if (!showAnswerForm) return null;
 
   const [body, setBody] = useState('');
@@ -14,7 +16,6 @@ const AnswerForm = ({ questionId, questionBody, showAnswerForm, handleAnswerForm
   const [showSubmitM, showM] = useState(false);
   const [showErr, showErrM] = useState(false);
   const globalData = useContext(globalContext);
-
 
   const handleSubmitQuestion = (e) => {
     e.preventDefault();
@@ -57,6 +58,7 @@ const AnswerForm = ({ questionId, questionBody, showAnswerForm, handleAnswerForm
           type="text"
           maxLength="1000"
           placeholder="Your Answer"
+          value={body}
           onChange={(e) => { setBody(e.target.value); }}
           required
         />
@@ -64,13 +66,28 @@ const AnswerForm = ({ questionId, questionBody, showAnswerForm, handleAnswerForm
           <span>What is your nickname?</span>
           <span className="asterisk" style={{ color: 'red' }}>*</span>
         </div>
-        <input className="AName" type="text" maxLength="1000" placeholder="Example: jackson11!" onChange={(e) => { setName(e.target.value); }} required />
+        <input
+          className="AName"
+          type="text"
+          maxLength="1000"
+          placeholder="Example: jackson11!"
+          value={name}
+          onChange={(e) => { setName(e.target.value); }}
+          required
+        />
         <span>For privacy reasons, do not use your full name or email address.</span>
         <div>
           <span>Your email</span>
           <span className="asterisk" style={{ color: 'red' }}>*</span>
         </div>
-        <input className="AEmail" type="email" placeholder="Example: abcde@abc.com" onChange={(e) => { setEmail(e.target.value); }} required />
+        <input
+          className="AEmail"
+          type="email"
+          placeholder="Example: abcde@abc.com"
+          value={email}
+          onChange={(e) => { setEmail(e.target.value); }}
+          required
+        />
         <span>For authentication reasons, you will not be emailed.</span>
         <button className="buttons ASubmit" type="submit" onClick={handleSubmitQuestion}>Submit Answer</button>
       </form>
