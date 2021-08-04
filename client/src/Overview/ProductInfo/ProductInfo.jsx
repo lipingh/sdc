@@ -37,7 +37,7 @@ const ProductInfo = () => {
         console.log('styles data fetching err', err);
       });
   }, [contextData.currState.styleIndex, globalData.state.productId,
-    globalData.state.ratingsBreakDown, globalData.state.name, globalData.state.category]);
+  globalData.state.ratingsBreakDown, globalData.state.name, globalData.state.category]);
 
   return (
     <div>
@@ -47,8 +47,8 @@ const ProductInfo = () => {
       <a href="#customerReviews" className={style.linkToReviewComponent}>{totalReview}</a>
       <h4 className={style.category}>{category}</h4>
       <h1 className={style.title}>{productName}</h1>
-      {onSale ? <><span style={{ color: 'red' }}>${salePrice}</span><span className={style.oldPrice}>${price}</span></>
-        : <span>${price}</span>}
+      {onSale ? <><span style={{ color: 'red', fontWeight: 'bold' }}>${salePrice}</span><span className={style.oldPrice} style={{ fontWeight: 'bold' }}>${price}</span></>
+        : <span style={{ fontWeight: 'bold' }}>${price}</span>}
     </div>
   );
 };

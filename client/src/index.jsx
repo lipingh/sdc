@@ -78,17 +78,13 @@ const App = () => {
   }, [state.productId]);
 
   const [theme, setTheme] = useState(true);
-  const handleTheme = () => {
-    setTheme((prev) => !prev);
-  };
 
   return (
-    <div className={theme ? 'light' : 'dark'}>
+    <div className={theme ? 'allSizes light' : 'allSizes dark'}>
       <img src="logo.png" alt="" width="30%" height="30%" />
       <globalContext.Provider value={{ state, dispatch }}>
-        <button type="button" className="themeButton" onClick={handleTheme}>
-          Theme:
-          {theme ? ' light' : ' dark'}
+        <button type="button" className="themeButton" onClick={() => setTheme((prev) => !prev)}>
+          {theme ? ' Light-Mode' : ' Dark-Mode'}
         </button>
         <Overview />
         <RelatedItems />

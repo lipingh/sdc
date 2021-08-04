@@ -104,7 +104,7 @@ const RelatedCard = ({ product }) => {
             product={product}
             onClose={handleStarClick}
           />
-      </div>
+        </div>
       </div>
       <div className="card-category">
         {product.category.toUpperCase()}
@@ -137,7 +137,7 @@ const RelatedCard = ({ product }) => {
           ? <div className="card-rating-none">No ratings</div>
           : (
             <>
-              <div className="card-rating-num">{ratingsBreakDown.averageRatings.toFixed(1)}</div>
+              <div className="card-rating-num">{ratingsBreakDown.averageRatings.toFixed(1)}  </div>
               <StarRating rating={ratingsBreakDown.averageRatings} />
             </>
           )}

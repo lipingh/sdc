@@ -8,6 +8,22 @@
   display: flex;
   overflow: hidden;
   position: relative;
-  border: 1px solid #000000;
+  border-radius: 5px;
   min-width: 690px;
+}
+
+.list-btn-container {
+  width: 60px;
+  display: flex;
+  align-items: center;
+}
+
+.btn-list-left {
+  font-size: 25px;
+  height: 300px;
+}
+
+.btn-list-right {
+  font-size: 25px;
+  height: 300px;
 }

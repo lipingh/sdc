@@ -1,7 +1,11 @@
 .linkToReviewComponent {
   font-weight: bold;
-  color: black;
+  color: var(--color-border);
   margin-left: 8px;
+}
+
+.linkToReviewComponent:hover {
+  color: red;
 }
 
 .category {

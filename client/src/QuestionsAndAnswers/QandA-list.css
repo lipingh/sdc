@@ -1,5 +1,8 @@
-.q-a {
-  font-family: sans-serif;
+.q-a-title {
+  font-size: var(--title-size);
+  color: var(--title-color);
+  padding: 10px;
+  padding-top: 35px;
 }
 
 .answer-list {
@@ -21,7 +24,7 @@
   flex-direction: row;
   justify-content: space-between;
   width: 80%;
-  font-size: large;
+  font-size: var(--subtitle-size);
 }
 
 .a-entry {
@@ -57,16 +60,20 @@
   border-radius: 2em;
 }
 
+input:focus, textarea:focus, select:focus {
+  outline: none;
+}
+
 .search-bar:hover {
   cursor: pointer;
   border-radius: 2em;
-  border-color: purple;
+  border: 0.17em solid var(--color-primary);
 }
 
 .search-bar:focus {
   cursor: pointer;
   border-radius: 2em;
-  border-color: purple;
+  border: 0.17em solid var(--color-primary);
 }
 
 .search-icon {
@@ -82,7 +89,7 @@
 
 .reported:hover {
   cursor: pointer;
-  color: red;
+  color: rgb(236, 81, 81);
   font-weight: bold;
 }
 
@@ -93,38 +100,40 @@
 
 .helpful:hover {
   cursor: pointer;
-  color: seagreen;
+  color: rgb(56, 205, 121);
   font-weight: bold;
 }
 
 .more-answers-button:hover {
-  color: white;
-  background-color: black;
+  color: var(--color-three);
+  background-color: var(--fontBody-color);
   cursor: pointer;
 }
 
 .questions-buttons:hover {
   cursor: pointer;
-  color: white;
-  background-color: black;
+  color: var(--color-three);
+  background-color: var(--fontBody-color);
 }
 
 .more-answers-button {
   display: inline-block;
-  border: 0.2em solid black;
+  border: 0.17em solid var(--fontBody-color);
   border-radius: 2em;
-  background-color: white;
+  background-color: var(--color-three);
   box-sizing: border-box;
   font-weight: 350;
-  font-family: sans-serif;
+  font-size: 12px;
+  color: var(--fontBody-color);
 }
 
 .questions-buttons {
   display: inline-block;
-  border: 0.2em solid black;
+  border: 0.17em solid var(--fontBody-color);
   border-radius: 2em;
-  background-color: white;
+  background-color: var(--color-three);
   box-sizing: border-box;
   font-weight: 350;
-  font-family: sans-serif;
+  font-size: 15px;
+  color: var(--fontBody-color);
 }

@@ -64,7 +64,7 @@ const RatingsAndReviews = () => {
 
   return (
     <div className="reviews-root">
-      <h3 id="customerReviews">Ratings &amp; Reviews</h3>
+      <h3 id="customerReviews">Ratings and Reviews</h3>
       <div className="ratings-reviews">
         <div className="breakdown">
           <div className="overall-rating">
@@ -127,7 +127,7 @@ const RatingsAndReviews = () => {
             <div>{error && 'Error...'}</div>
           </div>
           {/* <button type="button">MORE REVIEWS</button> */}
-          <button className="add-review-button" type="button" onClick={() => setShowReviewForm(true)}>ADD A REVIEW  + </button>
+          <button className="add-review-button " type="button" onClick={() => setShowReviewForm(true)}>ADD A REVIEW  + </button>
         </div>
 
       </div>
