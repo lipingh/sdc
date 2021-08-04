@@ -42,7 +42,7 @@ const OutfitList = () => {
   }, [outfitsContext.outfits, isInOutfit]);
 
   const setPossibleCards = () => {
-    let possibleCards = Math.floor((windowWidth - 100) / 230);
+    let possibleCards = Math.floor((windowWidth - 165) / 230);
     if (possibleCards >= len) {
       possibleCards = len;
     }

@@ -72,49 +72,56 @@ const OutfitCard = ({ product }) => {
           className="card-img"
         />
       </div>
-      <button type="button" className="btn-outfit-remove" onClick={() => (handleRemove())}>X</button>
+      <button type="button" className="btn-outfit-remove buttons" onClick={() => (handleRemove())}>X</button>
       <div className="card-category">
         {product.category.toUpperCase()}
       </div>
-      <div className="card-name" onClick={() => (handleCardClick())}>
-        {product.name}
+      <div className="container-card">
+        <span className="card-name" onClick={() => (handleCardClick())}>
+          {product.name}
+        </span>
       </div>
-      <div className="card-price" onClick={() => (handleCardClick())}>
-        {salePrice ? (
-          <>
-            <span className="sale-price" style={{ color: 'red' }}>
-              <strong>
-                $
-                {salePrice}
-              </strong>
-            </span>
-            <span className="old-price">
-              $
-              {defaultPrice}
-            </span>
-          </>
-        )
-          : (
-            <span>
-              <strong>
+      <div className="container-card">
+        <span className="card-price" onClick={() => (handleCardClick())}>
+          {salePrice ? (
+            <>
+              <span className="sale-price" style={{ color: 'red' }}>
+                <strong>
+                  $
+                  {salePrice}
+                </strong>
+              </span>
+              <span className="old-price">
                 $
                 {defaultPrice}
-              </strong>
-            </span>
-          )}
+              </span>
+            </>
+          )
+            : (
+              <span>
+                <strong>
+                  $
+                  {defaultPrice}
+                </strong>
+              </span>
+            )}
+        </span>
       </div>
       <div className="card-rating">
         {Number.isNaN(ratingsBreakDown.averageRatings)
           ? <div className="card-rating-none">No ratings</div>
           : (
             <>
-              <div className="card-rating-num">{ratingsBreakDown.averageRatings.toFixed(1)}  </div>
+              <div className="card-rating-num">
+                {ratingsBreakDown.averageRatings.toFixed(1)}
+                {' '}
+              </div>
               <StarRating rating={ratingsBreakDown.averageRatings} />
             </>
           )}
       </div>
       <div className="modal-comparison">
-        <button type="button" className="btn-modal-comparison" onClick={() => (setIsOpen(true))}>Compare</button>
+        <button type="button" className="btn-modal-comparison buttons" onClick={() => (setIsOpen(true))}>Compare</button>
         <ComparisonModal
           key={`comp${product.id}`}
           open={isOpen}

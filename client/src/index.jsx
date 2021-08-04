@@ -87,9 +87,9 @@ const App = () => {
           {theme ? 'SWITCH TO DARK-MODE' : 'SWITCH TO LIGHT-MODE'}
         </button>
         <Overview />
-        {/* <RelatedItems />
+        <RelatedItems />
         <QuestionsAndAnswers />
-        <RatingsAndReviews /> */}
+        <RatingsAndReviews />
       </globalContext.Provider>
     </div>
   );

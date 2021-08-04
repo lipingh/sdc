@@ -13,26 +13,35 @@
 }
 
 .list-btn-container {
-  width: 40px;
+  width: 75px;
   display: flex;
   align-items: center;
-}
-
-.btn-list-left {
-  font-size: 25px;
-  height: 300px;
-}
-
-.btn-list-right {
-  font-size: 25px;
-  height: 300px;
+  justify-content: center;
 }
 
 .add-card-text {
-  height: 300px;
-  min-width: 200px;
+  height: 325px;
+  min-width: 220px;
   color: var(--color-border);
+  position: absolute;
+  left: 0px;
+  top: 0px;
 }
 .add-card-text:hover {
   color: var(--fontBody-color);
+}
+
+.btn-list-left, .btn-list-right {
+  font-size: 25px;
+  height: 300px;
+  width: 30px;
+  border-radius: 5px;
+  border: 0px;
+  background-color: var(--color-secondary);
+  color: var(--fontBody-color);
+}
+
+.btn-list-left:hover, .btn-list-right:hover {
+  cursor: pointer;
+  background-color: var(--color-four);
 }

@@ -70,12 +70,6 @@ const RelatedCard = ({ product }) => {
     isInOutfit();
   }, [globalData.state.outfits]);
 
-  // const handleStarClick = () => {
-  //   const newInOutfit = !inOutfit;
-  //   globalData.dispatch({ type: 'updateOutfitIds', data: handleOutfitAction(newInOutfit, product.id) });
-  //   setInOutfit(newInOutfit);
-  // };
-
   const handleCardClick = () => {
     globalData.dispatch({ type: 'changeProductId', data: product.id });
   };
@@ -109,32 +103,36 @@ const RelatedCard = ({ product }) => {
       <div className="card-category">
         {product.category.toUpperCase()}
       </div>
-      <div className="card-name" onClick={() => (handleCardClick())}>
-        {product.name}
+      <div className="container-card">
+        <span className="card-name" onClick={() => (handleCardClick())}>
+          {product.name}
+        </span>
       </div>
-      <div className="card-price" onClick={() => (handleCardClick())}>
-        {salePrice ? (
-          <>
-            <span className="sale-price" style={{ color: 'red' }}>
-              <strong>
-                $
-                {salePrice}
-              </strong>
-            </span>
-            <span className="old-price">
-              $
-              {defaultPrice}
-            </span>
-          </>
-        )
-          : (
-            <span>
-              <strong>
+      <div className="container-card">
+        <span className="card-price" onClick={() => (handleCardClick())}>
+          {salePrice ? (
+            <>
+              <span className="sale-price" style={{ color: 'red' }}>
+                <strong>
+                  $
+                  {salePrice}
+                </strong>
+              </span>
+              <span className="old-price">
                 $
                 {defaultPrice}
-              </strong>
-            </span>
-          )}
+              </span>
+            </>
+          )
+            : (
+              <span>
+                <strong>
+                  $
+                  {defaultPrice}
+                </strong>
+              </span>
+            )}
+        </span>
       </div>
       <div className="card-rating">
         {Number.isNaN(ratingsBreakDown.averageRatings)

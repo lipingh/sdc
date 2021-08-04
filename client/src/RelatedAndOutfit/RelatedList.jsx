@@ -67,7 +67,7 @@ const RelatedList = () => {
   }, [globalData.state.productId]);
 
   const setPossibleCards = () => {
-    let possibleCards = Math.floor((windowWidth - 100) / 230);
+    let possibleCards = Math.floor((windowWidth - 165) / 230);
     if (possibleCards >= len) {
       possibleCards = len;
     }
@@ -121,7 +121,7 @@ const RelatedList = () => {
         ))}
       </div>
       <div className="list-btn-container">
-        {current < len - cards + 1 && <button type="button" className="btn-list-right" onClick={nextCard}>&#10095;</button>}
+        {current < len - cards && <button type="button" className="btn-list-right" onClick={nextCard}>&#10095;</button>}
       </div>
     </div>
   );
