@@ -81,6 +81,7 @@ input:focus, textarea:focus, select:focus {
   top: 6px;
   left: 475px;
   width: 14px;
+  color: rgb(38, 50, 56);
 }
 
 .seller {
@@ -104,36 +105,10 @@ input:focus, textarea:focus, select:focus {
   font-weight: bold;
 }
 
-.more-answers-button:hover {
-  color: var(--color-three);
-  background-color: var(--fontBody-color);
-  cursor: pointer;
-}
-
-.questions-buttons:hover {
-  cursor: pointer;
-  color: var(--color-three);
-  background-color: var(--fontBody-color);
-}
-
 .more-answers-button {
-  display: inline-block;
-  border: 0.17em solid var(--fontBody-color);
-  border-radius: 2em;
-  background-color: var(--color-three);
-  box-sizing: border-box;
-  font-weight: 350;
   font-size: 12px;
-  color: var(--fontBody-color);
 }
 
 .questions-buttons {
-  display: inline-block;
-  border: 0.17em solid var(--fontBody-color);
-  border-radius: 2em;
-  background-color: var(--color-three);
-  box-sizing: border-box;
-  font-weight: 350;
   font-size: 15px;
-  color: var(--fontBody-color);
 }
