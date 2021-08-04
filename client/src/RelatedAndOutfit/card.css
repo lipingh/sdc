@@ -4,14 +4,16 @@
   margin: 5px;
   padding: 10px;
   text-align: left;
-  background-color: #d9d9d9;
+  background-color: var(--color-secondary);
   justify-content: center;
   position: relative;
+  border-radius: 5px;
 }
 
-.list-card img{
+.list-card img {
   object-fit: cover;
   margin: auto;
+  border-radius: 5px;
   display: block;
   justify-content: center;
 }
@@ -22,7 +24,7 @@
   position: absolute;
 }
 
-.card-add-star img{
+.card-add-star img {
   width: 30px;
   height: 30px;
   object-fit: scale-down;
@@ -41,6 +43,10 @@
   justify-content: left;
   align-items: baseline;
   margin-top: 2%;
+}
+
+.card-rating-num {
+  padding-right: 5px;
 }
 
 .btn-outfit-remove {
@@ -62,4 +68,11 @@
 
 .text-add-card {
   text-align: center;
+}
+
+.card-category {
+  padding-top: 5px;
+  padding-bottom: 3px;
+  color: var(--title-color);
+  font-size: var(--list-size);
 }

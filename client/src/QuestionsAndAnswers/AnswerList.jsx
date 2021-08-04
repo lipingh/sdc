@@ -24,7 +24,7 @@ const AnswerList = ({ answers }) => {
           type="button"
           onClick={handleMoreAnswers}
         >
-          Hide Answers
+          HIDE ANSWERS
         </button>
       </>
     );
@@ -45,7 +45,7 @@ const AnswerList = ({ answers }) => {
         type="button"
         onClick={handleMoreAnswers}
       >
-        Load More Answers
+        LOAD MORE ANSWERS
       </button>
     </>
   );

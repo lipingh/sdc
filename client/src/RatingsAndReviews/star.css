@@ -10,7 +10,7 @@
 }
 
 .star-ratings-top {
-  color: var(--color-primary);
+  color: var(--color-star);
   padding: 0;
   position: absolute;
   z-index: 1;

@@ -104,7 +104,7 @@ const OutfitCard = ({ product }) => {
           ? <div className="card-rating-none">No ratings</div>
           : (
             <>
-              <div className="card-rating-num">{ratingsBreakDown.averageRatings.toFixed(1)}</div>
+              <div className="card-rating-num">{ratingsBreakDown.averageRatings.toFixed(1)}  </div>
               <StarRating rating={ratingsBreakDown.averageRatings} />
             </>
           )}

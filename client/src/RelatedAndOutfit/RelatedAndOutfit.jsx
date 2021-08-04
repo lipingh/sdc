@@ -5,6 +5,7 @@ import RelatedList from './RelatedList.jsx';
 import OutfitList from './OutfitList.jsx';
 import { getOutfits } from './helpers.js';
 import { globalContext } from '../index.jsx';
+import './main.css';
 
 export const OutfitContext = React.createContext();
 
@@ -39,7 +40,6 @@ const RelatedAndOutfit = () => {
 
   return (
     <div id="comp-modal-portal" className="related-outfit">
-      RELATED AND OUTFIT
       <OutfitContext.Provider value={{ outfits }}>
         <div className="related-section">Related Products</div>
         <RelatedList />

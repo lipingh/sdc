@@ -27,7 +27,7 @@ const QuestionsAndAnswers = () => {
 
   return (
     <div id="questions">
-      <h3>Questions and Answers</h3>
+      <span className="q-a-title">Questions and Answers</span>
       <SearchQuestions
         handleSearch={handleSearch}
       />
@@ -46,14 +46,14 @@ const QuestionsAndAnswers = () => {
           type="button"
           onClick={handleMoreQuestions}
         >
-          {moreQuestions ? 'Hide Questions' : 'More Answered Questions'}
+          {moreQuestions ? 'HIDE QUESTIONS' : 'MORE ANSWERED QUESTIONS'}
         </button>
         <button
           className="questions-buttons"
           type="button"
           onClick={() => { setQuestionForm(true); }}
         >
-          Add a Question
+          ADD A QUESTION
         </button>
       </div>
     </div>

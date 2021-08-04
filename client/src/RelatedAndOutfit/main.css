@@ -1,0 +1,13 @@
+.related-section {
+  font-size: var(--title-size);
+  color: var(--title-color);
+  padding: 10px;
+  padding-top: 35px;
+}
+
+.outfit-section {
+  font-size: var(--title-size);
+  color: var(--title-color);
+  padding: 10px;
+  padding-top: 35px;
+}

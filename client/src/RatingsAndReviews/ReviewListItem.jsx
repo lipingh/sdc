@@ -79,14 +79,15 @@ const ReviewListItem = ({ review }) => {
         </div>
       ) : null}
       <div>
-        <span>Helpful?</span>
-        <span onClick={handleAddHelpful} onKeyDown={() => { }} role="link" tabIndex={0}>
+        {/* <span>Helpful?</span> */}
+        <span className="helpful" onClick={handleAddHelpful} onKeyDown={() => { }} role="link" tabIndex={0}>
+          Helpful?
           Yes(
           {helpful}
           )
         </span>
         <span>{' | '}</span>
-        <span onClick={handleReport} onKeyDown={() => { }} role="link" tabIndex={0}>
+        <span className="reported" onClick={handleReport} onKeyDown={() => { }} role="link" tabIndex={0}>
           {reported ? 'Reported' : 'Report'}
         </span>
       </div>
