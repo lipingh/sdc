@@ -8,6 +8,7 @@
   background-color:var(--color-secondary);
   padding: 25px;
   z-index: 1000;
+  border-radius: 5px;
 }
 
 .comparison-overlay {
