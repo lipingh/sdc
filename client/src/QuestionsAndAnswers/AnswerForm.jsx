@@ -44,7 +44,7 @@ const AnswerForm = ({
   return ReactDOM.createPortal(
     <div className="answer-overlay">
       <form className="answer-form">
-        <button className="buttons XButton" type="button" onClick={handleAnswerForm}>X</button>
+        <button className="buttons btn-outfit-remove" type="button" onClick={handleAnswerForm}>X</button>
         <h3 className="ATitle">Submit your Answer</h3>
         <h4 className="ASubTitle">{`${globalData.state.name}: ${questionBody}`}</h4>
         <span style={{ color: 'green' }}>{showSubmitM ? 'Answer submitted!' : null}</span>
