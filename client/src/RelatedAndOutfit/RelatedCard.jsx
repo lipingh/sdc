@@ -80,6 +80,10 @@ const RelatedCard = ({ product }) => {
     globalData.dispatch({ type: 'changeProductId', data: product.id });
   };
 
+  const handleStarClick = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
     <div className="list-card">
       <div className="card-img-container" onClick={() => (handleCardClick())}>
@@ -91,18 +95,15 @@ const RelatedCard = ({ product }) => {
           className="card-img"
         />
       </div>
-      <div className="card-add-star" onClick={() => (setIsOpen(true))}>
-        <img src={emptyStar} alt="star_icon_empty" />
-        {isOpen ? (
+      <div role="button" className="card-add-star">
+        <img src={emptyStar} alt="star_icon_empty" onClick={() => (handleStarClick())} />
+        <div className="modal-comparison">
           <ComparisonModal
             key={`comp${product.id}`}
             open={isOpen}
             product={product}
-            onClose={() => (setIsOpen(false))}
+            onClose={handleStarClick}
           />
-        )
-          : null}
-        <div className="modal-comparison">
       </div>
       </div>
       <div className="card-category">
