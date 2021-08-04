@@ -58,9 +58,9 @@ const RatingsAndReviews = () => {
   }, [productId]);
 
   return (
-    <div className="reviews-root">
+    <>
       <h3 id="customerReviews">Ratings and Reviews</h3>
-      <div className="ratings-reviews">
+      <div className="ratings-reviews" id="review-form-modal">
         <div className="breakdown">
           <div className="overall-rating">
             <div>{Number.isNaN(ratingsBreakDown.averageRatings) ? 'No reviews' : ratingsBreakDown.averageRatings.toFixed(1)}</div>
@@ -121,7 +121,7 @@ const RatingsAndReviews = () => {
             <div>{loading && 'Loading...'}</div>
             <div>{error && 'Error...'}</div>
           </div>
-          <button className="add-review-button " type="button" onClick={() => setShowReviewForm(true)}>ADD A REVIEW  + </button>
+          <button className="buttons add-review-button " type="button" onClick={() => setShowReviewForm(true)}>ADD A REVIEW  + </button>
         </div>
 
       </div>
@@ -131,7 +131,7 @@ const RatingsAndReviews = () => {
         characteristics={characteristics}
         onClose={() => setShowReviewForm(false)}
       />
-    </div>
+    </>
   );
 };
 export default RatingsAndReviews;
