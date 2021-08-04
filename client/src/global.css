@@ -1,0 +1,38 @@
+/* .App {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  background-color: white;
+} */
+
+.light {
+  --color-primary: rgb(86, 195, 231);
+  --color-secondary: #fbfbfe;
+  --color-accent: #fd6f53;
+  --font-color: #000000;
+  --font-family: sans-serif;
+}
+
+.dark {
+  --color-primary: #17ed90;
+  --color-secondary: #243133;
+  --color-accent: #12cdea;
+  --font-color: #ffffff;
+}
+
+.themeButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: inline-block;
+  border: 0.2em solid black;
+  border-radius: 2em;
+  background-color: white;
+  box-sizing: border-box;
+  font-weight: 350;
+  font-family: var(--font-family)
+}
+
+.themeButton:hover {
+  color: white;
+  background-color: black;
+  cursor: pointer;
+}

@@ -1,110 +1,130 @@
 .q-a {
-  font-family:sans-serif;
+  font-family: sans-serif;
 }
+
 .answer-list {
-  height:200px;
+  height: 200px;
   width: 50%;
-  overflow:hidden;
-  overflow-y:scroll;
+  overflow: hidden;
+  overflow-y: scroll;
 }
+
 .questions-list {
-  height:400px;
+  height: 400px;
   width: 80%;
-  overflow:hidden;
-  overflow-y:scroll;
+  overflow: hidden;
+  overflow-y: scroll;
 }
+
 .q-entry {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   width: 80%;
-  font-size:large;
+  font-size: large;
 }
+
 .a-entry {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
+
 .Ahelp-report {
   padding-left: 2.5%;
 }
+
 .a-bullet {
   font-weight: bold;
 }
+
 #q-bullet {
   font-weight: bold;
 }
+
 .q-body {
   font-weight: bold;
 }
+
 .search-form {
   position: relative;
-    display: flex;
+  display: flex;
 }
+
 .search-bar {
-width: 500px;
-height: 28px;
-border-radius: 2em;
+  width: 500px;
+  height: 28px;
+  border-radius: 2em;
 }
+
 .search-bar:hover {
   cursor: pointer;
   border-radius: 2em;
   border-color: purple;
 }
+
 .search-bar:focus {
   cursor: pointer;
   border-radius: 2em;
   border-color: purple;
 }
+
 .search-icon {
   position: absolute;
-    top: 6px;
-    left: 475px;
-    width: 14px;
+  top: 6px;
+  left: 475px;
+  width: 14px;
 }
 
 .seller {
   font-weight: bold;
 }
+
 .reported:hover {
   cursor: pointer;
   color: red;
   font-weight: bold;
 }
+
 .add-answer:hover {
   cursor: pointer;
   font-weight: bold;
 }
+
 .helpful:hover {
   cursor: pointer;
-  color:seagreen;
+  color: seagreen;
   font-weight: bold;
 }
+
 .more-answers-button:hover {
-  color:white;
+  color: white;
   background-color: black;
   cursor: pointer;
 }
+
 .questions-buttons:hover {
   cursor: pointer;
-  color:white;
+  color: white;
   background-color: black;
 }
+
 .more-answers-button {
   display: inline-block;
   border: 0.2em solid black;
   border-radius: 2em;
   background-color: white;
-  box-sizing:border-box;
+  box-sizing: border-box;
   font-weight: 350;
-  font-family:sans-serif;
+  font-family: sans-serif;
 }
+
 .questions-buttons {
   display: inline-block;
   border: 0.2em solid black;
   border-radius: 2em;
   background-color: white;
-  box-sizing:border-box;
+  box-sizing: border-box;
   font-weight: 350;
-  font-family:sans-serif;
+  font-family: sans-serif;
 }
