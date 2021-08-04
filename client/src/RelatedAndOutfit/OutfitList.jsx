@@ -79,7 +79,7 @@ const OutfitList = () => {
   return (
     <div className="list-section">
       <div className="list-btn-container">
-        {current !== 0 && <button type="button" className="btn-list-left" onClick={prevCard}>prev</button>}
+        {current !== 0 && <button type="button" className="btn-list-left" onClick={prevCard}>&#8678;</button>}
       </div>
       <div className="list-cards" style={{ width: `${cards * 230}px` }} ref={listRef}>
         <div className="list-card" onClick={() => (handleAddToOutfit())}>
@@ -91,7 +91,7 @@ const OutfitList = () => {
         ))}
       </div>
       <div className="list-btn-container">
-        {current < len - cards && <button type="button" className="btn-list-right" onClick={nextCard}>next</button>}
+        {current < len - cards && <button type="button" className="btn-list-right" onClick={nextCard}>&#8680;</button>}
       </div>
     </div>
   );

@@ -64,7 +64,7 @@ const RatingsAndReviews = () => {
 
   return (
     <div className="reviews-root">
-      <span id="customerReviews" className="q-a-title">Ratings and Reviews</span>
+      <h3 id="customerReviews">Ratings and Reviews</h3>
       <div className="ratings-reviews">
         <div className="breakdown">
           <div className="overall-rating">
