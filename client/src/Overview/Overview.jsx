@@ -15,6 +15,8 @@ const initialState = {
   originalPrice: '',
   salePrice: '',
   onSale: false,
+  styleName: '',
+  styleThumbnails: [],
 };
 
 const reducer = (state, action) => {
@@ -37,6 +39,10 @@ const reducer = (state, action) => {
       return { ...state, onSale: action.data };
     case 'updateSalePrice':
       return { ...state, salePrice: action.data };
+    case 'updateStyleName':
+      return { ...state, styleName: action.data };
+    case 'updateStyleThumbnails':
+      return { ...state, styleThumbnails: action.data };
     default:
       return state;
   }
@@ -67,6 +73,13 @@ const Overview = () => {
         } else {
           dispatch({ type: 'updateSale', data: false });
         }
+
+        const stylename = response.data.results[state.styleIndex].name;
+        dispatch({ type: 'updateStyleName', data: stylename });
+        const thumbnails = response.data.results.map((styleObj) => (
+          styleObj.photos[0].thumbnail_url
+        ));
+        dispatch({ type: 'updateStyleThumbnails', data: thumbnails });
       })
       .catch((err) => {
         console.log('styles data fetching err', err);
@@ -90,6 +103,9 @@ const Overview = () => {
       } else {
         dispatch({ type: 'updateSale', data: false });
       }
+
+      const stylename = state.styleResults[state.styleIndex].name;
+      dispatch({ type: 'updateStyleName', data: stylename });
     }
   }, [state.styleIndex]);
 
