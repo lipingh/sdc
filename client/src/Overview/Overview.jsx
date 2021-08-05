@@ -17,6 +17,9 @@ const initialState = {
   onSale: false,
   styleName: '',
   styleThumbnails: [],
+  sku: {},
+  sizes: [],
+  quantities: {},
 };
 
 const reducer = (state, action) => {
@@ -43,6 +46,12 @@ const reducer = (state, action) => {
       return { ...state, styleName: action.data };
     case 'updateStyleThumbnails':
       return { ...state, styleThumbnails: action.data };
+    case 'updateSku':
+      return { ...state, sku: action.data };
+    case 'updateSizes':
+      return { ...state, sizes: action.data };
+    case 'updateQuantities':
+      return { ...state, quantities: action.data };
     default:
       return state;
   }
@@ -80,6 +89,20 @@ const Overview = () => {
           styleObj.photos[0].thumbnail_url
         ));
         dispatch({ type: 'updateStyleThumbnails', data: thumbnails });
+
+        const skuData = {};
+        const sizeData = [];
+        const quantityData = {};
+        const { skus } = response.data.results[state.styleIndex];
+
+        Object.keys(skus).forEach((key) => {
+          skuData[key] = skus[key];
+          sizeData.push(skus[key].size);
+          quantityData[skus[key].size] = skus[key].quantity;
+        });
+        dispatch({ type: 'updateSku', data: skuData });
+        dispatch({ type: 'updateSizes', data: sizeData });
+        dispatch({ type: 'updateQuantities', data: quantityData });
       })
       .catch((err) => {
         console.log('styles data fetching err', err);
@@ -106,6 +129,20 @@ const Overview = () => {
 
       const stylename = state.styleResults[state.styleIndex].name;
       dispatch({ type: 'updateStyleName', data: stylename });
+
+      const skuData = {};
+      const sizeData = [];
+      const quantityData = {};
+      const { skus } = state.styleResults[state.styleIndex];
+
+      Object.keys(skus).forEach((key) => {
+        skuData[key] = skus[key];
+        sizeData.push(skus[key].size);
+        quantityData[skus[key].size] = skus[key].quantity;
+      });
+      dispatch({ type: 'updateSku', data: skuData });
+      dispatch({ type: 'updateSizes', data: sizeData });
+      dispatch({ type: 'updateQuantities', data: quantityData });
     }
   }, [state.styleIndex]);
 
