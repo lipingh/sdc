@@ -13,9 +13,6 @@ import helperMethods from '../../RelatedAndOutfit/helpers.js';
 const Cart = () => {
   const contextData = useContext(ExpandContext);
   const globalData = useContext(globalContext);
-  const [sku, setSku] = useState({});
-  const [sizes, setSizes] = useState([]);
-  const [quantities, setQuantities] = useState({});
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedQuan, setSelectedQuan] = useState('');
   const [availableQuantity, setAvailableQuantity] = useState(0);
@@ -25,7 +22,7 @@ const Cart = () => {
 
   const sizeChangeHandler = () => {
     setSelectedSize(selectSize.current.value);
-    setAvailableQuantity(quantities[selectSize.current.value]);
+    setAvailableQuantity(contextData.currState.quantities[selectSize.current.value]);
   };
 
   const quantityChangeHandler = () => {
@@ -56,33 +53,14 @@ const Cart = () => {
   };
 
   const buttonClickHandler = () => {
-    Object.keys(sku).forEach((skuId) => {
-      if (sku[skuId].size === selectedSize) {
+    Object.keys(contextData.currState.sku).forEach((skuId) => {
+      if (contextData.currState.sku[skuId].size === selectedSize) {
         addProduct(skuId, selectedQuan);
       }
     });
   };
 
   useEffect(() => {
-    axios.get(`${options.url}products/${globalData.state.productId}/styles`, { headers: options.headers })
-      .then((response) => {
-        const skuData = {};
-        const sizeData = [];
-        const quantityData = {};
-        const { skus } = response.data.results[contextData.currState.styleIndex];
-
-        Object.keys(skus).forEach((key) => {
-          skuData[key] = skus[key];
-          sizeData.push(skus[key].size);
-          quantityData[skus[key].size] = skus[key].quantity;
-        });
-        setSku(skuData);
-        setSizes(sizeData);
-        setQuantities(quantityData);
-      })
-      .catch((err) => {
-        console.log('styles data fetching err', err);
-      });
     setSelectedSize('');
     setAvailableQuantity(0);
     if (globalData.state.outfits.includes(globalData.state.productId)) {
@@ -93,11 +71,13 @@ const Cart = () => {
   }, [contextData.currState.styleIndex, globalData.state.productId, globalData.state.outfits]);
   return (
     <div className={style.cart}>
-      {sizes.length > 0
+      {contextData.currState.sizes.length > 0
         ? (
           <select name="sizes" ref={selectSize} value={selectedSize} onChange={sizeChangeHandler} className={style.size}>
             <option value="">SELECT SIZE</option>
-            {sizes.map((size, index) => (<option value={size} key={index}>{size}</option>))}
+            {contextData.currState.sizes.map(
+              (size, index) => (<option value={size} key={index}>{size}</option>),
+            )}
           </select>
         ) : <select name="sizes" disabled><option value="">OUT OF STOCK</option></select>}
       {availableQuantity > 0
@@ -112,7 +92,7 @@ const Cart = () => {
                 <option value={index + 2} key={index}>{index + 2}</option>))}
           </select>
         ) : <select name="quantities" disabled className={style.quantity}><option value="">-</option></select>}
-      {sizes.length > 0 && <button type="button" className={style.addButton} onClick={buttonClickHandler}>Add To Bag</button>}
+      {contextData.currState.sizes.length > 0 && <button type="button" className={style.addButton} onClick={buttonClickHandler}>Add To Bag</button>}
       {isFavorite ? <img src={pinkHeart} alt="favorite button" className={style.favorite} onClick={favClickHandler} />
         : <img src={emptyHeart} alt="favorite button" className={style.favorite} onClick={favClickHandler} />}
     </div>
