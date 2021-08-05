@@ -77,7 +77,7 @@ const ComparisonModal = ({
             <div className="comp-title-center">Features</div>
             <div className="comp-title">{globalData.state.name}</div>
           </div>
-          <div className="comp-table-features" style={{ height: `${Math.floor(windowHt * 0.44)}px` }}>
+          <div className="comp-table-features" style={{ height: `${Math.floor(windowHt * 0.35)}px` }}>
             {sharedFeatures.map((feature) => <ComparisonRow key={`${product.id + feature.currVal}`} feature={feature} />)}
             {currProductFeatures.map((feature) => <ComparisonRow key={`${product.id + feature.name}`} feature={feature} />)}
             {relatedProdFeatures.map((feature) => <ComparisonRow key={`${product.id + feature.relatedVal}`} feature={feature} />)}

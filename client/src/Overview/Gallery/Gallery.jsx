@@ -3,6 +3,7 @@ import React, {
 } from 'react';
 import style from './Gallery.module.css';
 import { ExpandContext } from '../Overview.jsx';
+import LazyLoad from 'react-lazyload';
 
 const Gallery = () => {
   const [currImgIndex, setCurrImgIndex] = useState(0);
@@ -97,12 +98,14 @@ const Gallery = () => {
         <div className={style.thumbnails}>
           {contextData.currState.thumbnails.slice(firstThumbnailIdex, firstThumbnailIdex + 5).map((url, index) => (
             <div className={style.selected} key={firstThumbnailIdex + index}>
-              <img
-                src={url}
-                alt="selected style thumbnail"
-                className={style.eachThumbnail}
-                onClick={thumbnailClickHandler(firstThumbnailIdex + index)}
-              />
+              <LazyLoad>
+                <img
+                  src={url}
+                  alt="selected style thumbnail"
+                  className={style.eachThumbnail}
+                  onClick={thumbnailClickHandler(firstThumbnailIdex + index)}
+                />
+              </LazyLoad>
               {firstThumbnailIdex + index === currImgIndex && <div className={style.highlight} />}
             </div>
           ))}
@@ -116,13 +119,13 @@ const Gallery = () => {
           ? (
             <div className={style.mainImage} id="magnifyArea" ref={imageMove}>
               {contextData.currState.images.map((imageurl, index) => (
-              <img src={imageurl} alt="selected style" className={style.image} key={index} onClick={expandImgClickHandler}/>
+                <img src={imageurl} alt="selected style" className={style.image} key={index} onClick={expandImgClickHandler}/>
               ))}
             </div>
           ) : (
             <div className={style.mainImage} ref={imageMove}>
               {contextData.currState.images.map((imageurl, index) => (
-              <img src={imageurl} alt="selected style" className={style.image} key={index} onClick={mainImageClickHandler} />
+                <img src={imageurl} alt="selected style" className={style.image} key={index} onClick={mainImageClickHandler} />
               ))}
             </div>
           )}
