@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon server/index.js",
-    "build": "webpack --watch",
+    "react-dev": "webpack --config webpack.dev-config.js --watch",
+    "react-prod": "webpack --config webpack.prod-config.js --watch",
     "test": "jest"
   },
   "repository": {
@@ -49,6 +50,7 @@
     "path": "^0.12.7",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "react-lazyload": "^3.2.0"
   }
 }

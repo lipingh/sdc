@@ -5,7 +5,8 @@ import axios from 'axios';
 import RelatedCard from './RelatedCard.jsx';
 import './list.css';
 import options from '../config/config.js';
-import { globalContext } from '../index.jsx'
+import { globalContext } from '../index.jsx';
+import LazyLoad from 'react-lazyload';
 
 const RelatedList = () => {
   const [current, setCurrent] = useState(0);
@@ -117,7 +118,9 @@ const RelatedList = () => {
       </div>
       <div className="list-cards" style={{ width: `${cards * 230}px` }} ref={listRef}>
         {related.map((product) => (
-          <RelatedCard key={product.id} product={product} />
+          <LazyLoad>
+            <RelatedCard key={product.id} product={product} />
+          </LazyLoad>
         ))}
       </div>
       <div className="list-btn-container">

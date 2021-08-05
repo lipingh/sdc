@@ -6,6 +6,7 @@ import './list.css';
 import { OutfitContext } from './RelatedAndOutfit.jsx';
 import { handleOutfitAction, getOutfits } from './helpers.js';
 import { globalContext } from '../index.jsx';
+import LazyLoad from 'react-lazyload';
 
 const OutfitList = () => {
   const [current, setCurrent] = useState(0);
@@ -113,7 +114,9 @@ const OutfitList = () => {
             </div>
           )}
         {outfitsContext.outfits.map((product) => (
-          <OutfitCard key={product.id} product={product} />
+          <LazyLoad>
+            <OutfitCard key={product.id} product={product} />
+          </LazyLoad>
         ))}
       </div>
       <div className="list-btn-container">

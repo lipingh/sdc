@@ -17,22 +17,26 @@
   bottom: 0px;
   background-color: rgba(0, 0, 0, .6);
   z-index: 1000;
+  overflow: hidden;
+  overflow-y: scroll;
 }
 
 .review-form {
   display: flex;
-  flex-flow: column;
+  flex-direction: column;
   justify-content: center;
   position: fixed;
   top: 0%;
   left: 50%;
-  width: 60%;
-  height: 55%;
+  width: 70%;
+  max-height: 60%;
   transform: translate(-50%, 50%);
   background-color: var(--color-secondary);
   padding: 25px;
   z-index: 1000;
   border-radius: 5px;
+  overflow: hidden;
+  overflow-y: scroll;
 }
 
 .review-form>div {
