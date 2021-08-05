@@ -9,8 +9,13 @@ const ImageModal = ({
   }
   return ReactDOM.createPortal(
     <div className="image-window-modal">
-      <button type="button" onClick={() => handleClickPhoto(id)}>X</button>
-      <img src={url} alt="" />
+      <img
+        src={url}
+        alt=""
+        onClick={() => handleClickPhoto(id)}
+        onKeyPress={() => { }}
+        role="presentation"
+      />
     </div>,
     document.getElementById('image-modal'),
   );
