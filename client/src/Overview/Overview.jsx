@@ -12,6 +12,9 @@ const initialState = {
   styleResults: [],
   images: [],
   thumbnails: [],
+  originalPrice: '',
+  salePrice: '',
+  onSale: false,
 };
 
 const reducer = (state, action) => {
@@ -28,6 +31,12 @@ const reducer = (state, action) => {
       return { ...state, images: action.data };
     case 'updateThumbnails':
       return { ...state, thumbnails: action.data };
+    case 'updatePrice':
+      return { ...state, originalPrice: action.data };
+    case 'updateSale':
+      return { ...state, onSale: action.data };
+    case 'updateSalePrice':
+      return { ...state, salePrice: action.data };
     default:
       return state;
   }
@@ -48,6 +57,16 @@ const Overview = () => {
           .photos.map((photo) => photo.thumbnail_url);
         dispatch({ type: 'updateImages', data: imgs });
         dispatch({ type: 'updateThumbnails', data: thumbnailImgs });
+
+        const price = response.data.results[state.styleIndex].original_price;
+        dispatch({ type: 'updatePrice', data: price });
+        if (response.data.results[state.styleIndex].sale_price !== null) {
+          dispatch({ type: 'updateSale', data: true });
+          const saleprice = response.data.results[state.styleIndex].sale_price;
+          dispatch({ type: 'updateSalePrice', data: saleprice });
+        } else {
+          dispatch({ type: 'updateSale', data: false });
+        }
       })
       .catch((err) => {
         console.log('styles data fetching err', err);
@@ -61,6 +80,16 @@ const Overview = () => {
         .photos.map((photo) => photo.thumbnail_url);
       dispatch({ type: 'updateImages', data: imgs });
       dispatch({ type: 'updateThumbnails', data: thumbnailImgs });
+
+      const price = state.styleResults[state.styleIndex].original_price;
+      dispatch({ type: 'updatePrice', data: price });
+      if (state.styleResults[state.styleIndex].sale_price !== null) {
+        dispatch({ type: 'updateSale', data: true });
+        const saleprice = state.styleResults[state.styleIndex].sale_price;
+        dispatch({ type: 'updateSalePrice', data: saleprice });
+      } else {
+        dispatch({ type: 'updateSale', data: false });
+      }
     }
   }, [state.styleIndex]);
 
