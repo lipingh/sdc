@@ -14,7 +14,7 @@
   margin-top: 10px;
   display: flex;
   flex-wrap: wrap;
-  width: 350px;
+  width: 90%;
   height: 200px;
   align-content: space-around;
 }
@@ -23,6 +23,9 @@
   position: relative;
   margin-right: 18px;
   cursor: pointer;
+  width: 16%;
+  height: 0;
+  padding-bottom: 16%;
 }
 
 .frame {
@@ -41,5 +44,5 @@
 .checkmark {
   position: absolute;
   top: -8px;
-  right: -8px;
+  right: -5px;
 }
