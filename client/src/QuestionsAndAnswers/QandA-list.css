@@ -17,6 +17,7 @@
   width: 80%;
   overflow: hidden;
   overflow-y: scroll;
+  margin: auto;
 }
 
 .q-entry {
