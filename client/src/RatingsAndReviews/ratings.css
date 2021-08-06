@@ -31,6 +31,8 @@
 }
 
 .star-label {
+  display: inline-block;
+  white-space: nowrap;
   text-decoration: underline;
 }
 
@@ -38,7 +40,6 @@
   float: left;
   width: 15%;
   margin-top: 10px;
-  font-size: 16px;
 }
 
 .middle {
