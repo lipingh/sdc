@@ -17,14 +17,11 @@
   bottom: 0px;
   background-color: rgba(0, 0, 0, .6);
   z-index: 1000;
-  overflow: hidden;
-  overflow-y: scroll;
 }
 
 .review-form {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   position: fixed;
   top: 0%;
   left: 50%;
