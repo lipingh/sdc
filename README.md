@@ -58,13 +58,18 @@ The product breakdown, located under the ratings breakdown, displays ratings for
 The user can add a review for the given product by clicking the "add new review" button located under the review list.
 
 ## Atelier API
+[Documentation](https://gist.github.com/trentgoing/d69849d6c16b82d279ffc4ecd127f49f)
+
 ## Contributors
 - Blair(Jiaqian) Zhu
 - Lisa(Liping) Huang
 - Nick Hanrahan
 - Rachel Jones
+
  ## Tech Stack
-- React
+- React.js
 - Express
+- Node.js
 - CSS
--
+- Html
+- Atelier API
