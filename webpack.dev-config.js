@@ -1,4 +1,6 @@
 const path = require('path');
+const HTMLWebpackPlugin = require('html-webpack-plugin');
+const { HotModuleReplacementPlugin } = require('webpack');
 
 const srcPath = path.join(__dirname, '/client/src/index.jsx');
 const distPath = path.join(__dirname, '/client/dist');
@@ -9,7 +11,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: [/\.jsx$/],
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
@@ -38,4 +40,13 @@ module.exports = {
     filename: 'bundle.js',
     path: distPath,
   },
+  plugins: [
+    new HotModuleReplacementPlugin(),
+    new HTMLWebpackPlugin({
+      favicon: false,
+      showErrors: true,
+      cache: true,
+      template: path.join(__dirname, 'index.html'),
+    }),
+  ],
 };
