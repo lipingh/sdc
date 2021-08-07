@@ -1,8 +1,6 @@
 # Front End Capstone - For Project Catwalk
 
 # Table of Contents
-- [Front End Capstone - For Project Catwalk](#front-end-capstone---for-project-catwalk)
-- [Table of Contents](#table-of-contents)
   - [Introduction](#introduction)
   - [Application Details](#application-details)
     - [Overview](#overview)
