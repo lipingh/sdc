@@ -26,7 +26,7 @@ Product overview consists of two components, which are main image gallery and pr
 
 The gallery will display the current selected thumbnail, and the users are allowed to click a backwards and forward button to view the next or previous product image that is specific to the selected style. Users can click the main image to enter into an expanded view, and click the image again to view the image with a 2.5X zoom. The button that on the top right corner of the gallery can either bring users to the expanded view or back to the default view.
 
-To the side is the product detail information, which lists the current selected product's name, category, average ratings, and number of reviews. Clicking reviews will take users to the ratings and reviews widget of the page. The product price is based on the currently selected style. If the product is on sale, the sale price will appear in red, followed by the original price which is struckthrough. The styles that are available to the product are displayed as thumbnails for users to toggle between. Once the selected style changes, the main gallery, style name and product price updates. Below the style selector, users can select product size and quantity with two dropdown lists. An "Add to Cart" button will save the selected product to the cart. Users are also able to add the current product to their outfit list (described below) by clicking a heart icon.
+To the side is the product detail information, which lists the current selected product's name, category, average ratings, and number of reviews. Clicking reviews will take users to the ratings and reviews widget of the page. The product price is based on the currently selected style. If the product is on sale, the sale price will appear in red, followed by the original price which is struckthrough. The styles that are available to the product are displayed as thumbnails for users to toggle between. Once the selected style changes, the main gallery, style name and product price updates. Below the style selector, users can select product size and quantity with two dropdown lists. An "Add to Cart" button will save the selected product to the cart. Users are also able to add the current product to their outfit list (described below) by clicking a heart icon.J
 
 ### Related and Outfit
 
@@ -53,7 +53,7 @@ The ratings and reviews section allows the user to view and submit reviews for t
 
 The review list is the list of reviews available for the user to read. As the user scrolls down, it will display more reviews that have been submitted for the product. For each review, it displays the review details, including: rating, date of review, reviewer name, review summary, rating helpfulness, and so on.
 
-The overall rating is displayed to the left of the review list. All the review ratings will break down into 5 stars, 4 stars, 3 stars, 2 stars, and 1 star. For each breakdown star rating, it will display the count as well as the portion of the rating bar. Additionally, when the user clicks the label of the # star, the user could see all the unreported reviews with the filtering rating on the right.
+The overall rating is displayed to the left of the review list. All the review ratings breaks down into 5 stars, 4 stars, 3 stars, 2 stars, and 1 star. For each breakdown star rating, it displays the count as well as the portion of the rating bar. Additionally, when the user clicks the label of the # star, the user can see all the unreported reviews with the filtering rating on the right.
 
 The product breakdown, located under the ratings breakdown, displays ratings for each characteristic, such as fit, length, quality, and so on.
 
@@ -61,5 +61,12 @@ The user can add a review for the given product by clicking the "add new review"
 
 ## Atelier API
 ## Contributors
+- Blair(Jiaqian) Zhu
+- Lisa(Liping) Huang
+- Nick Hanrahan
+- Rachel Jones
+ ## Tech Stack
+- React
+- Express
+- CSS
 -
-## Tech Stack
