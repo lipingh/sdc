@@ -61,10 +61,10 @@ The user can add a review for the given product by clicking the "add new review"
 [Documentation](https://gist.github.com/trentgoing/d69849d6c16b82d279ffc4ecd127f49f)
 
 ## Contributors
-- Blair(Jiaqian) Zhu
-- Lisa(Liping) Huang
-- Nick Hanrahan
-- Rachel Jones
+- [Blair(Jiaqian) Zhu](https://github.com/happyzhu-tech)
+- [Lisa(Liping) Huang](https://github.com/lipingh)
+- [Nick Hanrahan](https://github.com/nickhanrahan)
+- [Rachel Jones](https://github.com/Jonesy464)
 
  ## Tech Stack
 - React.js
