@@ -11,6 +11,9 @@ SELECT datname FROM pg_database;
 \c sdc
 # show all the tables 
 \dt+
+
+# log as user me
+psql -d postgres -U me
 ```
 
 
@@ -280,7 +283,9 @@ limit 5
 offset 5;
 ```
 
- Limit  (cost=331815.95..331816.53 rows=5 width=320) (actual time=6735.559..6737.004 rows=5 loops=1)
+ **This is a second time running**
+
+Limit  (cost=331815.95..331816.53 rows=5 width=320) (actual time=6735.559..6737.004 rows=5 loops=1)
    ->  Gather Merge  (cost=331815.36..864916.58 rows=4569120 width=320) (actual time=6735.518..6737.000 rows=10 loops=1)
          Workers Planned: 2
          Workers Launched: 2
@@ -310,6 +315,8 @@ select * from
 order by helpfulness desc;                                                    
 ```
 -------------------------------------------------------------------------------------------------------------------------
+**This is a second time running**: much faster than first time
+
  Sort  (cost=0.68..0.70 rows=5 width=320) (actual time=0.023..0.024 rows=5 loops=1)
    Sort Key: reviews.helpfulness DESC
    Sort Method: quicksort  Memory: 26kB
@@ -319,3 +326,44 @@ order by helpfulness desc;
  Planning Time: 0.094 ms
  Execution Time: 0.045 ms
 (8 rows)
+
+## Aug 12, 2021
+
+focous on create the API
+
+- Initialize your API server
+
+  - Build out the framework for your service
+  - Setup your server-side application and related tools
+  - *Consider using Docker to build and deploy your service*
+
+  
+
+  Performance Testing your Service
+
+  AWS the production mode
+
+  what's the most critital request for the API? -> reviews
+
+  
+
+New Relic one, api key - ingest license
+
+K6  -> stress test locally 
+
+once depoly in AWS, using loader.io
+
+```sql
+SELECT characteristic_id, "value" from characteristic_reviews 
+INNER JOIN characteristics 
+ON characteristic_reviews.id = characteristics.id
+WHERE characteristics.product_id = 1;
+
+```
+
+when post a new review:
+
+- update the review table
+- How can I get the current unix epoch timestamp
+- update the reviews_photos table, how can i get the review id
+
