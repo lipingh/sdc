@@ -1,67 +1,46 @@
 const { pool } = require('../db/index');
 
 const getReviews = (req, res) => {
-  const productId = parseInt(req.params.product_id, 10);
-  pool.query('SELECT * from reviews WHERE product_id = $1 and reported= false LIMIT 5', [productId], (err, results) => {
+  const data = {};
+  const productId = parseInt(req.query.product_id, 10);
+  data.product = productId;
+  data.page = parseInt(req.query.page, 10);
+  data.count = parseInt(req.query.count, 10);
+  const skip = (data.page - 1) * data.count;
+
+  pool.query('SELECT * from reviews WHERE product_id = $1 and reported = false LIMIT $2 OFFSET $3', [productId, data.count, skip], (err, results) => {
     if (err) {
       throw err;
     }
+
     res.status(200).json(results.rows);
   });
 };
 
 const getReviewsMeta = (req, res) => {
-  const productId = parseInt(req.params.product_id, 10);
+  const productId = parseInt(req.query.product_id, 10);
   const data = {};
-  pool.query('SELECT rating, count FROM reviews_meta_ratings WHERE product_id = $1;', [productId], (ratingErr, rating) => {
+  data.product_id = productId;
+  pool.query('SELECT ratings FROM reviews_meta_ratings WHERE product_id = $1;', [productId], (ratingErr, rating) => {
     if (ratingErr) {
       throw ratingErr;
     }
-    data.ratings = rating.rows;
-    pool.query('SELECT recommend, count FROM reviews_meta_recommended WHERE product_id = $1;', [productId], (recommendErr, recommend) => {
+    data.ratings = rating.rows[0].ratings;
+    pool.query('SELECT recommended FROM reviews_meta_recommended WHERE product_id = $1;', [productId], (recommendErr, recommend) => {
       if (recommendErr) {
         throw recommendErr;
       }
-      data.recommended = recommend.rows;
-      pool.query('SELECT characteristic_id, name, value FROM reviews_meta_characteristics WHERE product_id = $1;', [productId], (err, characteristic) => {
+      data.recommended = recommend.rows[0].recommended;
+      pool.query('SELECT characteristics FROM reviews_meta_characteristics WHERE product_id = $1;', [productId], (err, characteristic) => {
         if (err) {
           throw err;
         }
-        data.characteristics = characteristic.rows;
-        // console.log(data);
+        data.characteristics = characteristic.rows[0].characteristics;
         res.status(200).json(data);
       });
     });
   });
 };
-// const getRatings = (req, res) => {
-//   const productId = parseInt(req.params.product_id, 10);
-//   pool.query('SELECT * FROM reviews_meta_ratings WHERE product_id = $1;', [productId], (err, results) => {
-//     if (err) {
-//       throw err;
-//     }
-//     res.status(200).json(results.rows);
-//   });
-// };
-// const getCharacteristics = (req, res) => {
-//   const productId = parseInt(req.params.product_id, 10);
-//   pool.query('SELECT * FROM reviews_meta_characteristics WHERE product_id = $1;', [productId], (err, results) => {
-//     if (err) {
-//       throw err;
-//     }
-//     res.status(200).json(results.rows);
-//   });
-// };
-
-// const getRecommended = (req, res) => {
-//   const productId = parseInt(req.params.product_id, 10);
-//   pool.query('SELECT * FROM reviews_meta_recommended WHERE product_id = $1;', [productId], (err, results) => {
-//     if (err) {
-//       throw err;
-//     }
-//     res.status(200).json(results.rows);
-//   });
-// };
 
 const updateReviewHelpful = (req, res) => {
   const id = parseInt(req.params.id, 10);
@@ -107,9 +86,6 @@ const postReview = (req, res) => {
 module.exports = {
   getReviews,
   getReviewsMeta,
-  // getRatings,
-  // getCharacteristics,
-  // getRecommended,
   updateReviewHelpful,
   updateReviewReport,
   postReview,

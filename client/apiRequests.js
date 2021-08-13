@@ -3,7 +3,8 @@ const options = require('./src/config/config');
 
 const getReviewsById = (params) => (
   axios({
-    url: `${options.url}reviews/`,
+    // url: `${options.url}reviews/`,
+    url: 'localhost:3000/reviews/',
     method: 'get',
     headers: options.headers,
     params,
@@ -13,7 +14,8 @@ const getReviewsById = (params) => (
 );
 
 const getReviewsMeta = (productId) => axios({
-  url: `${options.url}reviews/meta?product_id=${productId}`,
+  url: `http://localhost:3000/reviews/meta?product_id=${productId}`,
+  // url: `${options.url}reviews/meta?product_id=${productId}`,
   method: 'get',
   headers: options.headers,
 })

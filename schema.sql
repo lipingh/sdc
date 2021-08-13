@@ -158,20 +158,29 @@ ALTER TABLE characteristic_reviews ADD FOREIGN KEY (review_id) REFERENCES review
 -- DELIMITER ','
 -- CSV HEADER;
 
-
+DROP MATERIALIZED  VIEW IF EXISTS reviews_meta_ratings;
 CREATE MATERIALIZED VIEW reviews_meta_ratings AS
-SELECT product_id, rating, COUNT(id)
+SELECT product_id, json_object_agg(rating, "count") AS ratings
+FROM (SELECT product_id, rating, COUNT(id)
 FROM reviews
-GROUP BY product_id, rating;
+GROUP BY product_id, rating) AS r
+GROUP BY product_id;
 
+DROP MATERIALIZED  VIEW IF EXISTS reviews_meta_recommended;
 CREATE MATERIALIZED VIEW reviews_meta_recommended AS
-SELECT product_id, recommend, COUNT(id)
+SELECT product_id, json_object_agg(recommend, "count") AS recommended
+FROM (SELECT product_id, recommend, COUNT(id)
 FROM reviews
-GROUP BY product_id, recommend;
+GROUP BY product_id, recommend) AS r
+GROUP BY product_id;
 
+
+DROP MATERIALIZED  VIEW IF EXISTS reviews_meta_characteristics;
 CREATE MATERIALIZED VIEW reviews_meta_characteristics AS
-SELECT product_id, characteristic_id, "name", AVG("value") AS "value"
+SELECT product_id, json_object_agg("name", json_build_object('id', characteristic_id, 'value', "value")) AS characteristics
+FROM (SELECT product_id, characteristic_id, "name", AVG("value") AS "value"
 FROM characteristics
 INNER JOIN characteristic_reviews
 ON characteristic_reviews.characteristic_id = characteristics.id
-GROUP BY product_id, characteristic_id, "name";
+GROUP BY product_id, characteristic_id, "name") AS a
+GROUP BY product_id;

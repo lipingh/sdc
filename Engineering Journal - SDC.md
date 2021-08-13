@@ -370,62 +370,250 @@ when post a new review:
 - How can I get the current unix epoch timestamp
 - update the reviews_photos table, how can i get the review id
 
-```javascript
-var Tree = function() {
-  this.children = [];
-  this.isEnd = false;
-}
-
-var trieRoot = new Tree();
-
-// Insert: input string (apple) str
-var root = trieRoot;
-for (var i = 0; i < str.length; i++) {
-  var index = root.children.indexOf(str[i]);
-  var isEnd = false;
-  if ( index >= 0) {
-    root = root.children[index];
-  } else {
-    var node = new Tree();
-    root.children.push(node);
-    root = node;
-  }
-  if (i === str.length -1) root.isEnd = true;
-}
 
 
-// Search: input string searchTerm
-var root = trieRoot;
-for (var i = 0; i < searchTerm.length; i++) {
-  var index = root.children.indexOf(searchTerm[i]);
-  if (index < 0) return false;
-  root = root.children[index];
-  if (i === searchTerm.length - 1 && root.isEnd) {
-    return true;
-  }
-}
+Completed:
 
-// Startwith: serchTerm
-var root = trieRoot;
-for (var i = 0; i < searchTerm.length; i++) {
-  var index = root.children.indexOf(searchTerm[i]);
-  if (index < 0) return false;
-  root = root.children[index];
-  if (i === searchTerm.length - 1) {
-    return true;
-  }
-}
-```
-
-​	
+- create  MATERIALIZED VIEW for the aggreate review meta datas
 
 ```sql
-SELECT * FROM information_schema.views WHERE table_name = 'reviews_meta';
+CREATE MATERIALIZED VIEW reviews_meta_ratings AS
+SELECT product_id, rating, COUNT(id)
+FROM reviews
+GROUP BY product_id, rating;
 
-select definition
-from pg_matview
-where matviewname = 'reviews_meta'
-and schemaname = 'public';
+CREATE MATERIALIZED VIEW reviews_meta_recommended AS
+SELECT product_id, recommend, COUNT(id)
+FROM reviews
+GROUP BY product_id, recommend;
+
+CREATE MATERIALIZED VIEW reviews_meta_characteristics AS
+SELECT product_id, characteristic_id, "name", AVG("value") AS "value"
+FROM characteristics
+INNER JOIN characteristic_reviews
+ON characteristic_reviews.characteristic_id = characteristics.id
+GROUP BY product_id, characteristic_id, "name";
+```
+
+-> **need to improve, using nested json to form the results**
+
+## Aug 13, 2021
+
+### Planning
+
+1. Using nested data to form the review_meta
+2. Using nested data for the photos
+3. change endpoint to fetch data from current API
+4. Explore how to do page, naive way try offset, 
+   - does offset will reduce the query exectution time?
+
+```sql
+SELECT json
+(SELECT row_to_json(nested_ratings)
+FROM (
+  select rating, "count"
+  From
+  reviews_meta_ratings) as nested_ratings);
+  
+  output:
+ [{"rating":4,"count":1},  +
+ {"rating":5,"count":1},  +
+  {"rating":2,"count":1},  +
+  {"rating":3,"count":1},  +
+```
+
+```sql
+SELECT json_objecr_keys (ratings -> 'rating')
+from
+(SELECT row_to_json(nested_ratings)
+FROM (
+  select rating, "count"
+  From
+  reviews_meta_ratings) as nested_ratings
+ ) AS ratings;
+  
+  
+  
+SELECT row_to_json(nested_recommended)
+FROM (
+  select recommend, "count"
+  From
+  reviews_meta_recommended) as nested_recommended;
+```
+
+```sql
+select
+        json_build_object(
+                'id', u.id,
+                'name', u.name,
+                'email', u.email,
+                'user_role_id', u.user_role_id,
+                'user_role', json_build_object(
+                        'id', ur.id,
+                        'name', ur.name,
+                        'description', ur.description,
+                        'duty_id', ur.duty_id,
+                        'duty', json_build_object(
+                                'id', d.id,
+                                'name', d.name
+                        )
+                )
+    )
+from users u
+inner join user_roles ur on ur.id = u.user_role_id
+inner join role_duties d on d.id = ur.duty_id;
+```
+
+```sql
+(SELECT * 
+from reviews
+WHERE product_id = $1 and reported= false LIMIT 5) as a
+inner join
+(SELECT * 
+from photos
+WHERE product_id = $1 and reported= false LIMIT 5) as a
+
+
+
+SELECT row_to_json(nested_photos)
+FROM (
+  select *
+  FROM reviews_photo
+  Where review_id = 1
+  LIMIT 5
+  
+) as nested_photos;
+```
+
+```sql
+SELECT product_id, json_agg(json_build_object('rating', rating,
+                                              'count', "count"))
+FROM reviews_meta_ratings
+GROUP BY product_id;
+
+
+# ouput
+384 | [{"rating" : 1, "count" : 1}, {"rating" : 3, "count" : 1}, {"rating" : 4, "count" : 1}]
+```
+
+```sql
+SELECT product_id, json_agg(json_build_object(rating, "count")) AS ratings
+FROM reviews_meta_ratings
+GROUP BY product_id;
+
+#output
+384 | [{"1" : 1}, {"3" : 1}, {"4" : 1}]
+
+```
+
+```sql
+SELECT product_id, json_agg(json_build_object(recommend, "count")) as recommended
+FROM reviews_meta_recommended
+GROUP BY product_id;
+#output
+ 1 | [{"false" : 1}, {"true" : 1}]
+```
+
+```sql
+SELECT product_id, "name", json_agg(json_build_object(characteristic_id, "value")) AS characteristics
+FROM reviews_meta_characteristics
+GROUP BY product_id, "name";
+
+#output
+
+ 1 | Comfort | [{"3" : 5.0000000000000000}]
+384 | [{"1314" : 2.0000000000000000}, {"1315" : 2.3333333333333333}, {"1316" : 2.0000000000000000}, {"1317" : 4.3333333333333333}]
+```
+
+```sql
+SELECT product_id, json_agg(json_build_object("name", characteristics))
+FROM (SELECT product_id, "name", json_agg(json_build_object(characteristic_id, "value")) AS characteristics
+FROM reviews_meta_characteristics
+GROUP BY product_id, "name") as c
+GROUP BY product_id;
+
+# output
+1 | [{"Comfort" : [{"3" : 5.0000000000000000}]}, {"Fit" : [{"1" : 4.0000000000000000}]}, {"Length" : [{"2" : 3.5000000000000000}]}, {"Quality" : [{"4" : 4.0000000000000000}]}]
+```
+
+```sql
+SELECT product_id, json_agg(json_build_object("name",  json_agg(json_build_object(characteristic_id, "value"))))
+FROM reviews_meta_characteristics
+GROUP BY product_id;
+# ERROR:  aggregate function calls cannot be nested
+```
+
+```sql
+SELECT product_id, json_agg(json_build_object("name", characteristics))
+FROM (SELECT product_id, "name", json_agg(json_build_object(characteristic_id, "value")) AS characteristics
+FROM (SELECT product_id, characteristic_id, "name", AVG("value") AS "value"
+FROM characteristics
+INNER JOIN characteristic_reviews
+ON characteristic_reviews.characteristic_id = characteristics.id
+GROUP BY product_id, characteristic_id, "name") AS a
+GROUP BY product_id, "name") as b
+GROUP BY product_id;
+```
+
+```sql
+(select * from reviews_meta_ratings) UNION ALL (select * from reviews_meta_recommended)
+Order by product_id;
+```
+
+
+
+```sql
+SELECT product_id, json_object_agg(rating, "count") AS ratings
+FROM (SELECT product_id, rating, COUNT(id)
+FROM reviews
+GROUP BY product_id, rating) AS r
+GROUP BY product_id;
+```
+
+```
+SELECT product_id, json_object_agg(recommend, "count") AS recommended
+FROM (SELECT product_id, recommend, COUNT(id)
+FROM reviews
+GROUP BY product_id, recommend) AS r
+GROUP BY product_id;
+```
+
+```sql
+SELECT product_id, json_object_agg("name", characteristics) AS characteristics
+FROM (SELECT product_id, "name", json_object_agg(characteristic_id, "value") AS characteristics
+FROM (SELECT product_id, characteristic_id, "name", AVG("value") AS "value"
+FROM characteristics
+INNER JOIN characteristic_reviews
+ON characteristic_reviews.characteristic_id = characteristics.id
+GROUP BY product_id, characteristic_id, "name") AS a
+GROUP BY product_id, "name") as b
+GROUP BY product_id;
+```
+
+
+
+```sql
+SELECT product_id, json_object_agg("name", characteristics) AS characteristics
+FROM (
+  SELECT product_id, "name", json_agg(select characteristic_id, "value" from characteristic_reviews) 
+  AS characteristics
+	FROM (SELECT product_id, characteristic_id, "name", AVG("value") AS ch_value
+				FROM characteristics
+				INNER JOIN characteristic_reviews
+				ON characteristic_reviews.characteristic_id = characteristics.id
+				GROUP BY product_id, characteristic_id, "name") AS a
+GROUP BY product_id, "name") as b
+GROUP BY product_id;
+```
+
+```sql
+SELECT product_id, json_object_agg("name", json_build_object('id', characteristic_id, 'value', "value")) AS characteristics
+FROM (SELECT product_id, characteristic_id, "name", AVG("value") AS "value"
+FROM characteristics
+INNER JOIN characteristic_reviews
+ON characteristic_reviews.characteristic_id = characteristics.id
+GROUP BY product_id, characteristic_id, "name") AS a
+GROUP BY product_id;
 ```
 
 

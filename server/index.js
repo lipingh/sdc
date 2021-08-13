@@ -15,8 +15,8 @@ app.use(
 );
 app.use(express.static('client/dist'));
 
-app.get('/reviews/:product_id', controller.getReviews);
-app.get('/reviews/meta/:product_id', controller.getReviewsMeta);
+app.get('/reviews/', controller.getReviews);
+app.get('/reviews/meta', controller.getReviewsMeta);
 
 app.put('/reviews/:id/helpful', controller.updateReviewHelpful);
 app.put('/reviews/:id/report', controller.updateReviewReport);
