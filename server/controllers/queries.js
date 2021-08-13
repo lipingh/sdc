@@ -12,23 +12,56 @@ const getReviews = (req, res) => {
 
 const getReviewsMeta = (req, res) => {
   const productId = parseInt(req.params.product_id, 10);
-  pool.query('SELECT COUNT(id), rating, recommend from reviews WHERE product_id = $1 GROUP BY rating, recommend', [productId], (err, results) => {
-    if (err) {
-      throw err;
+  const data = {};
+  pool.query('SELECT rating, count FROM reviews_meta_ratings WHERE product_id = $1;', [productId], (ratingErr, rating) => {
+    if (ratingErr) {
+      throw ratingErr;
     }
-    res.status(200).json(results.rows);
+    data.ratings = rating.rows;
+    pool.query('SELECT recommend, count FROM reviews_meta_recommended WHERE product_id = $1;', [productId], (recommendErr, recommend) => {
+      if (recommendErr) {
+        throw recommendErr;
+      }
+      data.recommended = recommend.rows;
+      pool.query('SELECT characteristic_id, name, value FROM reviews_meta_characteristics WHERE product_id = $1;', [productId], (err, characteristic) => {
+        if (err) {
+          throw err;
+        }
+        data.characteristics = characteristic.rows;
+        // console.log(data);
+        res.status(200).json(data);
+      });
+    });
   });
 };
+// const getRatings = (req, res) => {
+//   const productId = parseInt(req.params.product_id, 10);
+//   pool.query('SELECT * FROM reviews_meta_ratings WHERE product_id = $1;', [productId], (err, results) => {
+//     if (err) {
+//       throw err;
+//     }
+//     res.status(200).json(results.rows);
+//   });
+// };
+// const getCharacteristics = (req, res) => {
+//   const productId = parseInt(req.params.product_id, 10);
+//   pool.query('SELECT * FROM reviews_meta_characteristics WHERE product_id = $1;', [productId], (err, results) => {
+//     if (err) {
+//       throw err;
+//     }
+//     res.status(200).json(results.rows);
+//   });
+// };
 
-const getCharacteristics = (req, res) => {
-  const productId = parseInt(req.params.product_id, 10);
-  pool.query('SELECT characteristic_id, "value" from characteristic_reviews INNER JOIN characteristics ON characteristic_reviews.id = characteristics.id WHERE characteristics.product_id = $1;', [productId], (err, results) => {
-    if (err) {
-      throw err;
-    }
-    res.status(200).json(results.rows);
-  });
-};
+// const getRecommended = (req, res) => {
+//   const productId = parseInt(req.params.product_id, 10);
+//   pool.query('SELECT * FROM reviews_meta_recommended WHERE product_id = $1;', [productId], (err, results) => {
+//     if (err) {
+//       throw err;
+//     }
+//     res.status(200).json(results.rows);
+//   });
+// };
 
 const updateReviewHelpful = (req, res) => {
   const id = parseInt(req.params.id, 10);
@@ -74,7 +107,9 @@ const postReview = (req, res) => {
 module.exports = {
   getReviews,
   getReviewsMeta,
-  getCharacteristics,
+  // getRatings,
+  // getCharacteristics,
+  // getRecommended,
   updateReviewHelpful,
   updateReviewReport,
   postReview,
