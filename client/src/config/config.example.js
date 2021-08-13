@@ -4,7 +4,6 @@ const CAMPUS_CODE = 'hr-sjo';
 const options = {
   url: `https://app-hrsei-api.herokuapp.com/api/fec2/${CAMPUS_CODE}/`,
   headers: {
-    'User-Agent': 'request',
     Authorization: API_KEY,
   },
 };

@@ -14,6 +14,9 @@ SELECT datname FROM pg_database;
 
 # log as user me
 psql -d postgres -U me
+
+#list views
+\dm
 ```
 
 
@@ -366,4 +369,64 @@ when post a new review:
 - update the review table
 - How can I get the current unix epoch timestamp
 - update the reviews_photos table, how can i get the review id
+
+```javascript
+var Tree = function() {
+  this.children = [];
+  this.isEnd = false;
+}
+
+var trieRoot = new Tree();
+
+// Insert: input string (apple) str
+var root = trieRoot;
+for (var i = 0; i < str.length; i++) {
+  var index = root.children.indexOf(str[i]);
+  var isEnd = false;
+  if ( index >= 0) {
+    root = root.children[index];
+  } else {
+    var node = new Tree();
+    root.children.push(node);
+    root = node;
+  }
+  if (i === str.length -1) root.isEnd = true;
+}
+
+
+// Search: input string searchTerm
+var root = trieRoot;
+for (var i = 0; i < searchTerm.length; i++) {
+  var index = root.children.indexOf(searchTerm[i]);
+  if (index < 0) return false;
+  root = root.children[index];
+  if (i === searchTerm.length - 1 && root.isEnd) {
+    return true;
+  }
+}
+
+// Startwith: serchTerm
+var root = trieRoot;
+for (var i = 0; i < searchTerm.length; i++) {
+  var index = root.children.indexOf(searchTerm[i]);
+  if (index < 0) return false;
+  root = root.children[index];
+  if (i === searchTerm.length - 1) {
+    return true;
+  }
+}
+```
+
+​	
+
+```sql
+SELECT * FROM information_schema.views WHERE table_name = 'reviews_meta';
+
+select definition
+from pg_matview
+where matviewname = 'reviews_meta'
+and schemaname = 'public';
+```
+
+
 

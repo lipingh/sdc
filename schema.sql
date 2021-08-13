@@ -157,3 +157,21 @@ ALTER TABLE characteristic_reviews ADD FOREIGN KEY (review_id) REFERENCES review
 -- FROM '/Users/lipinghuang/Desktop/sdc_files/characteristic_reviews.csv'
 -- DELIMITER ','
 -- CSV HEADER;
+
+
+CREATE MATERIALIZED VIEW reviews_meta_ratings AS
+SELECT product_id, rating, COUNT(id)
+FROM reviews
+GROUP BY product_id, rating;
+
+CREATE MATERIALIZED VIEW reviews_meta_recommended AS
+SELECT product_id, recommend, COUNT(id)
+FROM reviews
+GROUP BY product_id, recommend;
+
+CREATE MATERIALIZED VIEW reviews_meta_characteristics AS
+SELECT product_id, characteristic_id, "name", AVG("value") AS "value"
+FROM characteristics
+INNER JOIN characteristic_reviews
+ON characteristic_reviews.characteristic_id = characteristics.id
+GROUP BY product_id, characteristic_id, "name";

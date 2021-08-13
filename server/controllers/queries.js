@@ -57,6 +57,7 @@ const postReview = (req, res) => {
     product_id, rating, summary, body, recommend, name, email, photos, characteristics,
   } = req.body;
   const date = new Date().getTime();
+  let last_id;
   const params = [product_id, rating, date, summary, body, recommend, name, email];
 
   pool.query('INSERT INTO reviews(product_id, rating, date, summary, body, recommend, reviewer_name, reviewer_email) VALUES($1, $2, $3, $4, $5, $6, $7)', params, (err) => {
