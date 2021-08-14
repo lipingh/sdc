@@ -56,15 +56,15 @@ export const globalContext = React.createContext();
 const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   useEffect(() => {
-    getProductInfo(state.productId)
-      .then((res) => {
-        dispatch({ type: 'updateName', data: res.name });
-        dispatch({ type: 'updateCategory', data: res.category });
-        dispatch({ type: 'updateFeatures', data: res.features });
-      })
-      .catch((err) => {
-        console.log('product info data fetch error', err);
-      });
+    // getProductInfo(state.productId)
+    //   .then((res) => {
+    //     dispatch({ type: 'updateName', data: res.name });
+    //     dispatch({ type: 'updateCategory', data: res.category });
+    //     dispatch({ type: 'updateFeatures', data: res.features });
+    //   })
+    //   .catch((err) => {
+    //     console.log('product info data fetch error', err);
+    //   });
     getReviewsMeta(state.productId)
       .then((res) => {
         dispatch({ type: 'updateRecommended', data: res.recommended });
@@ -86,9 +86,9 @@ const App = () => {
         <button type="button" className="buttons themeButton" onClick={() => setTheme((prev) => !prev)}>
           {theme ? 'SWITCH TO DARK-MODE' : 'SWITCH TO LIGHT-MODE'}
         </button>
-        <Overview />
+        {/* <Overview />
         <RelatedItems />
-        <QuestionsAndAnswers />
+        <QuestionsAndAnswers /> */}
         <RatingsAndReviews />
       </globalContext.Provider>
     </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './reviews.css';
 import StarRating from './StarRating.jsx';
@@ -16,16 +16,21 @@ const ReviewListItem = ({ review }) => {
     setShowFullImage(showFullImageCopy);
   };
   const handleAddHelpful = () => {
+    sethelpful((prev) => (disableHelpful ? prev - 1 : prev + 1));
     setDisableHelpful(!disableHelpful);
-    sethelpful(() => (disableHelpful ? helpful - 1 : helpful + 1));
-    updateReviewHelpful(review.review_id, helpful);
   };
 
   const handleReport = () => {
     setReported(!reported);
-    reportReview(review.review_id);
   };
 
+  useEffect(() => {
+    updateReviewHelpful(review.review_id, helpful);
+  }, [helpful]);
+
+  useEffect(() => {
+    reportReview(review.review_id);
+  }, [reported]);
   return (
     <div>
       <div className="review-list-overall">
@@ -96,7 +101,7 @@ ReviewListItem.propTypes = {
     rating: PropTypes.number,
     summary: PropTypes.string,
     reviewer_name: PropTypes.string,
-    date: PropTypes.string,
+    // date: PropTypes.string,
     body: PropTypes.string,
     photos: PropTypes.arrayOf(PropTypes.object),
     recommend: PropTypes.bool,

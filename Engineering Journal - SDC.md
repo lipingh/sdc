@@ -243,6 +243,13 @@ group by product_id, rating;
 
  trade-offs: more storage needed
 
+ Schema |             Name             |       Type        | Owner | Persistence |  Size  | Description 
+--------+------------------------------+-------------------+-------+-------------+--------+-------------
+ public | reviews_meta_characteristics | materialized view | me    | permanent   | 220 MB | 
+ public | reviews_meta_ratings         | materialized view | me    | permanent   | 64 MB  | 
+ public | reviews_meta_recommended     | materialized view | me    | permanent   | 53 MB  | 
+(3 rows)
+
 Materialized Views or aggreateTo improve the query performance, I need to create several view for that
 
 [Standard views](https://www.postgresql.org/docs/current/sql-createview.html) represent the result of a query without actually storing data.
@@ -401,9 +408,9 @@ GROUP BY product_id, characteristic_id, "name";
 
 ### Planning
 
-1. Using nested data to form the review_meta
-2. Using nested data for the photos
-3. change endpoint to fetch data from current API
+1. ~~Using nested data to form the review_meta~~
+2. ~~Using nested data for the photos~~
+3. ~~change endpoint to fetch data from current API~~
 4. Explore how to do page, naive way try offset, 
    - does offset will reduce the query exectution time?
 
@@ -544,77 +551,162 @@ GROUP BY product_id;
 ```
 
 ```sql
-SELECT product_id, json_agg(json_build_object("name", characteristics))
-FROM (SELECT product_id, "name", json_agg(json_build_object(characteristic_id, "value")) AS characteristics
-FROM (SELECT product_id, characteristic_id, "name", AVG("value") AS "value"
-FROM characteristics
-INNER JOIN characteristic_reviews
-ON characteristic_reviews.characteristic_id = characteristics.id
-GROUP BY product_id, characteristic_id, "name") AS a
-GROUP BY product_id, "name") as b
-GROUP BY product_id;
-```
-
-```sql
-(select * from reviews_meta_ratings) UNION ALL (select * from reviews_meta_recommended)
-Order by product_id;
+## get nested [{'id': 1, 'url': 'www.image.com'}]
+SELECT review_id, json_agg(json_build_object('id', id, 'url', "url") )
+FROM reviews_photo
+GROUP BY review_id;
 ```
 
 
 
 ```sql
-SELECT product_id, json_object_agg(rating, "count") AS ratings
-FROM (SELECT product_id, rating, COUNT(id)
-FROM reviews
-GROUP BY product_id, rating) AS r
-GROUP BY product_id;
-```
+# Create a function to get reviews by page number
+CREATE FUNCTION getRowsByPageNumberAndSize(
+ PageNumber INTEGER = 0,
+ PageSize INTEGER = 5
+ )
+ RETURNS SETOF public.reviews 
+ LANGUAGE plpgsql
+ AS
+ $$
+ DECLARE
+  PageOffset INTEGER :=0;
+ BEGIN
+ 
+  PageOffset := ((PageNumber-1) * PageSize);
+ 
+  RETURN QUERY
+   SELECT *
+   FROM public.reviews
+   OFFSET PageOffset;
+   FETCH NEXT PageSize ROWS ONLY;
+END;
+$$;
 
 ```
-SELECT product_id, json_object_agg(recommend, "count") AS recommended
-FROM (SELECT product_id, recommend, COUNT(id)
-FROM reviews
-GROUP BY product_id, recommend) AS r
-GROUP BY product_id;
-```
+
+
+
+
+
+
+
+# Improvements
+
+- compare generate a whole materlizze view (join all the materlize view) or seperate
+  - Storage for 3 seperate views: 200MB + 64MB + 53MB
+  - Storage for 1 view: 274 MB 
 
 ```sql
-SELECT product_id, json_object_agg("name", characteristics) AS characteristics
-FROM (SELECT product_id, "name", json_object_agg(characteristic_id, "value") AS characteristics
-FROM (SELECT product_id, characteristic_id, "name", AVG("value") AS "value"
-FROM characteristics
-INNER JOIN characteristic_reviews
-ON characteristic_reviews.characteristic_id = characteristics.id
-GROUP BY product_id, characteristic_id, "name") AS a
-GROUP BY product_id, "name") as b
-GROUP BY product_id;
-```
-
-
-
-```sql
-SELECT product_id, json_object_agg("name", characteristics) AS characteristics
+CREATE MATERIALIZED VIEW reviews_meta AS
+SELECT t1.product_id, t1.ratings, t2.recommended, t3.characteristics
 FROM (
-  SELECT product_id, "name", json_agg(select characteristic_id, "value" from characteristic_reviews) 
-  AS characteristics
-	FROM (SELECT product_id, characteristic_id, "name", AVG("value") AS ch_value
-				FROM characteristics
-				INNER JOIN characteristic_reviews
-				ON characteristic_reviews.characteristic_id = characteristics.id
-				GROUP BY product_id, characteristic_id, "name") AS a
-GROUP BY product_id, "name") as b
+    SELECT product_id, json_object_agg(rating, "count") AS ratings
+    FROM (SELECT product_id, rating, COUNT(id)
+    FROM reviews
+    GROUP BY product_id, rating) AS r
+    GROUP BY product_id
+) AS t1
+INNER JOIN (
+  SELECT product_id, json_object_agg(recommend, "count") AS recommended
+  FROM (SELECT product_id, recommend, COUNT(id)
+  FROM reviews
+  GROUP BY product_id, recommend) AS r
+  GROUP BY product_id
+) AS t2 ON t1.product_id = t2.product_id
+INNER JOIN (
+    SELECT product_id, json_object_agg("name", json_build_object('id', characteristic_id, 'value', "value")) AS characteristics
+  FROM (SELECT product_id, characteristic_id, "name", AVG("value") AS "value"
+  FROM characteristics
+  INNER JOIN characteristic_reviews
+  ON characteristic_reviews.characteristic_id = characteristics.id
+  GROUP BY product_id, characteristic_id, "name") AS a
+  GROUP BY product_id
+) AS t3 ON t3.product_id = t1.product_id;
+
+```
+
+By combine to one view, it speed up the response
+
+```sql
+EXPLAIN ANALYZE
+SELECT review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness 
+FROM reviews INNER JOIN reviews_photo ON reviews.id = reviews_photo.review_id
+WHERE product_id = 1 and reported = false  
+LIMIT 5;                                                                
+```
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=130540.90..195363.75 rows=5 width=292) (actual time=13346.425..13346.470 rows=0 loops=1)
+   ->  Hash Join  (cost=130540.90..428726.01 rows=23 width=292) (actual time=13346.420..13346.465 rows=0 loops=1)
+         Hash Cond: (reviews.id = reviews_photo.review_id)
+         ->  Gather  (cost=1000.00..288466.58 rows=48 width=292) (actual time=0.733..10804.103 rows=2 loops=1)
+               Workers Planned: 2
+               Workers Launched: 2
+               ->  Parallel Seq Scan on reviews  (cost=0.00..287461.78 rows=20 width=292) (actual time=4448.353..12405.541 rows=1 loops=3)
+                     Filter: ((NOT reported) AND (product_id = 1))
+                     Rows Removed by Filter: 1924983
+         ->  Hash  (cost=84544.18..84544.18 rows=2742618 width=4) (actual time=2470.258..2470.258 rows=2742540 loops=1)
+               Buckets: 131072  Batches: 64  Memory Usage: 2525kB
+               ->  Seq Scan on reviews_photo  (cost=0.00..84544.18 rows=2742618 width=4) (actual time=6.030..1410.689 rows=2742540 loops=1)
+ Planning Time: 2.623 ms
+ Execution Time: 13347.102 ms
+(14 rows)
+
+```sql
+
+DROP VIEW IF EXISTS reviews_view;
+CREATE VIEW reviews_view AS
+SELECT product_id, json_agg(json_build_object(
+  'review_id', review_id,
+  'rating', rating, 
+  'summary', summary, 
+  'recommend', recommend, 
+  'response', response, 
+  'body', body, 
+  'date', "date",
+  'reviewer_name', reviewer_name, 
+  'helpfulness', helpfulness, 
+  'photo', photo)) as results
+FROM reviews
+LEFT JOIN (SELECT review_id, json_agg(json_build_object('id', id, 'url', "url")) as photo
+FROM reviews_photo
+GROUP BY review_id) as t
+ON reviews.id = t.review_id
+GROUP BY product_id;
+```
+
+​	
+
+
+
+```sql
+SELECT product_id AS product, json_agg(json_build_object(
+  'review_id', id,
+  'rating', rating,
+  'summary', summary,
+  'recommend', recommend,
+  'response', response,
+  'body', body,
+  'date', "date",
+  'reviewer_name', reviewer_name,
+  'helpfulness', helpfulness,
+  'photo', COALESCE(photo, '[]'::json)))as results
+FROM reviews
+LEFT JOIN (SELECT review_id, json_agg(json_build_object('id', id, 'url', "url")) as photo
+FROM reviews_photo
+Where review_id = 1
+GROUP BY review_id) as t
+ON reviews.id = t.review_id
 GROUP BY product_id;
 ```
 
 ```sql
-SELECT product_id, json_object_agg("name", json_build_object('id', characteristic_id, 'value', "value")) AS characteristics
-FROM (SELECT product_id, characteristic_id, "name", AVG("value") AS "value"
-FROM characteristics
-INNER JOIN characteristic_reviews
-ON characteristic_reviews.characteristic_id = characteristics.id
-GROUP BY product_id, characteristic_id, "name") AS a
-GROUP BY product_id;
+
+SELECT * FROM reviews
 ```
+
+
 
 
 

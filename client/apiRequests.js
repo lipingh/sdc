@@ -4,7 +4,7 @@ const options = require('./src/config/config');
 const getReviewsById = (params) => (
   axios({
     // url: `${options.url}reviews/`,
-    url: 'localhost:3000/reviews/',
+    url: 'http://localhost:3000/reviews/',
     method: 'get',
     headers: options.headers,
     params,
@@ -31,13 +31,14 @@ const getProductInfo = (id) => axios({
   .catch((err) => Promise.reject(err));
 
 const updateReviewHelpful = (reviewId, helpful) => axios.put(
-  `${options.url}reviews/${reviewId}/helpful`,
+  // `${options.url}reviews/${reviewId}/helpful`,
+  `http://localhost:3000/reviews/${reviewId}/helpful`,
   {
     helpfulness: helpful,
   },
-  {
-    headers: options.headers,
-  },
+  // {
+  //   headers: options.headers,
+  // },
 )
   .then()
   .catch((err) => {
@@ -45,10 +46,11 @@ const updateReviewHelpful = (reviewId, helpful) => axios.put(
   });
 
 const reportReview = (reviewId) => axios.put(
-  `${options.url}reviews/${reviewId}/report`, {},
-  {
-    headers: options.headers,
-  },
+  // `${options.url}reviews/${reviewId}/report`, {},
+  // {
+  //   headers: options.headers,
+  // },
+  `http://localhost:3000/reviews/${reviewId}/report`, {},
 )
   .then()
   .catch((err) => {

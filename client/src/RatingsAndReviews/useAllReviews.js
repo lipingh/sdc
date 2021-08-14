@@ -20,8 +20,9 @@ const useAllReviews = (productId, page, sortOption, ratingFilter) => {
     setError(false);
     axios({
       method: 'GET',
-      url: `${options.url}reviews/`,
-      headers: options.headers,
+      // url: `${options.url}reviews/`,
+      // headers: options.headers,
+      url: 'http://localhost:3000/reviews/',
       params: {
         product_id: productId,
         page,

@@ -158,29 +158,88 @@ ALTER TABLE characteristic_reviews ADD FOREIGN KEY (review_id) REFERENCES review
 -- DELIMITER ','
 -- CSV HEADER;
 
-DROP MATERIALIZED  VIEW IF EXISTS reviews_meta_ratings;
-CREATE MATERIALIZED VIEW reviews_meta_ratings AS
-SELECT product_id, json_object_agg(rating, "count") AS ratings
-FROM (SELECT product_id, rating, COUNT(id)
+-- DROP MATERIALIZED  VIEW IF EXISTS reviews_meta_ratings;
+-- CREATE MATERIALIZED VIEW reviews_meta_ratings AS
+-- SELECT product_id, json_object_agg(rating, "count") AS ratings
+-- FROM (SELECT product_id, rating, COUNT(id)
+-- FROM reviews
+-- GROUP BY product_id, rating) AS r
+-- GROUP BY product_id;
+
+-- DROP MATERIALIZED  VIEW IF EXISTS reviews_meta_recommended;
+-- CREATE MATERIALIZED VIEW reviews_meta_recommended AS
+-- SELECT product_id, json_object_agg(recommend, "count") AS recommended
+-- FROM (SELECT product_id, recommend, COUNT(id)
+-- FROM reviews
+-- GROUP BY product_id, recommend) AS r
+-- GROUP BY product_id;
+
+
+-- DROP MATERIALIZED  VIEW IF EXISTS reviews_meta_characteristics;
+-- CREATE MATERIALIZED VIEW reviews_meta_characteristics AS
+-- SELECT product_id, json_object_agg("name", json_build_object('id', characteristic_id, 'value', "value")) AS characteristics
+-- FROM (SELECT product_id, characteristic_id, "name", AVG("value") AS "value"
+-- FROM characteristics
+-- INNER JOIN characteristic_reviews
+-- ON characteristic_reviews.characteristic_id = characteristics.id
+-- GROUP BY product_id, characteristic_id, "name") AS a
+-- GROUP BY product_id;
+
+
+CREATE MATERIALIZED VIEW reviews_meta AS
+SELECT t1.product_id, t1.ratings, t2.recommended, t3.characteristics
+FROM (
+    SELECT product_id, json_object_agg(rating, "count") AS ratings
+    FROM (SELECT product_id, rating, COUNT(id)
+    FROM reviews
+    GROUP BY product_id, rating) AS r
+    GROUP BY product_id
+) AS t1
+INNER JOIN (
+  SELECT product_id, json_object_agg(recommend, "count") AS recommended
+  FROM (SELECT product_id, recommend, COUNT(id)
+  FROM reviews
+  GROUP BY product_id, recommend) AS r
+  GROUP BY product_id
+) AS t2 ON t1.product_id = t2.product_id
+INNER JOIN (
+    SELECT product_id, json_object_agg("name", json_build_object('id', characteristic_id, 'value', "value")) AS characteristics
+  FROM (SELECT product_id, characteristic_id, "name", AVG("value") AS "value"
+  FROM characteristics
+  INNER JOIN characteristic_reviews
+  ON characteristic_reviews.characteristic_id = characteristics.id
+  GROUP BY product_id, characteristic_id, "name") AS a
+  GROUP BY product_id
+) AS t3 ON t3.product_id = t1.product_id;
+
+
+-- DROP VIEW IF EXISTS reviews_view
+-- CREATE VIEW reviews_view AS
+-- SELECT product_id, review_id, rating, summary, recommend, response, body, "date", reviewer_name, helpfulness, photo
+-- FROM reviews
+-- INNER JOIN (SELECT review_id, json_agg(json_build_object('id', id, 'url', "url")) as photo
+-- FROM reviews_photo
+-- GROUP BY review_id) as t
+-- ON reviews.id = t.review_id;
+
+-- DROP MATERIALIZED VIEW IF EXISTS reviews_view;
+-- CREATE MATERIALIZED VIEW reviews_view AS
+DROP VIEW IF EXISTS reviews_view;
+CREATE VIEW reviews_view AS
+SELECT product_id AS product, json_agg(json_build_object(
+  'review_id', id,
+  'rating', rating,
+  'summary', summary,
+  'recommend', recommend,
+  'response', response,
+  'body', body,
+  'date', "date",
+  'reviewer_name', reviewer_name,
+  'helpfulness', helpfulness,
+  'photo', COALESCE(photos, '[]'::json)))as results
 FROM reviews
-GROUP BY product_id, rating) AS r
-GROUP BY product_id;
-
-DROP MATERIALIZED  VIEW IF EXISTS reviews_meta_recommended;
-CREATE MATERIALIZED VIEW reviews_meta_recommended AS
-SELECT product_id, json_object_agg(recommend, "count") AS recommended
-FROM (SELECT product_id, recommend, COUNT(id)
-FROM reviews
-GROUP BY product_id, recommend) AS r
-GROUP BY product_id;
-
-
-DROP MATERIALIZED  VIEW IF EXISTS reviews_meta_characteristics;
-CREATE MATERIALIZED VIEW reviews_meta_characteristics AS
-SELECT product_id, json_object_agg("name", json_build_object('id', characteristic_id, 'value', "value")) AS characteristics
-FROM (SELECT product_id, characteristic_id, "name", AVG("value") AS "value"
-FROM characteristics
-INNER JOIN characteristic_reviews
-ON characteristic_reviews.characteristic_id = characteristics.id
-GROUP BY product_id, characteristic_id, "name") AS a
+LEFT JOIN (SELECT review_id, json_agg(json_build_object('id', id, 'url', "url")) as photos
+FROM reviews_photo
+GROUP BY review_id) as t
+ON reviews.id = t.review_id
 GROUP BY product_id;
