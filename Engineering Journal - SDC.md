@@ -17,6 +17,8 @@ psql -d postgres -U me
 
 #list views
 \dm
+
+# list the table_id_seq
 ```
 
 
@@ -561,9 +563,10 @@ GROUP BY review_id;
 
 ```sql
 # Create a function to get reviews by page number
-CREATE FUNCTION getRowsByPageNumberAndSize(
+CREATE FUNCTION getReviewsByPageNumberAndSize(
  PageNumber INTEGER = 0,
- PageSize INTEGER = 5
+ PageSize INTEGER = 5, 
+ Sort  text ='relevant',
  )
  RETURNS SETOF public.reviews 
  LANGUAGE plpgsql
@@ -572,7 +575,6 @@ CREATE FUNCTION getRowsByPageNumberAndSize(
  DECLARE
   PageOffset INTEGER :=0;
  BEGIN
- 
   PageOffset := ((PageNumber-1) * PageSize);
  
   RETURN QUERY
@@ -702,11 +704,205 @@ GROUP BY product_id;
 ```
 
 ```sql
-
-SELECT * FROM reviews
+# How to fix PostgreSQL error "duplicate key violates unique constraint"
+# set the serial nextval
+SELECT MAX(id) FROM reviews;
+select nextval('reviews_id_seq');
+BEGIN;
+LOCK TABLE reviews IN EXCLUSIVE MODE;
+SELECT setval('reviews_id_seq', COALESCE((SELECT MAX(id)+1 FROM reviews), 1), false);
+COMMIT;
 ```
 
 
 
+# Testing
 
+### 1. Get Metadata
+
+```sql
+# get metadata
+EXPLAIN ANALYZE
+SELECT * FROM reviews_meta WHERE product_id = 13023;
+                                                           
+                                           QUERY PLAN    Aug 14, 2021                                                        
+---------------------------------------------------------------------------------------------
+ Gather  (cost=1000.00..41017.08 rows=1 width=260) (actual time=40.265..1506.471 rows=1 loops=1)
+   Workers Planned: 2
+   Workers Launched: 2
+   ->  Parallel Seq Scan on reviews_meta  (cost=0.00..40016.98 rows=1 width=260) (actual time=1012.268..1500.482 rows=0 loops=3)
+         Filter: (product_id = 13023)
+         Rows Removed by Filter: 316690
+ Planning Time: 0.069 ms
+ Execution Time: 1506.488 ms
+(8 rows)
+```
+
+### 2. Get Reviews
+
+- Using view
+
+````sql
+# get reviews
+EXPLAIN ANALYZE
+SELECT * from reviews_view WHERE product = 13027 LIMIT 5 OFFSET 10;
+
+
+Query Plan on Aug 14, 2021
+---------------------------------------------------------------------------------------------
+ Limit  (cost=499420.50..578245.31 rows=5 width=36) (actual time=37207.100..37222.995 rows=0 loops=1)
+   ->  GroupAggregate  (cost=341770.87..1130018.49 rows=50 width=36) (actual time=37207.094..37222.988 rows=1 loops=1)
+         Group Key: reviews.product_id
+         ->  Merge Left Join  (cost=341770.87..1130017.49 rows=50 width=328) (actual time=28934.062..37222.251 rows=6 loops=1)
+               Merge Cond: (reviews.id = reviews_photo.review_id)
+               ->  Gather Merge  (cost=1000.46..380688.57 rows=50 width=296) (actual time=23027.249..23034.954 rows=6 loops=1)
+                     Workers Planned: 2
+                     Workers Launched: 2
+                     ->  Parallel Index Scan using reviews_pkey on reviews  (cost=0.43..379682.77 rows=21 width=296) (actual time=15356.585..15359.018 rows=2 loops=3)
+                           Filter: (product_id = 13027)
+                           Rows Removed by Filter: 1924982
+               ->  GroupAggregate  (cost=340770.41..715045.84 rows=2742618 width=36) (actual time=5314.561..13907.810 rows=2742534 loops=1)
+                     Group Key: reviews_photo.review_id
+                     ->  Gather Merge  (cost=340770.41..660193.48 rows=2742618 width=136) (actual time=5306.634..6683.894 rows=2742540 loops=1)
+                           Workers Planned: 2
+                           Workers Launched: 2
+                           ->  Sort  (cost=339770.39..342627.29 rows=1142758 width=136) (actual time=5006.282..5296.457 rows=914180 loops=3)
+                                 Sort Key: reviews_photo.review_id
+                                 Sort Method: external merge  Disk: 136656kB
+                                 Worker 0:  Sort Method: external merge  Disk: 105376kB
+                                 Worker 1:  Sort Method: external merge  Disk: 150464kB
+                                 ->  Parallel Seq Scan on reviews_photo  (cost=0.00..68545.57 rows=1142758 width=136) (actual time=4.500..3270.560 rows=914180 loops=3)
+ Planning Time: 34.927 ms
+ Execution Time: 37307.789 ms
+(24 rows)
+````
+
+- Subquery
+
+  ```sql
+  # get reviews
+  EXPLAIN ANALYZE
+  SELECT product_id AS product, json_agg(json_build_object(
+    'review_id', id,
+    'rating', rating,
+    'summary', summary,
+    'recommend', recommend,
+    'response', response,
+    'body', body,
+    'date', "date",
+    'reviewer_name', reviewer_name,
+    'helpfulness', helpfulness,
+    'photos', COALESCE(photos, '[]'::json))) as results
+  FROM (SELECT id, product_id, rating, summary, body, "date", reviewer_name, helpfulness
+        FROM reviews 
+        WHERE product_id = 13027 && reported = false)  AS t1
+   LEFT JOIN (SELECT * FROM reviews_photo)
+   
+  ```
+
+- using function to fetch reviews by page
+
+  ```sql
+  CREATE OR REPLACE FUNCTION getReviewsByPage(
+   Product INTEGER,
+   PageNumber INTEGER DEFAULT 1,
+   PageSize INTEGER DEFAULT 5,
+   Sort VARCHAR DEFAULT 'id'
+   )
+   RETURNS TABLE(review_id int, rating int, summary text, recommend bool, response text, date bigint, reviewer_name varchar, helpfulness int) AS
+   $BODY$
+   DECLARE
+    PageOffset INTEGER :=0;
+   BEGIN
+  
+    PageOffset := ((PageNumber-1) * PageSize);
+  
+    RETURN QUERY
+     SELECT id as review_id, rating, summary, recommend, response, "date", reviewer_name, helpfulness
+     FROM public.reviews
+     WHERE product_id = Product AND reported = false
+     ORDER BY Sort
+     LIMIT Pagesize
+     OFFSET PageOffset;
+  END;
+  $BODY$
+  LANGUAGE plpgsql;
+  ```
+
+  ```sql
+  EXPLAIN ANALYZE
+  SELECT * from getReviewsByPage(13023);
+                                                                                                          
+  ----------------------------------------------------------------------------------------
+   Function Scan on getreviewsbypage  (cost=0.25..10.25 rows=1000 width=558) (actual time=4045.050..4045.051 rows=3 loops=1)
+   Planning Time: 0.052 ms
+   Execution Time: 4045.522 ms
+  (3 rows)
+  
+  ```
+
+  ```sql
+    SELECT product_id AS product, json_agg(json_build_object(
+    'review_id', id,
+    'rating', rating,
+    'summary', summary,
+    'recommend', recommend,
+    'response', response,
+    'body', body,
+    'date', "date",
+    'reviewer_name', reviewer_name,
+    'helpfulness', helpfulness)) as results
+    FROM getreviewsbypage(13027)
+    GROUP BY product_id;
+  ```
+
+  
+
+```sql
+CREATE OR REPLACE FUNCTION getReviewsByPage(
+ Product INTEGER,
+ PageNumber INTEGER DEFAULT 1,
+ PageSize INTEGER DEFAULT 5,
+ Sort VARCHAR DEFAULT 'id'
+ )
+ RETURNS json AS
+ $BODY$
+ DECLARE
+  PageOffset INTEGER :=0;
+ BEGIN
+
+  PageOffset := ((PageNumber-1) * PageSize);
+  RETURN QUERY
+  SELECT json_agg(json_build_object(
+  'review_id', id,
+  'rating', rating,
+  'summary', summary,
+  'recommend', recommend,
+  'response', response,
+  'body', body,
+  'date', "date",
+  'reviewer_name', reviewer_name,
+  'helpfulness', helpfulness,
+  'photos', COALESCE(photos, '[]'::json)))
+FROM 
+(select id, rating, summary, recommend, body, response, "date", reviewer_name, helpfulness 
+ from reviews 
+ where product_id = Product AND reported = false
+ ORDER BY Sort DESC
+) AS t1
+LEFT JOIN (SELECT review_id, json_agg(json_build_object('id', id, 'url', "url")) as photos
+FROM reviews_photo
+GROUP BY review_id) as t2
+ON t1.id = t2.review_id
+LIMIT Pagesize
+OFFSET PageOffset;
+END;
+$BODY$
+LANGUAGE plpgsql;
+```
+
+```sql
+select getReviewsByPage(13027);
+select * from getReviewsByPage(13027);
+```
 

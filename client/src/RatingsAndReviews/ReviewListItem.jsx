@@ -22,15 +22,13 @@ const ReviewListItem = ({ review }) => {
 
   const handleReport = () => {
     setReported(!reported);
+    reportReview(review.review_id);
   };
 
   useEffect(() => {
     updateReviewHelpful(review.review_id, helpful);
   }, [helpful]);
 
-  useEffect(() => {
-    reportReview(review.review_id);
-  }, [reported]);
   return (
     <div>
       <div className="review-list-overall">
@@ -39,12 +37,12 @@ const ReviewListItem = ({ review }) => {
           {review.reviewer_name}
           {review.email ? <span>(Verified Purchaser)</span> : null}
           {', '}
-          {new Date(review.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+          {new Date(parseInt(review.date, 10)).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
         </span>
       </div>
       <div className="review-summary">{review.summary}</div>
       <div>{review.body}</div>
-      <div className="photos-container">
+      {/* <div className="photos-container">
         {review.photos.map((photo) => (
           <div key={photo.id}>
             <img
@@ -66,12 +64,12 @@ const ReviewListItem = ({ review }) => {
           </div>
 
         ))}
-      </div>
+      </div> */}
 
       <div>
         {review.recommend ? <span>&#10003; I recommend this product</span> : null}
       </div>
-      {review.response ? (
+      {(review.response && review.response !== 'null') ? (
         <div className="review-response">
           <strong>
             Response:
@@ -101,7 +99,7 @@ ReviewListItem.propTypes = {
     rating: PropTypes.number,
     summary: PropTypes.string,
     reviewer_name: PropTypes.string,
-    // date: PropTypes.string,
+    date: PropTypes.string,
     body: PropTypes.string,
     photos: PropTypes.arrayOf(PropTypes.object),
     recommend: PropTypes.bool,

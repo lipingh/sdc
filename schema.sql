@@ -236,10 +236,52 @@ SELECT product_id AS product, json_agg(json_build_object(
   'date', "date",
   'reviewer_name', reviewer_name,
   'helpfulness', helpfulness,
-  'photo', COALESCE(photos, '[]'::json)))as results
+  'photos', COALESCE(photos, '[]'::json)))as results
 FROM reviews
 LEFT JOIN (SELECT review_id, json_agg(json_build_object('id', id, 'url', "url")) as photos
 FROM reviews_photo
 GROUP BY review_id) as t
 ON reviews.id = t.review_id
 GROUP BY product_id;
+
+
+SELECT MAX(id) FROM reviews;
+select nextval('reviews_id_seq');
+BEGIN;
+LOCK TABLE reviews IN EXCLUSIVE MODE;
+SELECT setval('reviews_id_seq', COALESCE((SELECT MAX(id)+1 FROM reviews), 1), false);
+COMMIT;
+
+BEGIN;
+LOCK TABLE reviews_photo IN EXCLUSIVE MODE;
+SELECT setval('reviews_photo_id_seq', COALESCE((SELECT MAX(id)+1 FROM reviews_photo), 1), false);
+COMMIT;
+
+
+
+CREATE OR REPLACE FUNCTION getReviewsByPage(
+ Product INTEGER,
+ PageNumber INTEGER DEFAULT 1,
+ PageSize INTEGER DEFAULT 5,
+ Sort VARCHAR DEFAULT 'helpfulness'
+ )
+ RETURNS SETOF public.reviews AS
+ $BODY$
+ DECLARE
+  PageOffset INTEGER :=0;
+ BEGIN
+
+  PageOffset := ((PageNumber-1) * PageSize);
+
+  RETURN QUERY
+   SELECT *
+   FROM public.reviews
+   WHERE product_id = Product AND reported = false
+   ORDER BY Sort DESC
+   LIMIT Pagesize
+   OFFSET PageOffset;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+

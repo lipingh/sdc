@@ -3,21 +3,18 @@ const options = require('./src/config/config');
 
 const getReviewsById = (params) => (
   axios({
-    // url: `${options.url}reviews/`,
     url: 'http://localhost:3000/reviews/',
     method: 'get',
     headers: options.headers,
     params,
   })
-    .then((res) => res.data.results)
+    .then((res) => res.data)
     .catch((err) => Promise.reject(err))
 );
 
 const getReviewsMeta = (productId) => axios({
   url: `http://localhost:3000/reviews/meta?product_id=${productId}`,
-  // url: `${options.url}reviews/meta?product_id=${productId}`,
   method: 'get',
-  headers: options.headers,
 })
   .then((res) => res.data)
   .catch((err) => Promise.reject(err));
