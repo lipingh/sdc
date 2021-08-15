@@ -1254,3 +1254,19 @@ left Join
 (33 rows)
 ```
 
+```sql
+(SELECT product_id, json_object_agg(rating, "count") AS ratings 
+from (select rating, count(id) from reviews where product_id = 13027 group by rating) as s1)
+as t1
+(SELECT product_id, json_object_agg(recommend, "count") AS recommended
+FROM (SELECT product_id, recommend, COUNT(id)
+FROM reviews
+GROUP BY product_id, recommend) AS s2
+GROUP BY product_id) as t2
+(SELECT product_id, json_object_agg(recommend, "count") AS recommended
+FROM (SELECT product_id, recommend, COUNT(id)
+FROM reviews
+GROUP BY product_id, recommend) AS s2
+GROUP BY product_id) as t3
+```
+

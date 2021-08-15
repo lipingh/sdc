@@ -28,14 +28,10 @@ const getProductInfo = (id) => axios({
   .catch((err) => Promise.reject(err));
 
 const updateReviewHelpful = (reviewId, helpful) => axios.put(
-  // `${options.url}reviews/${reviewId}/helpful`,
   `http://localhost:3000/reviews/${reviewId}/helpful`,
   {
     helpfulness: helpful,
   },
-  // {
-  //   headers: options.headers,
-  // },
 )
   .then()
   .catch((err) => {
@@ -43,10 +39,6 @@ const updateReviewHelpful = (reviewId, helpful) => axios.put(
   });
 
 const reportReview = (reviewId) => axios.put(
-  // `${options.url}reviews/${reviewId}/report`, {},
-  // {
-  //   headers: options.headers,
-  // },
   `http://localhost:3000/reviews/${reviewId}/report`, {},
 )
   .then()
@@ -54,7 +46,7 @@ const reportReview = (reviewId) => axios.put(
     throw err;
   });
 
-const postReview = (data) => axios.post(`${options.url}reviews`, data, { headers: options.headers })
+const postReview = (data) => axios.post('http://localhost:3000/reviews', data, { headers: options.headers })
   .then()
   .catch((err) => Promise.reject(err));
 

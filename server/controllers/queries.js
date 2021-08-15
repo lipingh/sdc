@@ -7,22 +7,6 @@ const getReviews = (req, res) => {
   const sort = req.query.sort === 'newest' ? 'date' : 'helpfulness';
   const offset = (pageNUmber - 1) * pageSize;
   const data = {};
-
-  //   pool.query(`SELECT t1.review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness, id, url from (SELECT id as review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness from reviews WHERE product_id = $1 and reported = false ORDER BY ${sort} DESC LIMIT $2 OFFSET $3) as t1 left Join reviews_photo on t1.review_id = reviews_photo.review_id `, [productId, pageSize, offset], (err, results) => {
-  //     if (err) {
-  //       throw err;
-  //     }
-  //     data.results = results.rows;
-
-  //     res.status(200).json(data);
-  //   });
-
-  //   const q = `SELECT t1.review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness, COALESCE(photos, '[]'::json) as photos from
-  // (SELECT id as review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness from reviews WHERE product_id = 13023 and reported = false ORDER BY ${sort} DESC LIMIT $2 OFFSET $3) as t1
-  // left Join
-  // (SELECT review_id, json_agg(json_build_object('id', id, 'url', "url")) as photos from reviews_photo where review_id in (select id from reviews WHERE product_id = 13027 and reported = false ORDER BY helpfulness DESC LIMIT 5) GROUP BY review_id) as t2
-  //  on t1.review_id = t2.review_id`;
-
   pool.query(`SELECT t1.review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness, COALESCE(photos, '[]'::json) as photos from
  (SELECT id as review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness from reviews WHERE product_id = $1 and reported = false ORDER BY ${sort} DESC LIMIT $2 OFFSET $3) as t1
  left Join
@@ -85,7 +69,6 @@ const getReviewsMeta = (req, res) => {
 
   Promise.all([ratingPromise, recommendPromise, characteristicPromise])
     .then(() => {
-      // console.log(data);
       res.status(200).json(data);
     });
 };
@@ -136,11 +119,15 @@ const postReview = (req, res) => {
       });
     }
 
-    // TO DO: update the characteristics
-    for (const key in characteristics) {
-
-    }
-    // TO DO: update the characteristics_reviews
+    // insert into the characteristics_reviews
+    Object.keys(characteristics).forEach((key) => {
+      pool.query('INSERT INTO characteristic_reviews(review_id, characteristic_id) VALUES($1, $2)', [reviewId, key], (charError) => {
+        if (charError) {
+          throw charError;
+        }
+      });
+    });
+    res.status(200).send('ok');
   });
 };
 

@@ -249,6 +249,13 @@ LOCK TABLE reviews_photo IN EXCLUSIVE MODE;
 SELECT setval('reviews_photo_id_seq', COALESCE((SELECT MAX(id)+1 FROM reviews_photo), 1), false);
 COMMIT;
 
+SELECT MAX(id) FROM characteristic_reviews;
+select nextval('characteristic_reviews_id_seq');
+BEGIN;
+LOCK TABLE reviews IN EXCLUSIVE MODE;
+SELECT setval('characteristic_reviews_id_seq', COALESCE((SELECT MAX(id)+1 FROM characteristic_reviews), 1), false);
+COMMIT;
+
 -- ---
 -- CREATE FUNCTION
 -- ---
