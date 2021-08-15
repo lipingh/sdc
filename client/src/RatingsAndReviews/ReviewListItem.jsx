@@ -42,7 +42,7 @@ const ReviewListItem = ({ review }) => {
       </div>
       <div className="review-summary">{review.summary}</div>
       <div>{review.body}</div>
-      {/* <div className="photos-container">
+      <div className="photos-container">
         {review.photos.map((photo) => (
           <div key={photo.id}>
             <img
@@ -64,7 +64,7 @@ const ReviewListItem = ({ review }) => {
           </div>
 
         ))}
-      </div> */}
+      </div>
 
       <div>
         {review.recommend ? <span>&#10003; I recommend this product</span> : null}

@@ -133,30 +133,30 @@ ALTER TABLE characteristic_reviews ADD FOREIGN KEY (review_id) REFERENCES review
 -- Loading Data
 -- ---
 
--- COPY product(id, "name", slogan, "description", category, default_price)
--- FROM '/Users/lipinghuang/Desktop/sdc_files/product.csv'
--- DELIMITER ','
--- CSV HEADER;
+COPY product(id, "name", slogan, "description", category, default_price)
+FROM '/Users/lipinghuang/Desktop/sdc_files/product.csv'
+DELIMITER ','
+CSV HEADER;
 
--- COPY reviews(id, product_id, rating, "date", summary, body, recommend, reported, reviewer_name, reviewer_email, response, helpfulness)
--- FROM '/Users/lipinghuang/Desktop/sdc_files/reviews.csv'
--- DELIMITER ','
--- CSV HEADER;
+COPY reviews(id, product_id, rating, "date", summary, body, recommend, reported, reviewer_name, reviewer_email, response, helpfulness)
+FROM '/Users/lipinghuang/Desktop/sdc_files/reviews.csv'
+DELIMITER ','
+CSV HEADER;
 
--- COPY reviews_photo(id, review_id, "url")
--- FROM '/Users/lipinghuang/Desktop/sdc_files/reviews_photos.csv'
--- DELIMITER ','
--- CSV HEADER;
+COPY reviews_photo(id, review_id, "url")
+FROM '/Users/lipinghuang/Desktop/sdc_files/reviews_photos.csv'
+DELIMITER ','
+CSV HEADER;
 
--- COPY characteristics(id, product_id, "name")
--- FROM '/Users/lipinghuang/Desktop/sdc_files/characteristics.csv'
--- DELIMITER ','
--- CSV HEADER;
+COPY characteristics(id, product_id, "name")
+FROM '/Users/lipinghuang/Desktop/sdc_files/characteristics.csv'
+DELIMITER ','
+CSV HEADER;
 
--- COPY characteristic_reviews(id, characteristic_id, review_id, "value")
--- FROM '/Users/lipinghuang/Desktop/sdc_files/characteristic_reviews.csv'
--- DELIMITER ','
--- CSV HEADER;
+COPY characteristic_reviews(id, characteristic_id, review_id, "value")
+FROM '/Users/lipinghuang/Desktop/sdc_files/characteristic_reviews.csv'
+DELIMITER ','
+CSV HEADER;
 
 -- DROP MATERIALIZED  VIEW IF EXISTS reviews_meta_ratings;
 -- CREATE MATERIALIZED VIEW reviews_meta_ratings AS
@@ -186,64 +186,56 @@ ALTER TABLE characteristic_reviews ADD FOREIGN KEY (review_id) REFERENCES review
 -- GROUP BY product_id;
 
 
-CREATE MATERIALIZED VIEW reviews_meta AS
-SELECT t1.product_id, t1.ratings, t2.recommended, t3.characteristics
-FROM (
-    SELECT product_id, json_object_agg(rating, "count") AS ratings
-    FROM (SELECT product_id, rating, COUNT(id)
-    FROM reviews
-    GROUP BY product_id, rating) AS r
-    GROUP BY product_id
-) AS t1
-INNER JOIN (
-  SELECT product_id, json_object_agg(recommend, "count") AS recommended
-  FROM (SELECT product_id, recommend, COUNT(id)
-  FROM reviews
-  GROUP BY product_id, recommend) AS r
-  GROUP BY product_id
-) AS t2 ON t1.product_id = t2.product_id
-INNER JOIN (
-    SELECT product_id, json_object_agg("name", json_build_object('id', characteristic_id, 'value', "value")) AS characteristics
-  FROM (SELECT product_id, characteristic_id, "name", AVG("value") AS "value"
-  FROM characteristics
-  INNER JOIN characteristic_reviews
-  ON characteristic_reviews.characteristic_id = characteristics.id
-  GROUP BY product_id, characteristic_id, "name") AS a
-  GROUP BY product_id
-) AS t3 ON t3.product_id = t1.product_id;
+-- CREATE MATERIALIZED VIEW reviews_meta AS
+-- SELECT t1.product_id, t1.ratings, t2.recommended, t3.characteristics
+-- FROM (
+--     SELECT product_id, json_object_agg(rating, "count") AS ratings
+--     FROM (SELECT product_id, rating, COUNT(id)
+--     FROM reviews
+--     GROUP BY product_id, rating) AS r
+--     GROUP BY product_id
+-- ) AS t1
+-- INNER JOIN (
+--   SELECT product_id, json_object_agg(recommend, "count") AS recommended
+--   FROM (SELECT product_id, recommend, COUNT(id)
+--   FROM reviews
+--   GROUP BY product_id, recommend) AS r
+--   GROUP BY product_id
+-- ) AS t2 ON t1.product_id = t2.product_id
+-- INNER JOIN (
+--     SELECT product_id, json_object_agg("name", json_build_object('id', characteristic_id, 'value', "value")) AS characteristics
+--   FROM (SELECT product_id, characteristic_id, "name", AVG("value") AS "value"
+--   FROM characteristics
+--   INNER JOIN characteristic_reviews
+--   ON characteristic_reviews.characteristic_id = characteristics.id
+--   GROUP BY product_id, characteristic_id, "name") AS a
+--   GROUP BY product_id
+-- ) AS t3 ON t3.product_id = t1.product_id;
 
 
--- DROP VIEW IF EXISTS reviews_view
+-- DROP VIEW IF EXISTS reviews_view;
 -- CREATE VIEW reviews_view AS
--- SELECT product_id, review_id, rating, summary, recommend, response, body, "date", reviewer_name, helpfulness, photo
+-- SELECT product_id AS product, json_agg(json_build_object(
+--   'review_id', id,
+--   'rating', rating,
+--   'summary', summary,
+--   'recommend', recommend,
+--   'response', response,
+--   'body', body,
+--   'date', "date",
+--   'reviewer_name', reviewer_name,
+--   'helpfulness', helpfulness,
+--   'photos', COALESCE(photos, '[]'::json)))as results
 -- FROM reviews
--- INNER JOIN (SELECT review_id, json_agg(json_build_object('id', id, 'url', "url")) as photo
+-- LEFT JOIN (SELECT review_id, json_agg(json_build_object('id', id, 'url', "url")) as photos
 -- FROM reviews_photo
 -- GROUP BY review_id) as t
--- ON reviews.id = t.review_id;
+-- ON reviews.id = t.review_id
+-- GROUP BY product_id;
 
--- DROP MATERIALIZED VIEW IF EXISTS reviews_view;
--- CREATE MATERIALIZED VIEW reviews_view AS
-DROP VIEW IF EXISTS reviews_view;
-CREATE VIEW reviews_view AS
-SELECT product_id AS product, json_agg(json_build_object(
-  'review_id', id,
-  'rating', rating,
-  'summary', summary,
-  'recommend', recommend,
-  'response', response,
-  'body', body,
-  'date', "date",
-  'reviewer_name', reviewer_name,
-  'helpfulness', helpfulness,
-  'photos', COALESCE(photos, '[]'::json)))as results
-FROM reviews
-LEFT JOIN (SELECT review_id, json_agg(json_build_object('id', id, 'url', "url")) as photos
-FROM reviews_photo
-GROUP BY review_id) as t
-ON reviews.id = t.review_id
-GROUP BY product_id;
-
+-- ---
+-- AVOID UNIQ ID CONFLICT
+-- ---
 
 SELECT MAX(id) FROM reviews;
 select nextval('reviews_id_seq');
@@ -257,31 +249,47 @@ LOCK TABLE reviews_photo IN EXCLUSIVE MODE;
 SELECT setval('reviews_photo_id_seq', COALESCE((SELECT MAX(id)+1 FROM reviews_photo), 1), false);
 COMMIT;
 
+-- ---
+-- CREATE FUNCTION
+-- ---
 
+-- CREATE OR REPLACE FUNCTION getReviewsByPage(
+--  Product INTEGER,
+--  PageNumber INTEGER DEFAULT 1,
+--  PageSize INTEGER DEFAULT 5,
+--  Sort VARCHAR DEFAULT 'helpfulness'
+--  )
+--  RETURNS SETOF public.reviews AS
+--  $BODY$
+--  DECLARE
+--   PageOffset INTEGER :=0;
+--  BEGIN
 
-CREATE OR REPLACE FUNCTION getReviewsByPage(
- Product INTEGER,
- PageNumber INTEGER DEFAULT 1,
- PageSize INTEGER DEFAULT 5,
- Sort VARCHAR DEFAULT 'helpfulness'
- )
- RETURNS SETOF public.reviews AS
- $BODY$
- DECLARE
-  PageOffset INTEGER :=0;
- BEGIN
+--   PageOffset := ((PageNumber-1) * PageSize);
 
-  PageOffset := ((PageNumber-1) * PageSize);
+--   RETURN QUERY
+--    SELECT *
+--    FROM public.reviews
+--    WHERE product_id = Product AND reported = false
+--    ORDER BY Sort DESC
+--    LIMIT Pagesize
+--    OFFSET PageOffset;
+-- END;
+-- $BODY$
+-- LANGUAGE plpgsql;
 
-  RETURN QUERY
-   SELECT *
-   FROM public.reviews
-   WHERE product_id = Product AND reported = false
-   ORDER BY Sort DESC
-   LIMIT Pagesize
-   OFFSET PageOffset;
-END;
-$BODY$
-LANGUAGE plpgsql;
+-- ---
+-- CREATE INDEX
+-- ---
 
+CREATE INDEX idx_product_id
+ON reviews(product_id);
 
+CREATE INDEX idx_product_id_characteristics
+ON characteristics(product_id);
+
+CREATE INDEX idx_id_characteristics
+ON characteristic_reviews(characteristic_id);
+
+CREATE INDEX idx_review_id_photo
+ON reviews_photo(review_id);

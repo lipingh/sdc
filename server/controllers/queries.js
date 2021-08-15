@@ -4,38 +4,90 @@ const getReviews = (req, res) => {
   const productId = parseInt(req.query.product_id, 10);
   const pageNUmber = parseInt(req.query.page, 10);
   const pageSize = parseInt(req.query.count, 10);
-  const { sort } = req.query;
+  const sort = req.query.sort === 'newest' ? 'date' : 'helpfulness';
   const offset = (pageNUmber - 1) * pageSize;
   const data = {};
-  pool.query('SELECT id as review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness from reviews WHERE product_id = $1 and reported = false order by $2 DESC LIMIT $3 OFFSET $4', [productId, sort, pageSize, offset], (err, results) => {
+
+  //   pool.query(`SELECT t1.review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness, id, url from (SELECT id as review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness from reviews WHERE product_id = $1 and reported = false ORDER BY ${sort} DESC LIMIT $2 OFFSET $3) as t1 left Join reviews_photo on t1.review_id = reviews_photo.review_id `, [productId, pageSize, offset], (err, results) => {
+  //     if (err) {
+  //       throw err;
+  //     }
+  //     data.results = results.rows;
+
+  //     res.status(200).json(data);
+  //   });
+
+  //   const q = `SELECT t1.review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness, COALESCE(photos, '[]'::json) as photos from
+  // (SELECT id as review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness from reviews WHERE product_id = 13023 and reported = false ORDER BY ${sort} DESC LIMIT $2 OFFSET $3) as t1
+  // left Join
+  // (SELECT review_id, json_agg(json_build_object('id', id, 'url', "url")) as photos from reviews_photo where review_id in (select id from reviews WHERE product_id = 13027 and reported = false ORDER BY helpfulness DESC LIMIT 5) GROUP BY review_id) as t2
+  //  on t1.review_id = t2.review_id`;
+
+  pool.query(`SELECT t1.review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness, COALESCE(photos, '[]'::json) as photos from
+ (SELECT id as review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness from reviews WHERE product_id = $1 and reported = false ORDER BY ${sort} DESC LIMIT $2 OFFSET $3) as t1
+ left Join
+ (SELECT review_id, json_agg(json_build_object('id', id, 'url', "url")) as photos from reviews_photo where review_id in (select id from reviews WHERE product_id = $1 and reported = false ORDER BY helpfulness DESC LIMIT 5) GROUP BY review_id) as t2
+  on t1.review_id = t2.review_id`, [productId, pageSize, offset], (err, results) => {
     if (err) {
       throw err;
     }
     data.results = results.rows;
     res.status(200).json(data);
   });
-  // pool.query('SELECT * from reviews_view WHERE product = $1 LIMIT $2 OFFSET $3', [productId, count, skip], (err, results) => {
-  //   if (err) {
-  //     throw err;
-  //   }
-  //   res.status(200).json(results.rows[0]);
-  // });
-  // pool.query('SELECT id as review_id, rating, summary, recommend, response, date, reviewer_name, helpfulness FROM getReviewsByPage($1, $2, $3, $4)', [productId, page, count, sort], (err, results) => {
-  //   if (err) {
-  //     throw err;
-  //   }
-  //   res.status(200).json(results.rows);
-  // });
 };
 
 const getReviewsMeta = (req, res) => {
   const productId = parseInt(req.query.product_id, 10);
-  pool.query('SELECT * FROM reviews_meta WHERE product_id = $1', [productId], (err, results) => {
-    if (err) {
-      throw err;
-    }
-    res.status(200).json(results.rows[0]);
+  const data = {};
+  const ratingPromise = new Promise((resolve, reject) => {
+    pool.query('select rating, count(id) from reviews where product_id = $1 group by rating', [productId], (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        const result = {};
+        results.rows.forEach((rating) => { result[rating.rating] = rating.count; });
+        data.ratings = result;
+        resolve(result);
+      }
+    });
   });
+
+  const recommendPromise = new Promise((resolve, reject) => {
+    pool.query('SELECT recommend, COUNT(*) FROM reviews WHERE product_id = $1 GROUP BY recommend', [productId], (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        const result = {};
+        results.rows.forEach((recommend) => { result[recommend.recommend] = recommend.count; });
+        data.recommended = result;
+        resolve(result);
+      }
+    });
+  });
+
+  const characteristicPromise = new Promise((resolve, reject) => {
+    pool.query('select name, characteristic_id, AVG(value) from (select id, name from characteristics where product_id = $1) as t1 inner join characteristic_reviews on t1.id = characteristic_reviews.characteristic_id GROUP BY name, characteristic_id', [productId], (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        const result = {};
+        results.rows.forEach((characteristic) => {
+          result[characteristic.name] = {
+            id: characteristic.characteristic_id,
+            value: characteristic.avg,
+          };
+        });
+        data.characteristics = result;
+        resolve(result);
+      }
+    });
+  });
+
+  Promise.all([ratingPromise, recommendPromise, characteristicPromise])
+    .then(() => {
+      // console.log(data);
+      res.status(200).json(data);
+    });
 };
 
 const updateReviewHelpful = (req, res) => {

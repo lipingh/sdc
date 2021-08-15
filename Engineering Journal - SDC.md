@@ -289,10 +289,10 @@ select TO_CHAR(TO_TIMESTAMP(date / 1000), 'DD/MM/YYYY HH24:MI:SS') date from rev
 ```sql
 EXPLAIN ANALYZE
 select * from reviews 
-where reported = false
+where product_id = 13027 and reported = false
 order by helpfulness desc
 limit 5
-offset 5;
+offset 0;
 ```
 
  **This is a second time running**
@@ -904,5 +904,353 @@ LANGUAGE plpgsql;
 ```sql
 select getReviewsByPage(13027);
 select * from getReviewsByPage(13027);
+```
+
+```
+
+```
+
+- Select reviews by product id without index
+
+  ```
+  EXPLAIN ANALYZE
+  select * from reviews 
+  where product_id = 13027 and reported = false
+  order by helpfulness desc
+  limit 5
+  offset 5;
+                                                                   QUERY PLAN                                                                 
+  --------------------------------------------------------------------------------------------------------------------------------------------
+   Limit  (cost=288465.05..288465.63 rows=5 width=320) (actual time=15240.757..15245.145 rows=2 loops=1)
+     ->  Gather Merge  (cost=288464.47..288469.13 rows=40 width=320) (actual time=15240.745..15245.112 rows=7 loops=1)
+           Workers Planned: 2
+           Workers Launched: 2
+           ->  Sort  (cost=287464.44..287464.49 rows=20 width=320) (actual time=15201.730..15201.754 rows=2 loops=3)
+                 Sort Key: helpfulness DESC
+                 Sort Method: quicksort  Memory: 25kB
+                 Worker 0:  Sort Method: quicksort  Memory: 25kB
+                 Worker 1:  Sort Method: quicksort  Memory: 27kB
+                 ->  Parallel Seq Scan on reviews  (cost=0.00..287464.01 rows=20 width=320) (actual time=11341.512..15195.552 rows=2 loops=3)
+                       Filter: ((NOT reported) AND (product_id = 13027))
+                       Rows Removed by Filter: 1924982
+   Planning Time: 12.458 ms
+   Execution Time: 15300.764 ms
+  (14 rows)
+  ```
+
+  - using index
+
+    ```
+    EXPLAIN ANALYZE
+    select * from reviews 
+    where product_id = 13027 and reported = false
+    order by helpfulness desc
+    limit 5
+    offset 5;
+    
+      QUERY PLAN                                                                
+    ------------------------------------------------------------------------------------------------------------------------------------------
+     Limit  (cost=12.36..12.37 rows=5 width=320) (actual time=14.336..14.338 rows=2 loops=1)
+       ->  Sort  (cost=12.34..12.46 rows=48 width=320) (actual time=14.333..14.335 rows=7 loops=1)
+             Sort Key: helpfulness DESC
+             Sort Method: quicksort  Memory: 27kB
+             ->  Index Scan using idx_product_id on reviews  (cost=0.43..11.31 rows=48 width=320) (actual time=14.291..14.316 rows=7 loops=1)
+                   Index Cond: (product_id = 13027)
+                   Filter: (NOT reported)
+     Planning Time: 11.012 ms
+     Execution Time: 15.798 ms
+    (9 rows)
+    ```
+
+    
+
+ ```sql
+ # aggreate reviews rating
+ EXPLAIN ANALYZE
+ 
+ (select rating, count(id) from reviews where product_id = 13027 group by rating) as t;
+ 
+ 
+                                                            QUERY PLAN                                                           
+ --------------------------------------------------------------------------------------------------------------------------------
+  HashAggregate  (cost=11.56..11.61 rows=5 width=12) (actual time=0.202..0.204 rows=4 loops=1)
+    Group Key: rating
+    Batches: 1  Memory Usage: 24kB
+    ->  Index Scan using idx_product_id on reviews  (cost=0.43..11.31 rows=50 width=8) (actual time=0.041..0.191 rows=7 loops=1)
+          Index Cond: (product_id = 13027)
+  Planning Time: 8.845 ms
+  Execution Time: 1.036 ms
+ (7 rows)
+ 
+ EXPLAIN ANALYZE
+ select id from reviews where product_id = 13027;
+                                                         QUERY PLAN                                                        
+ --------------------------------------------------------------------------------------------------------------------------
+  Index Scan using idx_product_id on reviews  (cost=0.43..11.31 rows=50 width=4) (actual time=0.030..0.054 rows=7 loops=1)
+    Index Cond: (product_id = 13027)
+  Planning Time: 0.085 ms
+  Execution Time: 0.072 ms
+  
+  
+ EXPLAIN ANALYZE
+ select recommend, count(id) from reviews where product_id = 13027 group by recommend;
+ 
+                                                            QUERY PLAN                                                           
+ --------------------------------------------------------------------------------------------------------------------------------
+  HashAggregate  (cost=11.56..11.58 rows=2 width=9) (actual time=0.149..0.149 rows=2 loops=1)
+    Group Key: recommend
+    Batches: 1  Memory Usage: 24kB
+    ->  Index Scan using idx_product_id on reviews  (cost=0.43..11.31 rows=50 width=5) (actual time=0.044..0.139 rows=7 loops=1)
+          Index Cond: (product_id = 13027)
+  Planning Time: 0.147 ms
+  Execution Time: 0.176 ms
+ (7 rows)
+ 
+ EXPLAIN ANALYZE
+ select id, name from characteristics where product_id = 13027;
+ 
+                                                            QUERY PLAN       (NO INDEX)                                                     
+ ---------------------------------------------------------------------------------------------------------------------------------
+  Gather  (cost=1000.00..36532.23 rows=4 width=10) (actual time=41.297..923.160 rows=4 loops=1)
+    Workers Planned: 2
+    Workers Launched: 2
+    ->  Parallel Seq Scan on characteristics  (cost=0.00..35531.83 rows=2 width=10) (actual time=599.982..893.430 rows=1 loops=3)
+          Filter: (product_id = 13027)
+          Rows Removed by Filter: 1115892
+  Planning Time: 6.443 ms
+  Execution Time: 923.216 ms
+ (8 rows)
+ 
+ 
+                                                                    QUERY PLAN     (USE INDEX)                                                              
+ -------------------------------------------------------------------------------------------------------------------------------------------------
+  Index Scan using idx_product_id_characteristics on characteristics  (cost=0.43..8.50 rows=4 width=10) (actual time=0.109..0.112 rows=4 loops=1)
+    Index Cond: (product_id = 13027)
+  Planning Time: 0.359 ms
+  Execution Time: 0.129 ms
+ (4 rows)
+ 
+ 
+ EXPLAIN ANALYZE
+ select * from
+ (select id, name from characteristics where product_id = 13027) as t1
+ inner join characteristic_reviews on t1.id = characteristic_reviews.characteristic_id;
+ 
+                                                                             QUERY PLAN                                                                             
+ -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  Gather  (cost=1008.55..207156.57 rows=23 width=26) (actual time=136.835..7983.913 rows=20 loops=1)
+    Workers Planned: 2
+    Workers Launched: 2
+    ->  Hash Join  (cost=8.55..206154.27 rows=10 width=26) (actual time=5358.805..7974.024 rows=7 loops=3)
+          Hash Cond: (characteristic_reviews.characteristic_id = characteristics.id)
+          ->  Parallel Seq Scan on characteristic_reviews  (cost=0.00..185006.04 rows=8053204 width=16) (actual time=3.309..6936.302 rows=6442525 loops=3)
+          ->  Hash  (cost=8.50..8.50 rows=4 width=10) (actual time=0.052..0.055 rows=4 loops=3)
+                Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                ->  Index Scan using idx_product_id_characteristics on characteristics  (cost=0.43..8.50 rows=4 width=10) (actual time=0.035..0.039 rows=4 loops=3)
+                      Index Cond: (product_id = 13027)
+  Planning Time: 8.508 ms
+  Execution Time: 7983.959 ms
+ (12 rows)
+ 
+ 
+ EXPLAIN ANALYZE
+ select * from
+ (select id, name from characteristics where product_id = 13023) as t1
+ inner join characteristic_reviews on t1.id = characteristic_reviews.characteristic_id;
+ 
+                                                                       QUERY PLAN                                                                       
+ -------------------------------------------------------------------------------------------------------------------------------------------------------
+  Nested Loop  (cost=0.87..44.67 rows=23 width=26) (actual time=2.108..2.139 rows=20 loops=1)
+    ->  Index Scan using idx_product_id_characteristics on characteristics  (cost=0.43..8.50 rows=4 width=10) (actual time=0.047..0.049 rows=4 loops=1)
+          Index Cond: (product_id = 13023)
+    ->  Index Scan using idx_id_characteristics on characteristic_reviews  (cost=0.44..8.82 rows=22 width=16) (actual time=0.316..0.318 rows=5 loops=4)
+          Index Cond: (characteristic_id = characteristics.id)
+  Planning Time: 3.007 ms
+  Execution Time: 2.173 ms
+ (7 rows)
+ 
+ 
+ EXPLAIN ANALYZE
+ select name, characteristic_id, review_id, value from
+ (select id, name from characteristics where product_id = 13023) as t1
+ inner join characteristic_reviews on t1.id = characteristic_reviews.characteristic_id;
+ 
+ 
+                                                                       QUERY PLAN  (remove uncerrssay columns)                                                                     
+ -------------------------------------------------------------------------------------------------------------------------------------------------------
+  Nested Loop  (cost=0.87..44.67 rows=23 width=18) (actual time=0.020..0.037 rows=20 loops=1)
+    ->  Index Scan using idx_product_id_characteristics on characteristics  (cost=0.43..8.50 rows=4 width=10) (actual time=0.008..0.009 rows=4 loops=1)
+          Index Cond: (product_id = 13023)
+    ->  Index Scan using idx_id_characteristics on characteristic_reviews  (cost=0.44..8.82 rows=22 width=12) (actual time=0.004..0.005 rows=5 loops=4)
+          Index Cond: (characteristic_id = characteristics.id)
+  Planning Time: 0.244 ms
+  Execution Time: 0.059 ms
+ (7 rows)
+ 
+ 
+ EXPLAIN ANALYZE
+ select name, characteristic_id, AVG(value) from
+ (select id, name from characteristics where product_id = 13023) as t1
+ inner join characteristic_reviews on t1.id = characteristic_reviews.characteristic_id
+ GROUP BY name, characteristic_id;
+ 
+                                                                         QUERY PLAN                                                                          
+ -------------------------------------------------------------------------------------------------------------------------------------------------------------
+  HashAggregate  (cost=44.84..45.13 rows=23 width=42) (actual time=1.521..1.526 rows=4 loops=1)
+    Group Key: characteristics.name, characteristic_reviews.characteristic_id
+    Batches: 1  Memory Usage: 24kB
+    ->  Nested Loop  (cost=0.87..44.67 rows=23 width=14) (actual time=0.187..0.208 rows=20 loops=1)
+          ->  Index Scan using idx_product_id_characteristics on characteristics  (cost=0.43..8.50 rows=4 width=10) (actual time=0.173..0.174 rows=4 loops=1)
+                Index Cond: (product_id = 13023)
+          ->  Index Scan using idx_id_characteristics on characteristic_reviews  (cost=0.44..8.82 rows=22 width=8) (actual time=0.004..0.006 rows=5 loops=4)
+                Index Cond: (characteristic_id = characteristics.id)
+  Planning Time: 8.857 ms
+  Execution Time: 2.131 ms
+ (10 rows)
+ 
+ EXPLAIN ANALYZE
+ select json_object_agg("name", json_build_object('id', characteristic_id, 'value', avg)) AS characteristics from
+ (select name, characteristic_id, AVG(value) from
+ (select id, name from characteristics where product_id = 13023) as t1
+ inner join characteristic_reviews on t1.id = characteristic_reviews.characteristic_id
+ GROUP BY name, characteristic_id) as t2;
+ 
+                                                                             QUERY PLAN                                                                             
+ -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  Aggregate  (cost=45.48..45.49 rows=1 width=32) (actual time=6.032..6.033 rows=1 loops=1)
+    ->  HashAggregate  (cost=44.84..45.13 rows=23 width=42) (actual time=0.073..0.079 rows=4 loops=1)
+          Group Key: characteristics.name, characteristic_reviews.characteristic_id
+          Batches: 1  Memory Usage: 24kB
+          ->  Nested Loop  (cost=0.87..44.67 rows=23 width=14) (actual time=0.046..0.061 rows=20 loops=1)
+                ->  Index Scan using idx_product_id_characteristics on characteristics  (cost=0.43..8.50 rows=4 width=10) (actual time=0.009..0.010 rows=4 loops=1)
+                      Index Cond: (product_id = 13023)
+                ->  Index Scan using idx_id_characteristics on characteristic_reviews  (cost=0.44..8.82 rows=22 width=8) (actual time=0.010..0.011 rows=5 loops=4)
+                      Index Cond: (characteristic_id = characteristics.id)
+  Planning Time: 0.509 ms
+  Execution Time: 6.323 ms
+ (11 rows)
+ ```
+
+```sql
+select json_build_object("rating", "count")
+from (select rating, count(id) from reviews where product_id = 13027 group by rating) as t;
+```
+
+
+
+```sql
+EXPLAIN ANALYZE
+SELECT * FROM
+(SELECT id as review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness from reviews WHERE product_id = 13023 and reported = false ORDER BY helpfulness DESC LIMIT 5) as t1 
+Left Join reviews_photo on t1.review_id = reviews_photo.review_id;
+
+
+                                                                     QUERY PLAN (no index for reviews_photo review_id)                                                                    
+----------------------------------------------------------------------------------------------------------------------------------------------------
+ Hash Right Join  (cost=12.23..94841.28 rows=5 width=428) (actual time=494.517..1428.248 rows=5 loops=1)
+   Hash Cond: (reviews_photo.review_id = reviews.id)
+   ->  Seq Scan on reviews_photo  (cost=0.00..84544.18 rows=2742618 width=136) (actual time=0.461..1078.082 rows=2742540 loops=1)
+   ->  Hash  (cost=12.17..12.17 rows=5 width=292) (actual time=0.329..0.331 rows=5 loops=1)
+         Buckets: 1024  Batches: 1  Memory Usage: 10kB
+         ->  Limit  (cost=12.10..12.12 rows=5 width=292) (actual time=0.308..0.311 rows=5 loops=1)
+               ->  Sort  (cost=12.10..12.22 rows=48 width=292) (actual time=0.306..0.307 rows=5 loops=1)
+                     Sort Key: reviews.helpfulness DESC
+                     Sort Method: quicksort  Memory: 27kB
+                     ->  Index Scan using idx_product_id on reviews  (cost=0.43..11.31 rows=48 width=292) (actual time=0.110..0.262 rows=5 loops=1)
+                           Index Cond: (product_id = 13027)
+                           Filter: (NOT reported)
+ Planning Time: 3.808 ms
+ Execution Time: 1433.821 ms
+(14 rows)
+
+
+
+##with index
+                                                                 QUERY PLAN                                                                  
+----------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop Left Join  (cost=12.53..54.45 rows=5 width=428) (actual time=0.493..0.590 rows=3 loops=1)
+   ->  Limit  (cost=12.10..12.12 rows=5 width=292) (actual time=0.093..0.145 rows=3 loops=1)
+         ->  Sort  (cost=12.10..12.22 rows=48 width=292) (actual time=0.091..0.142 rows=3 loops=1)
+               Sort Key: reviews.helpfulness DESC
+               Sort Method: quicksort  Memory: 26kB
+               ->  Index Scan using idx_product_id on reviews  (cost=0.43..11.31 rows=48 width=292) (actual time=0.061..0.064 rows=3 loops=1)
+                     Index Cond: (product_id = 13023)
+                     Filter: (NOT reported)
+                     Rows Removed by Filter: 2
+   ->  Index Scan using idx_review_id_photo on reviews_photo  (cost=0.43..8.45 rows=1 width=136) (actual time=0.144..0.145 rows=0 loops=3)
+         Index Cond: (review_id = reviews.id)
+ Planning Time: 10.369 ms
+ Execution Time: 0.706 ms
+(13 rows)
+```
+
+```sql
+EXPLAIN ANALYZE
+SELECT t1.review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness, id, url from
+(SELECT id as review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness from reviews WHERE product_id = 13023 and reported = false ORDER BY helpfulness DESC LIMIT 5) as t1 
+left Join reviews_photo on t1.review_id = reviews_photo.review_id;
+                                                                  QUERY PLAN                                                                  
+----------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop Left Join  (cost=12.53..54.45 rows=5 width=424) (actual time=0.053..0.064 rows=3 loops=1)
+   ->  Limit  (cost=12.10..12.12 rows=5 width=292) (actual time=0.043..0.045 rows=3 loops=1)
+         ->  Sort  (cost=12.10..12.22 rows=48 width=292) (actual time=0.042..0.043 rows=3 loops=1)
+               Sort Key: reviews.helpfulness DESC
+               Sort Method: quicksort  Memory: 26kB
+               ->  Index Scan using idx_product_id on reviews  (cost=0.43..11.31 rows=48 width=292) (actual time=0.014..0.017 rows=3 loops=1)
+                     Index Cond: (product_id = 13023)
+                     Filter: (NOT reported)
+                     Rows Removed by Filter: 2
+   ->  Index Scan using idx_review_id_photo on reviews_photo  (cost=0.43..8.45 rows=1 width=136) (actual time=0.004..0.004 rows=0 loops=3)
+         Index Cond: (review_id = reviews.id)
+ Planning Time: 0.554 ms
+ Execution Time: 0.094 ms
+(13 rows)
+
+```
+
+```sql
+EXPLAIN ANALYZE
+SELECT t1.review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness, COALESCE(photos, '[]'::json) as photos from
+(SELECT id as review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness from reviews WHERE product_id = 13023 and reported = false ORDER BY helpfulness DESC LIMIT 5) as t1 
+left Join 
+(SELECT review_id, json_agg(json_build_object('id', id, 'url', "url")) as photos from reviews_photo where review_id in (select id from reviews WHERE product_id = 13027 and reported = false ORDER BY helpfulness DESC LIMIT 5) GROUP BY review_id) as t2
+ on t1.review_id = t2.review_id;
+ 
+                                                                                         QUERY PLAN                                                                                        
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Hash Left Join  (cost=66.91..66.99 rows=5 width=324) (actual time=0.244..0.253 rows=3 loops=1)
+   Hash Cond: (reviews.id = t2.review_id)
+   ->  Limit  (cost=12.10..12.12 rows=5 width=292) (actual time=0.057..0.059 rows=3 loops=1)
+         ->  Sort  (cost=12.10..12.22 rows=48 width=292) (actual time=0.055..0.057 rows=3 loops=1)
+               Sort Key: reviews.helpfulness DESC
+               Sort Method: quicksort  Memory: 26kB
+               ->  Index Scan using idx_product_id on reviews  (cost=0.43..11.31 rows=48 width=292) (actual time=0.023..0.028 rows=3 loops=1)
+                     Index Cond: (product_id = 13023)
+                     Filter: (NOT reported)
+                     Rows Removed by Filter: 2
+   ->  Hash  (cost=54.74..54.74 rows=5 width=36) (actual time=0.179..0.182 rows=3 loops=1)
+         Buckets: 1024  Batches: 1  Memory Usage: 9kB
+         ->  Subquery Scan on t2  (cost=54.58..54.74 rows=5 width=36) (actual time=0.148..0.167 rows=3 loops=1)
+               ->  GroupAggregate  (cost=54.58..54.69 rows=5 width=36) (actual time=0.147..0.164 rows=3 loops=1)
+                     Group Key: reviews_photo.review_id
+                     ->  Sort  (cost=54.58..54.59 rows=5 width=136) (actual time=0.112..0.115 rows=3 loops=1)
+                           Sort Key: reviews_photo.review_id
+                           Sort Method: quicksort  Memory: 25kB
+                           ->  Nested Loop  (cost=12.61..54.52 rows=5 width=136) (actual time=0.073..0.097 rows=3 loops=1)
+                                 ->  HashAggregate  (cost=12.18..12.23 rows=5 width=4) (actual time=0.054..0.057 rows=5 loops=1)
+                                       Group Key: reviews_1.id
+                                       Batches: 1  Memory Usage: 24kB
+                                       ->  Limit  (cost=12.10..12.12 rows=5 width=8) (actual time=0.044..0.047 rows=5 loops=1)
+                                             ->  Sort  (cost=12.10..12.22 rows=48 width=8) (actual time=0.044..0.045 rows=5 loops=1)
+                                                   Sort Key: reviews_1.helpfulness DESC
+                                                   Sort Method: quicksort  Memory: 25kB
+                                                   ->  Index Scan using idx_product_id on reviews reviews_1  (cost=0.43..11.31 rows=48 width=8) (actual time=0.017..0.027 rows=5 loops=1)
+                                                         Index Cond: (product_id = 13027)
+                                                         Filter: (NOT reported)
+                                 ->  Index Scan using idx_review_id_photo on reviews_photo  (cost=0.43..8.45 rows=1 width=136) (actual time=0.006..0.006 rows=1 loops=5)
+                                       Index Cond: (review_id = reviews_1.id)
+ Planning Time: 1.041 ms
+ Execution Time: 0.495 ms
+(33 rows)
 ```
 
