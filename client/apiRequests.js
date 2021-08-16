@@ -1,16 +1,16 @@
 const axios = require('axios');
 const options = require('./src/config/config');
 
-const getReviewsById = (params) => (
-  axios({
-    url: 'http://localhost:3000/reviews/',
-    method: 'get',
-    headers: options.headers,
-    params,
-  })
-    .then((res) => res.data)
-    .catch((err) => Promise.reject(err))
-);
+// const getReviewsById = (params) => (
+//   axios({
+//     url: 'http://localhost:3000/reviews/',
+//     method: 'get',
+//     headers: options.headers,
+//     params,
+//   })
+//     .then((res) => res.data)
+//     .catch((err) => Promise.reject(err))
+// );
 
 const getReviewsMeta = (productId) => axios({
   url: `http://localhost:3000/reviews/meta?product_id=${productId}`,
@@ -51,7 +51,6 @@ const postReview = (data) => axios.post('http://localhost:3000/reviews', data, {
   .catch((err) => Promise.reject(err));
 
 module.exports = {
-  getReviewsById,
   getReviewsMeta,
   getProductInfo,
   updateReviewHelpful,

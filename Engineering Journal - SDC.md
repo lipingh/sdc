@@ -1265,8 +1265,44 @@ GROUP BY product_id, recommend) AS s2
 GROUP BY product_id) as t2
 (SELECT product_id, json_object_agg(recommend, "count") AS recommended
 FROM (SELECT product_id, recommend, COUNT(id)
-FROM reviews
+FROM revieSws
 GROUP BY product_id, recommend) AS s2
 GROUP BY product_id) as t3
+```
+
+# Stress Test
+
+https://onenr.io/0oqQaW42GR1
+
+Aug 16, 2021
+
+- 20 users get meta data
+
+  ![Screen Shot 2021-08-16 at 11.02.20 AM](/Users/lipinghuang/Library/Application Support/typora-user-images/Screen Shot 2021-08-16 at 11.02.20 AM.png)
+
+- 200 users get meta data![Screen Shot 2021-08-16 at 11.04.27 AM](/Users/lipinghuang/Library/Application Support/typora-user-images/Screen Shot 2021-08-16 at 11.04.27 AM.png)
+
+- stages stress testing
+
+  ```javascript
+  export const options = {
+    stages: [
+      { duration: '30s', target: 200 },
+      { duration: '1m30s', target: 10 },
+      { duration: '20s', target: 0 },
+    ],
+  };
+  ```
+
+  ![Screen Shot 2021-08-16 at 11.58.38 AM](/Users/lipinghuang/Desktop/Screen Shot 2021-08-16 at 11.58.38 AM.png)
+
+```javascript
+export const options = {
+  stages: [
+    { duration: '30s', target: 2000 },
+    { duration: '1m30s', target: 1000 },
+    { duration: '20s', target: 200 },
+  ],
+};
 ```
 

@@ -4,3 +4,4 @@ client/src/config/config.js
 client/dist/bundle.js
 package-lock.json
 server/db/index.js
+newrelic.js
