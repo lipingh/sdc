@@ -1306,3 +1306,22 @@ export const options = {
 };
 ```
 
+```
+docker run -d -p 3000:3127 --name sdc --rm sdc
+```
+
+
+
+
+
+## Deploy on EC2
+
+```
+sudo apt-get update && sudo apt-get upgrade -y
+curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+sudo apt-get install -y node.js
+sudo apt-get install gcc g++ make
+
+sudo iptables -t nat -A PREROUTING -i eht0 -p tcp --dport 80 -j REDIRECT --to-port 3000
+```
+

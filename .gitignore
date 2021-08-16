@@ -5,3 +5,4 @@ client/dist/bundle.js
 package-lock.json
 server/db/index.js
 newrelic.js
+newrelic_agent.log
