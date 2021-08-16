@@ -14,7 +14,7 @@ export default function getReviewsAndRatingsByProductId() {
   const productId = 13027;
   const pageSize = 5;
   const pageNumber = 5;
-  group('loading the ratings and reviews', () => {
+  group('loading the ratings and reviews for a single product', () => {
     // get review meta data request
     const review_meta_res = http.get(`http://localhost:3000/reviews/meta?product_id=${productId}`);
     check(review_meta_res, { 'review meta data status was 200': (r) => r.status === 200 });
