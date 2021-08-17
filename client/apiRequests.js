@@ -30,14 +30,14 @@ const updateReviewHelpful = (reviewId, helpful) => axios.put(
   });
 
 const reportReview = (reviewId) => axios.put(
-  `http://3.17.150:3000/reviews/${reviewId}/report`, {},
+  `${baseUrl}/reviews/${reviewId}/report`, {},
 )
   .then()
   .catch((err) => {
     throw err;
   });
 
-const postReview = (data) => axios.post('http://3.17.150:3000/reviews', data, { headers: options.headers })
+const postReview = (data) => axios.post('${baseUrl}/reviews', data, { headers: options.headers })
   .then()
   .catch((err) => Promise.reject(err));
 
