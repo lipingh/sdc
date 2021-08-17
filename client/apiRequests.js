@@ -13,7 +13,7 @@ const options = require('./src/config/config');
 // );
 
 const getReviewsMeta = (productId) => axios({
-  url: `http://localhost:3000/reviews/meta?product_id=${productId}`,
+  url: `http://3.17.150.126:3000/reviews/meta?product_id=${productId}`,
   method: 'get',
 })
   .then((res) => res.data)
@@ -28,7 +28,7 @@ const getProductInfo = (id) => axios({
   .catch((err) => Promise.reject(err));
 
 const updateReviewHelpful = (reviewId, helpful) => axios.put(
-  `http://localhost:3000/reviews/${reviewId}/helpful`,
+  `http://3.17.150.126:3000/reviews/${reviewId}/helpful`,
   {
     helpfulness: helpful,
   },
@@ -39,14 +39,14 @@ const updateReviewHelpful = (reviewId, helpful) => axios.put(
   });
 
 const reportReview = (reviewId) => axios.put(
-  `http://localhost:3000/reviews/${reviewId}/report`, {},
+  `http://3.17.150:3000/reviews/${reviewId}/report`, {},
 )
   .then()
   .catch((err) => {
     throw err;
   });
 
-const postReview = (data) => axios.post('http://localhost:3000/reviews', data, { headers: options.headers })
+const postReview = (data) => axios.post('http://3.17.150:3000/reviews', data, { headers: options.headers })
   .then()
   .catch((err) => Promise.reject(err));
 
