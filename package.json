@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon server/index.js",
     "react-dev": "webpack --config webpack.dev-config.js --watch",
-    "react-prod": "webpack --config webpack.prod-config.js --watch",
+    "react-prod": "webpack --config webpack.prod-config.js",
     "test": "jest"
   },
   "repository": {

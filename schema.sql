@@ -41,8 +41,8 @@ CREATE TABLE reviews (
   body TEXT,
   recommend BOOLEAN DEFAULT TRUE,
   reported BOOLEAN DEFAULT FALSE,
-  reviewer_name VARCHAR(100),
-  reviewer_email VARCHAR(100),
+  reviewer_name VARCHAR(50),
+  reviewer_email VARCHAR(50),
   response TEXT,
   helpfulness INTEGER NOT NULL DEFAULT 0,
   PRIMARY KEY (id)

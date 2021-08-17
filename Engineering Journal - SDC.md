@@ -1,5 +1,7 @@
 
 
+
+
 ## Postgres Synax
 
 ```sql
@@ -19,6 +21,12 @@ psql -d postgres -U me
 \dm
 
 # list the table_id_seq
+```
+
+```sql
+#ubuntu
+sudo -u postgres -i
+psql postgres
 ```
 
 
@@ -1317,11 +1325,62 @@ docker run -d -p 3000:3127 --name sdc --rm sdc
 ## Deploy on EC2
 
 ```
+ssh -i "jelly_sdc.cer" ubuntu@ec2-3-17-150-126.us-east-2.compute.amazonaws.com
 sudo apt-get update && sudo apt-get upgrade -y
 curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
 sudo apt-get install -y node.js
 sudo apt-get install gcc g++ make
 
 sudo iptables -t nat -A PREROUTING -i eht0 -p tcp --dport 80 -j REDIRECT --to-port 3000
+```
+
+```
+sudo -u postgres -i
+psql postgres
+```
+
+```bash
+scp -i ~/Desktop/jelly_sdc.cer ~/Desktop/sdc_files/product.csv ubuntu@ec2-3-17-150-126.us-east-2.compute.amazonaws.com:~/data/
+
+COPY product(id, "name", slogan, "description", category, default_price)
+FROM '/home/ubuntu/data/product.csv'
+DELIMITER ','
+CSV HEADER;
+```
+
+```bash
+scp -i ~/Desktop/jelly_sdc.cer ~/Desktop/sdc_files/characteristics.csv ubuntu@ec2-3-17-150-126.us-east-2.compute.amazonaws.com:~/data/
+
+COPY characteristics(id, product_id, "name")
+FROM '/home/ubuntu/data/characteristics.csv'
+DELIMITER ','
+CSV HEADER;
+```
+
+```bash
+scp -i ~/Desktop/jelly_sdc.cer ~/Desktop/sdc_files/reviews.csv ubuntu@ec2-3-17-150-126.us-east-2.compute.amazonaws.com:~/data/
+
+COPY reviews(id, product_id, rating, "date", summary, body, recommend, reported, reviewer_name, reviewer_email, response, helpfulness)
+FROM '/home/ubuntu/data/reviews.csv'
+DELIMITER ','
+CSV HEADER;
+```
+
+```bash
+scp -i ~/Desktop/jelly_sdc.cer ~/Desktop/sdc_files/characteristic_reviews.csv ubuntu@ec2-3-17-150-126.us-east-2.compute.amazonaws.com:~/data/
+
+COPY characteristic_reviews(id, characteristic_id, review_id, value)
+FROM '/home/ubuntu/data/characteristic_reviews.csv'
+DELIMITER ','
+CSV HEADER;
+```
+
+```bash
+scp -i ~/Desktop/jelly_sdc.cer ~/Desktop/sdc_files/reviews_photos.csv ubuntu@ec2-3-17-150-126.us-east-2.compute.amazonaws.com:~/data/
+
+COPY reviews_photo(id, review_id, url)
+FROM '/home/ubuntu/data/reviews_photos.csv'
+DELIMITER ','
+CSV HEADER;
 ```
 

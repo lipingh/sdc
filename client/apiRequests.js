@@ -1,19 +1,10 @@
 const axios = require('axios');
 const options = require('./src/config/config');
 
-// const getReviewsById = (params) => (
-//   axios({
-//     url: 'http://localhost:3000/reviews/',
-//     method: 'get',
-//     headers: options.headers,
-//     params,
-//   })
-//     .then((res) => res.data)
-//     .catch((err) => Promise.reject(err))
-// );
-
+const baseUrl = 'http://localhost:3000';
+// const baseUrl = 'http://3.17.150.126:3000/';
 const getReviewsMeta = (productId) => axios({
-  url: `http://3.17.150.126:3000/reviews/meta?product_id=${productId}`,
+  url: `${baseUrl}/reviews/meta?product_id=${productId}`,
   method: 'get',
 })
   .then((res) => res.data)
@@ -28,7 +19,7 @@ const getProductInfo = (id) => axios({
   .catch((err) => Promise.reject(err));
 
 const updateReviewHelpful = (reviewId, helpful) => axios.put(
-  `http://3.17.150.126:3000/reviews/${reviewId}/helpful`,
+  `${baseUrl}/reviews/${reviewId}/helpful`,
   {
     helpfulness: helpful,
   },
