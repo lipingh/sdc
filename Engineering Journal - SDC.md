@@ -1325,7 +1325,7 @@ docker run -d -p 3000:3127 --name sdc --rm sdc
 ## Deploy on EC2
 
 ```
-ssh -i "jelly_sdc.cer" ubuntu@ec2-3-17-150-126.us-east-2.compute.amazonaws.com
+ssh -i "~/Desktop/jelly_sdc.cer" ubuntu@ec2-3-17-150-126.us-east-2.compute.amazonaws.com
 sudo apt-get update && sudo apt-get upgrade -y
 curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
 sudo apt-get install -y node.js
@@ -1337,6 +1337,10 @@ sudo iptables -t nat -A PREROUTING -i eht0 -p tcp --dport 80 -j REDIRECT --to-po
 ```
 sudo -u postgres -i
 psql postgres
+
+#restart service
+
+sudo service postgresql restart
 ```
 
 ```bash
@@ -1382,5 +1386,9 @@ COPY reviews_photo(id, review_id, url)
 FROM '/home/ubuntu/data/reviews_photos.csv'
 DELIMITER ','
 CSV HEADER;
+```
+
+```
+aws ec2 describe-volumes --volume vol-0e5dd0ec32b5765ba --region us-east-2
 ```
 
