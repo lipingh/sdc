@@ -16,7 +16,11 @@ const ReviewListItem = ({ review }) => {
     setShowFullImage(showFullImageCopy);
   };
   const handleAddHelpful = () => {
-    sethelpful((prev) => (disableHelpful ? prev - 1 : prev + 1));
+    sethelpful((prev) => {
+      const current = disableHelpful ? prev - 1 : prev + 1;
+      updateReviewHelpful(review.review_id, current);
+      return current;
+    });
     setDisableHelpful(!disableHelpful);
   };
 
@@ -25,9 +29,9 @@ const ReviewListItem = ({ review }) => {
     reportReview(review.review_id);
   };
 
-  useEffect(() => {
-    updateReviewHelpful(review.review_id, helpful);
-  }, [helpful]);
+  // useEffect(() => {
+  //   updateReviewHelpful(review.review_id, helpful);
+  // }, [helpful]);
 
   return (
     <div>
