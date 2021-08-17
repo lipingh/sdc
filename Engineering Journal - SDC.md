@@ -1324,8 +1324,12 @@ docker run -d -p 3000:3127 --name sdc --rm sdc
 
 ## Deploy on EC2
 
-```
+```bash
+#databse instance
 ssh -i "~/Desktop/jelly_sdc.cer" ubuntu@ec2-3-17-150-126.us-east-2.compute.amazonaws.com
+#front-end instance
+ssh -i "~/Desktop/jelly_sdc.cer" ubuntu@ec2-13-59-152-171.us-east-2.compute.amazonaws.com
+
 sudo apt-get update && sudo apt-get upgrade -y
 curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
 sudo apt-get install -y node.js
@@ -1340,7 +1344,7 @@ psql postgres
 
 #restart service
 
-sudo service postgresql restart
+ql
 ```
 
 ```bash
@@ -1390,5 +1394,16 @@ CSV HEADER;
 
 ```
 aws ec2 describe-volumes --volume vol-0e5dd0ec32b5765ba --region us-east-2
+```
+
+Lessones Learned:
+
+- Deploy client and server sperately
+- read documentation carefully
+
+```bash
+postgressql://Username:Password@ec2-54-228-243-29.eu-west-1.compute.amazonaws.com:5432/database?ssl=true
+
+postgressql://me:password@ec2-3-17-150-126.us-east-2.compute.amazonaws.com:5432/database?ssl=true
 ```
 

@@ -1,8 +1,8 @@
 const axios = require('axios');
 const options = require('./src/config/config');
 
-// const baseUrl = 'http://localhost:3000';
-const baseUrl = 'http://3.17.150.126:3000';
+const baseUrl = 'http://localhost:3000';
+// const baseUrl = 'http://3.17.150.126:3000';
 const getReviewsMeta = (productId) => axios({
   url: `${baseUrl}/reviews/meta?product_id=${productId}`,
   method: 'get',
@@ -37,7 +37,7 @@ const reportReview = (reviewId) => axios.put(
     throw err;
   });
 
-const postReview = (data) => axios.post('${baseUrl}/reviews', data, { headers: options.headers })
+const postReview = (data) => axios.post(`${baseUrl}/reviews`, data, { headers: options.headers })
   .then()
   .catch((err) => Promise.reject(err));
 
