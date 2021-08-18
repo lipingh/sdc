@@ -15,8 +15,11 @@ const RatingsAndReviews = () => {
   const { productId } = globalData.state;
   const { ratingsBreakDown } = globalData.state;
   const [showReviewForm, setShowReviewForm] = useState(false);
-  const recommended = parseInt(globalData.state.recommended.true, 10);
-  const notRecommended = parseInt(globalData.state.recommended.false, 10);
+  const recommended = globalData.state.recommended.true ? globalData.state.recommended.true : 0;
+  const notRecommended = globalData.state.recommended.false
+    ? globalData.state.recommended.false : 0;
+  // const recommended = parseInt(globalData.state.recommended.true, 10);
+  // const notRecommended = parseInt(globalData.state.recommended.false, 10);
   const { characteristics } = globalData.state;
   const [sortOption, setSortOption] = useState('relevant');
   const [page, setPage] = useState(1);

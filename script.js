@@ -1,7 +1,7 @@
 import http from 'k6/http';
 import { check, group, sleep } from 'k6';
 const baseUrl = 'http://13.59.152.171:3000';
-
+// const baseUrl = 'http://localhost:3000';
 export const options = {
   stages: [
     { duration: '30s', target: 2000 },
@@ -12,7 +12,7 @@ export const options = {
 
 const SLEEP_DURATION = 0.1;
 export default function getReviewsAndRatingsByProductId() {
-  const productId = 13027;
+  const productId = 13025;
   const pageSize = 5;
   const pageNumber = 5;
   group('loading the ratings and reviews for a single product', () => {

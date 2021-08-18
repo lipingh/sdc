@@ -5,11 +5,16 @@
 
 const calculateRating = (ratings) => {
   // console.log('input', ratings);
-  const oneStar = ratings['1'] ? parseInt(ratings['1'], 10) : 0;
-  const twoStar = ratings['2'] ? parseInt(ratings['2'], 10) : 0;
-  const threeStar = ratings['3'] ? parseInt(ratings['3'], 10) : 0;
-  const fourStar = ratings['4'] ? parseInt(ratings['4'], 10) : 0;
-  const fiveStar = ratings['5'] ? parseInt(ratings['5'], 10) : 0;
+  const oneStar = ratings['1'] ? ratings['1'] : 0;
+  const twoStar = ratings['2'] ? ratings['2'] : 0;
+  const threeStar = ratings['3'] ? ratings['3'] : 0;
+  const fourStar = ratings['4'] ? ratings['4'] : 0;
+  const fiveStar = ratings['5'] ? ratings['5'] : 0;
+  // const oneStar = ratings['1'] ? parseInt(ratings['1'], 10) : 0;
+  // const twoStar = ratings['2'] ? parseInt(ratings['2'], 10) : 0;
+  // const threeStar = ratings['3'] ? parseInt(ratings['3'], 10) : 0;
+  // const fourStar = ratings['4'] ? parseInt(ratings['4'], 10) : 0;
+  // const fiveStar = ratings['5'] ? parseInt(ratings['5'], 10) : 0;
   const totalReviews = oneStar + twoStar + threeStar + fourStar + fiveStar;
   const totalScores = oneStar + twoStar * 2 + threeStar * 3 + fourStar * 4 + fiveStar * 5;
   const averageRatings = (totalScores / totalReviews);

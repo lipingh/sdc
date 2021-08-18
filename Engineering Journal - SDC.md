@@ -1140,11 +1140,35 @@ select * from getReviewsByPage(13027);
  ```
 
 ```sql
-select json_build_object("rating", "count")
-from (select rating, count(id) from reviews where product_id = 13027 group by rating) as t;
+EXPLAIN ANALYZE
+select t1.product_id, ratings, characteristics, recommended
+from 
+		(select product_id, json_object_agg("rating", "count") as ratings
+     from (select product_id, rating, count(id) 
+            from reviews where product_id = 13027 
+            group by product_id, rating) as r 
+      group by product_id) as t1
+inner join
+		(select product_id, json_object_agg("name", json_build_object('id', characteristic_id, 				'value', avg)) AS characteristics 
+		from (select product_id, name, characteristic_id, AVG(value) from
+						(select product_id, id, name from characteristics where product_id = 13027) as c1
+						inner join characteristic_reviews on 
+            c1.id = characteristic_reviews.characteristic_id
+            GROUP BY product_id, name, characteristic_id) as c2 
+     group by product_id) as t2
+on t1.product_id = t2.product_id
+inner join 
+		(Select product_id, json_object_agg("recommend", count) as recommended
+  		from (SELECT product_id, recommend, COUNT(*) 
+            FROM reviews WHERE product_id = 13027 						
+            GROUP BY product_id, recommend) as re
+  		group by product_id
+		) as t3
+on t1.product_id = t3.product_id;
+
 ```
 
-
+![Screen Shot 2021-08-17 at 6.38.53 PM](/Users/lipinghuang/Desktop/Screen Shot 2021-08-17 at 6.38.53 PM.png)
 
 ```sql
 EXPLAIN ANALYZE
@@ -1406,4 +1430,30 @@ postgressql://Username:Password@ec2-54-228-243-29.eu-west-1.compute.amazonaws.co
 
 postgressql://me:password@ec2-3-17-150-126.us-east-2.compute.amazonaws.com:5432/database?ssl=true
 ```
+
+- Stress testing for remote database
+
+  
+
+  ```
+  export const options = {
+    stages: [
+      { duration: '30s', target: 2000 },
+      { duration: '1m30s', target: 1000 },
+      { duration: '20s', target: 200 },
+    ],
+  };
+  
+  ```
+
+  ![Screen Shot 2021-08-17 at 5.11.41 PM](/Users/lipinghuang/Desktop/Screen Shot 2021-08-17 at 5.11.41 PM.png)
+  -  run the second time
+
+    ![Screen Shot 2021-08-17 at 5.24.11 PM](/Users/lipinghuang/Desktop/Screen Shot 2021-08-17 at 5.24.11 PM.png)
+
+![](/Users/lipinghuang/Desktop/Screen Shot 2021-08-17 at 7.50.47 PM.png)
+
+Refactor the meta data query, and improve the http_req_duration with same stress testing parameters
+
+![](/Users/lipinghuang/Desktop/Screen Shot 2021-08-17 at 7.50.47 PM.png)
 
