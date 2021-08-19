@@ -29,10 +29,6 @@ const ReviewListItem = ({ review }) => {
     reportReview(review.review_id);
   };
 
-  // useEffect(() => {
-  //   updateReviewHelpful(review.review_id, helpful);
-  // }, [helpful]);
-
   return (
     <div>
       <div className="review-list-overall">

@@ -6,7 +6,6 @@ const getReviews = (req, res) => {
   const pageSize = parseInt(req.query.count, 10);
   const sort = req.query.sort === 'newest' ? 'date' : 'helpfulness';
   const offset = (pageNUmber - 1) * pageSize;
-  const data = {};
   pool.query(`SELECT t1.review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness, COALESCE(photos, '[]'::json) as photos from
  (SELECT id as review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness from reviews WHERE product_id = $1 and reported = false ORDER BY ${sort} DESC LIMIT $2 OFFSET $3) as t1
  left Join
@@ -15,62 +14,41 @@ const getReviews = (req, res) => {
     if (err) {
       throw err;
     }
-    data.results = results.rows;
-    res.status(200).json(data);
+    res.status(200).json({ results: results.rows });
   });
 };
 
 const getReviewsMeta = (req, res) => {
   const productId = parseInt(req.query.product_id, 10);
-  const data = {};
-  const ratingPromise = new Promise((resolve, reject) => {
-    pool.query('select rating, count(id) from reviews where product_id = $1 group by rating', [productId], (err, results) => {
-      if (err) {
-        reject(err);
-      } else {
-        const result = {};
-        results.rows.forEach((rating) => { result[rating.rating] = rating.count; });
-        data.ratings = result;
-        resolve(result);
-      }
-    });
-  });
+  const sqlQuery = `select t1.product_id, ratings, recommended, characteristics
+  from
+      (select product_id, json_object_agg("rating", "count") as ratings
+       from (select product_id, rating, count(id)
+              from reviews where product_id = $1
+              group by product_id, rating) as r
+        group by product_id) as t1
+  inner join
+      (select product_id, json_object_agg("name", json_build_object('id', characteristic_id, 'value', avg)) AS characteristics
+      from (select product_id, name, characteristic_id, AVG(value) from
+              (select product_id, id, name from characteristics where product_id = $1) as c1
+              inner join characteristic_reviews on
+              c1.id = characteristic_reviews.characteristic_id
+              GROUP BY product_id, name, characteristic_id) as c2
+       group by product_id) as t2 on t1.product_id = t2.product_id
+  inner join
+      (Select product_id, json_object_agg("recommend", "count") as recommended
+        from (SELECT product_id, recommend, COUNT(*)
+              FROM reviews WHERE product_id = $1
+              GROUP BY product_id, recommend) as re
+        group by product_id
+      ) as t3 on t1.product_id = t3.product_id`;
 
-  const recommendPromise = new Promise((resolve, reject) => {
-    pool.query('SELECT recommend, COUNT(*) FROM reviews WHERE product_id = $1 GROUP BY recommend', [productId], (err, results) => {
-      if (err) {
-        reject(err);
-      } else {
-        const result = {};
-        results.rows.forEach((recommend) => { result[recommend.recommend] = recommend.count; });
-        data.recommended = result;
-        resolve(result);
-      }
-    });
+  pool.query(sqlQuery, [productId], (err, results) => {
+    if (err) {
+      throw err;
+    }
+    res.status(200).json(results.rows[0]);
   });
-
-  const characteristicPromise = new Promise((resolve, reject) => {
-    pool.query('select name, characteristic_id, AVG(value) from (select id, name from characteristics where product_id = $1) as t1 inner join characteristic_reviews on t1.id = characteristic_reviews.characteristic_id GROUP BY name, characteristic_id', [productId], (err, results) => {
-      if (err) {
-        reject(err);
-      } else {
-        const result = {};
-        results.rows.forEach((characteristic) => {
-          result[characteristic.name] = {
-            id: characteristic.characteristic_id,
-            value: characteristic.avg,
-          };
-        });
-        data.characteristics = result;
-        resolve(result);
-      }
-    });
-  });
-
-  Promise.all([ratingPromise, recommendPromise, characteristicPromise])
-    .then(() => {
-      res.status(200).json(data);
-    });
 };
 
 const updateReviewHelpful = (req, res) => {
