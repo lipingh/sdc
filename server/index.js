@@ -1,7 +1,7 @@
 require('newrelic');
 const express = require('express');
 const bodyParser = require('body-parser');
-
+const cors = require('cors');
 const controller = require('./controllers/queries');
 
 const app = express();
@@ -9,13 +9,16 @@ const port = 3000;
 
 // app.use(express.json());
 app.use(bodyParser.json());
+app.use(cors());
 app.use(
   bodyParser.urlencoded({
     extended: true,
   }),
 );
 app.use(express.static('client/dist'));
-
+app.get('/loaderio-e5022006837028672ad26d571f464ca2',(req, res)=>{
+	res.send('loaderio-e5022006837028672ad26d571f464ca2');
+})
 app.get('/reviews/', controller.getReviews);
 app.get('/reviews/meta', controller.getReviewsMeta);
 
