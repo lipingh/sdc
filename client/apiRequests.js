@@ -3,6 +3,7 @@ const options = require('./src/config/config');
 
 // const baseUrl = 'http://localhost:3000';
 const baseUrl = 'http://13.59.152.171:3000';
+// const baseUrl = 'http://3.144.36.63:3000';
 const getReviewsMeta = (productId) => axios({
   url: `${baseUrl}/reviews/meta?product_id=${productId}`,
   method: 'get',
