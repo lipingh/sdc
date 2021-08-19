@@ -16,7 +16,7 @@ app.use(
   }),
 );
 app.use(express.static('client/dist'));
-app.get('/loaderio-e0d9e09648c9188939e93c8ebc615540',(req, res)=>{
+app.get('/loaderio-e5022006837028672ad26d571f464ca2',(req, res)=>{
 	res.send('loaderio-e0d9e09648c9188939e93c8ebc615540');
 })
 app.get('/reviews/', controller.getReviews);
