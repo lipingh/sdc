@@ -1,7 +1,7 @@
 import http from 'k6/http';
 import { check, group, sleep } from 'k6';
-const baseUrl = 'http://13.59.152.171:3000';
-// const baseUrl = 'http://localhost:3000';
+// const baseUrl = 'http://13.59.152.171:3000';
+const baseUrl = 'http://localhost:3000';
 export const options = {
   stages: [
     { duration: '30s', target: 2000 },

@@ -6,6 +6,7 @@ const controller = require('./controllers/queries');
 
 const app = express();
 const port = 3000;
+const loaderio = 'loaderio-e5022006837028672ad26d571f464ca2';
 
 // app.use(express.json());
 app.use(bodyParser.json());
@@ -16,9 +17,9 @@ app.use(
   }),
 );
 app.use(express.static('client/dist'));
-app.get('/loaderio-e5022006837028672ad26d571f464ca2',(req, res)=>{
-	res.send('loaderio-e5022006837028672ad26d571f464ca2');
-})
+app.get(`/${loaderio}`, (req, res) => {
+  res.send(loaderio);
+});
 app.get('/reviews/', controller.getReviews);
 app.get('/reviews/meta', controller.getReviewsMeta);
 
