@@ -17,6 +17,9 @@ app.use(
   }),
 );
 app.use(express.static('client/dist'));
+app.get('/', (res, req) => {
+  res.send('Hello world');
+});
 app.get(`/${loaderio}`, (req, res) => {
   res.send(loaderio);
 });
