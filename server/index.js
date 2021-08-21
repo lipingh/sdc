@@ -16,10 +16,17 @@ app.use(
     extended: true,
   }),
 );
+<<<<<<< HEAD
 app.use(express.static('client/dist'));
 app.get('/', (req, res) => {
   res.send('Hello world');
 });
+=======
+//app.use(express.static('client/dist'));
+//app.get('/', (req, res) => {
+  //res.send('Hello world');
+//});
+>>>>>>> 45e2297e94afc3e9e5c0617d56b45fdb3c5384fd
 app.get(`/${loaderio}`, (req, res) => {
   res.send(loaderio);
 });
