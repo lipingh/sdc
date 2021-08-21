@@ -6,7 +6,7 @@ const controller = require('./controllers/queries');
 
 const app = express();
 const port = 3000;
-const loaderio = 'loaderio-e5022006837028672ad26d571f464ca2';
+const loaderio = 'loaderio-92d4962ab2aa913032dbbe0c0cc75f8d';
 
 // app.use(express.json());
 app.use(bodyParser.json());
@@ -17,7 +17,7 @@ app.use(
   }),
 );
 app.use(express.static('client/dist'));
-app.get('/', (res, req) => {
+app.get('/', (req, res) => {
   res.send('Hello world');
 });
 app.get(`/${loaderio}`, (req, res) => {
