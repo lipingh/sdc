@@ -185,6 +185,13 @@ CSV HEADER;
 -- GROUP BY product_id, characteristic_id, "name") AS a
 -- GROUP BY product_id;
 
+-- CREATE MATERIALIZED VIEW reviews_unreported AS
+-- SELECT t1.review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness, COALESCE(photos, '[]'::json) as photos
+-- from
+--  (SELECT product_id, id as review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness from reviews WHERE reported = false) as t1
+--  left Join
+--  (SELECT review_id, json_agg(json_build_object('id', id, 'url', "url")) as photos from reviews_photo where review_id in (select id from reviews WHERE product_id = $1 and reported = false ORDER BY helpfulness DESC LIMIT 5) GROUP BY review_id) as t2
+--   on t1.review_id = t2.review_id
 
 CREATE MATERIALIZED VIEW reviews_meta AS
 SELECT t1.product_id, t1.ratings, t2.recommended, t3.characteristics
@@ -211,6 +218,8 @@ INNER JOIN (
   GROUP BY product_id, characteristic_id, "name") AS a
   GROUP BY product_id
 ) AS t3 ON t3.product_id = t1.product_id;
+
+
 
 
 -- DROP VIEW IF EXISTS reviews_view;
@@ -303,3 +312,6 @@ ON reviews_photo(review_id);
 
 CREATE INDEX idx_product_id_view
 ON reviews_meta(product_id);
+
+CREATE INDEX idx_reported
+ON reviews(reported);

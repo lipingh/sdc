@@ -7,10 +7,10 @@ const getReviews = (req, res) => {
   const sort = req.query.sort === 'newest' ? 'date' : 'helpfulness';
   const offset = (pageNUmber - 1) * pageSize;
   pool.query(`SELECT t1.review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness, COALESCE(photos, '[]'::json) as photos from
- (SELECT id as review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness from reviews WHERE product_id = $1 and reported = false ORDER BY ${sort} DESC LIMIT $2 OFFSET $3) as t1
- left Join
- (SELECT review_id, json_agg(json_build_object('id', id, 'url', "url")) as photos from reviews_photo where review_id in (select id from reviews WHERE product_id = $1 and reported = false ORDER BY helpfulness DESC LIMIT 5) GROUP BY review_id) as t2
-  on t1.review_id = t2.review_id`, [productId, pageSize, offset], (err, results) => {
+   (SELECT id as review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness from reviews WHERE product_id = $1 and reported = false ORDER BY ${sort} DESC LIMIT $2 OFFSET $3) as t1
+   left Join
+   (SELECT review_id, json_agg(json_build_object('id', id, 'url', "url")) as photos from reviews_photo where review_id in (select id from reviews WHERE product_id = $1 and reported = false ORDER BY helpfulness DESC LIMIT 5) GROUP BY review_id) as t2
+    on t1.review_id = t2.review_id`, [productId, pageSize, offset], (err, results) => {
     if (err) {
       throw err;
     }
@@ -20,28 +20,6 @@ const getReviews = (req, res) => {
 
 const getReviewsMeta = (req, res) => {
   const productId = parseInt(req.query.product_id, 10);
-  // const sqlQuery = `select t1.product_id, ratings, recommended, characteristics
-  // from
-  //     (select product_id, json_object_agg("rating", "count") as ratings
-  //      from (select product_id, rating, count(id)
-  //             from reviews where product_id = $1
-  //             group by product_id, rating) as r
-  //       group by product_id) as t1
-  // inner join
-  //     (select product_id, json_object_agg("name", json_build_object('id', characteristic_id, 'value', avg)) AS characteristics
-  //     from (select product_id, name, characteristic_id, AVG(value) from
-  //             (select product_id, id, name from characteristics where product_id = $1) as c1
-  //             inner join characteristic_reviews on
-  //             c1.id = characteristic_reviews.characteristic_id
-  //             GROUP BY product_id, name, characteristic_id) as c2
-  //      group by product_id) as t2 on t1.product_id = t2.product_id
-  // inner join
-  //     (Select product_id, json_object_agg("recommend", "count") as recommended
-  //       from (SELECT product_id, recommend, COUNT(*)
-  //             FROM reviews WHERE product_id = $1
-  //             GROUP BY product_id, recommend) as re
-  //       group by product_id
-  //     ) as t3 on t1.product_id = t3.product_id`;
   const sqlQuery = 'select * from reviews_meta where product_id = $1';
 
   pool.query(sqlQuery, [productId], (err, results) => {

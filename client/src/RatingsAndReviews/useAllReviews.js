@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 // import options from '../config/config';
-// const baseUrl = 'http://localhost:3000';
-const baseUrl = 'http://13.59.152.171:3000';
 const useAllReviews = (productId, page, sortOption, ratingFilter) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -21,7 +19,7 @@ const useAllReviews = (productId, page, sortOption, ratingFilter) => {
     setError(false);
     axios({
       method: 'GET',
-      url: `${baseUrl}/reviews/`,
+      url: '/reviews/',
       params: {
         product_id: productId,
         page,

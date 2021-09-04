@@ -16,15 +16,10 @@ app.use(
     extended: true,
   }),
 );
-//app.use(express.static('client/dist'));
-app.get('/', (req, res) => {
-  res.send('Hello world');
-});
-
-//app.use(express.static('client/dist'));
-//app.get('/', (req, res) => {
-  //res.send('Hello world');
-//});
+app.use(express.static('client/dist'));
+// app.get('/', (req, res) => {
+//   res.send('Hello world');
+// });
 
 app.get(`/${loaderio}`, (req, res) => {
   res.send(loaderio);
