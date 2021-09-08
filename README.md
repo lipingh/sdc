@@ -1,5 +1,5 @@
 # RESTful API
-Build a RESTful API for the [Project Catwalk](https://github.com/lipingh/fec) in 2 weeks.
+Build a Ratings and Reviews RESTful API for the [Project Catwalk](https://github.com/lipingh/fec) in 2 weeks.
 
 
 # Tech stack
