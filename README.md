@@ -4,6 +4,7 @@ Build a Ratings and Reviews RESTful API for the [Project Catwalk](https://github
 
 # Tech stack
 - PostgreSQL
+- Node.js/Express.js
 - New Relic
 - k6
 - Loader.io
